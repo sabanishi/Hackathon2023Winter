@@ -397,6 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tra: {fileID: 899781159}
   mat: {fileID: 2100000, guid: 05afc87e681404036b24b8a431261878, type: 2}
+  cam: {fileID: 650320202}
 --- !u!1 &1053404369
 GameObject:
   m_ObjectHideFlags: 0
