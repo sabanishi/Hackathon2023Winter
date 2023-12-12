@@ -11,6 +11,7 @@ namespace Hackathon2023Winter.Entity
         [SerializeField] private PlayerOfflineOperator offlineOperator;
         [SerializeField] private PlayerOnlineOperator onlineOperator;
         [SerializeField] private bool isCircle;
+        [SerializeField] private KeyInputter keyInputter;
 
         public bool IsCircle => isCircle;
 
@@ -21,27 +22,38 @@ namespace Hackathon2023Winter.Entity
         /// <param name="isHostControl">Hostが操作権を持つ時、true</param>
         public void Setup(bool isWASD, bool isHostControl)
         {
-            var ketSet = isWASD ? PlayerOperateKeySet.WASDMode : PlayerOperateKeySet.ArrowMode;
+            var keySet = isWASD ? PlayerOperateKeySet.WASDMode : PlayerOperateKeySet.ArrowMode;
             if (isOnline)
             {
                 //オンラインモード
-                onlineOperator.SetKeySet(ketSet);
+                onlineOperator.SetActive(true);
                 onlineOperator.SetControlAuthority(isHostControl);
+                onlineOperator.SetMoverActive(true);
+                keyInputter.SetKeySet(keySet);
+                keyInputter.SetControlAuthority(isHostControl);
+                
             }
             else
             {
                 //オフラインモード
-                offlineOperator.SetKeySet(ketSet);
+                offlineOperator.SetActive(true);
+                offlineOperator.SetKeySet(keySet);
                 offlineOperator.SetCanControl(true);
             }
         }
 
         protected override void ChangeToOfflineInternal()
         {
-            if (gameObject.GetComponent<PhotonRigidbody2DView>() != null)
+            if (gameObject.GetComponent<PUN2_RigidbodySync>() != null)
             {
-                Destroy(gameObject.GetComponent<PhotonRigidbody2DView>());
+                Destroy(gameObject.GetComponent<PUN2_RigidbodySync>());
             }
+
+            if (keyInputter != null)
+            {
+                Destroy(keyInputter.gameObject);
+            }
+            
             base.ChangeToOfflineInternal();
         }
     }

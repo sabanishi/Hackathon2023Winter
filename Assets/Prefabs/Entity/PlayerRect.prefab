@@ -1,5 +1,74 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &640967709797415826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6006995127027626908}
+  - component: {fileID: 9021141941883361887}
+  - component: {fileID: 5592793812833649660}
+  m_Layer: 0
+  m_Name: KeyInputter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6006995127027626908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640967709797415826}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1009092107292107971}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9021141941883361887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640967709797415826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a97862586b4267aeb3d185d4f252ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onlineOperator: {fileID: 3419871856296772742}
+--- !u!114 &5592793812833649660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640967709797415826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 1
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 9021141941883361887}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8436217441524702630
 GameObject:
   m_ObjectHideFlags: 0
@@ -18,6 +87,7 @@ GameObject:
   - component: {fileID: 5785662170158886922}
   - component: {fileID: 4105221016712212691}
   - component: {fileID: 5019751966861180526}
+  - component: {fileID: 4758246082238195702}
   m_Layer: 0
   m_Name: PlayerRect
   m_TagString: Untagged
@@ -36,7 +106,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6006995127027626908}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -181,6 +252,7 @@ MonoBehaviour:
   offlineOperator: {fileID: 3803176367600333697}
   onlineOperator: {fileID: 3419871856296772742}
   isCircle: 0
+  keyInputter: {fileID: 9021141941883361887}
 --- !u!114 &3803176367600333697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,9 +293,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8792576885683161971}
   jumpPower: 15
-  firstMoveImpulse: 2
-  A: 10
-  B: 8
+  firstMoveImpulse: 5
+  A: 50
+  B: 20
   D: 3
   E: 1
   F: 1
@@ -247,6 +319,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5019751966861180526}
+  - {fileID: 4758246082238195702}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -262,3 +335,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3219aa221eb545dab03fef8a8046aa87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4758246082238195702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436217441524702630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
