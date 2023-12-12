@@ -58,5 +58,6 @@ namespace Hackathon2023Winter.Entity
         }
         
         public abstract float GetSize();
+        
     }
 }

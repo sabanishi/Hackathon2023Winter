@@ -52,5 +52,15 @@ namespace Hackathon2023Winter.Entity
         protected virtual void ChangeToOfflineInternal()
         {
         }
+
+        /// <summary>
+        /// rotate方向にオブジェクトが存在するかを返す
+        /// </summary>
+        public bool CheckIsCollide(Vector2 rotate)
+        {
+            var catchTransform = transform;
+            var hit = Physics2D.Raycast(catchTransform.position, rotate,catchTransform.localScale.x*7/4);
+            return hit.collider != null;
+        }
     }
 }
