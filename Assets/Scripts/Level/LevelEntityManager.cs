@@ -10,34 +10,38 @@ namespace Hackathon2023Winter.Level
     /// </summary>
     public class LevelEntityManager : MonoBehaviour
     {
-        [SerializeField] private Camera mainCamera;
         [SerializeField] private Camera renderCamera;
         [SerializeField] private TilemapProvider tilemapProviderPrefab;
         [SerializeField] private Material material;
+        [SerializeField] private EntityShaderBridge entityShaderBridge;
 
         private List<BaseEntity> _entities;
-        
-        private readonly int _sCirclePosition = Shader.PropertyToID("circlePosition");
-        private readonly int _sCircleInfo = Shader.PropertyToID("circleInfo");
-        private readonly int _sQuadPosition = Shader.PropertyToID("quadPosition");
-        private readonly int _sQuadInfo = Shader.PropertyToID("quadInfo");
+        private bool _hasLevelData;
 
-        public void Setup()
+        public void Setup(bool isOnline, bool isHost)
         {
             _entities = new List<BaseEntity>();
+            entityShaderBridge.Setup(isOnline, isHost);
         }
 
         public void Cleanup()
         {
             _entities.Clear();
+            entityShaderBridge.Cleanup();
         }
 
+        /// <summary>
+        /// オフラインモードまたはオンラインモードのHostの時、Levelを生成する
+        /// </summary>
+        /// <param name="isOnline"></param>
         public void CreateLevel(bool isOnline)
         {
+            _hasLevelData = true;
             var tilemap = tilemapProviderPrefab.TerrainTilemap;
             tilemap.CompressBounds();
-            float sX = (float)tilemap.size.x / 2;
-            float sY = (float)tilemap.size.y / 2;
+            var size = tilemap.size;
+            float sX = (float)size.x / 2;
+            float sY = (float)size.y / 2;
 
             TilemapProvider provider;
             //Tileを生成する
@@ -52,9 +56,10 @@ namespace Hackathon2023Winter.Level
                 provider.SwitchToOffline();
             }
 
-            provider.transform.parent = transform;
-            provider.transform.localPosition = new Vector3(sX, sY, 0) * (-1.0f);
-            provider.transform.localScale = Vector3.one;
+            var transform1 = provider.transform;
+            transform1.parent = transform;
+            transform1.localPosition = new Vector3(sX, sY, 0) * (-1.0f);
+            transform1.localScale = Vector3.one;
 
             //TilemapProvider内のEntityを全て取得する
             _entities = provider.GetEntities();
@@ -75,6 +80,7 @@ namespace Hackathon2023Winter.Level
                         {
                             playerEntity.Setup(isCircle, true);
                         }
+
                         break;
                     case JumpRampEntity jumpRamp:
                         jumpRamp.Setup();
@@ -84,51 +90,47 @@ namespace Hackathon2023Winter.Level
                         break;
                 }
             }
+            
+            //PlayerのScaleをEntityShaderBridgeに渡す
+            SendPlayerScaleInfo();
         }
 
-        private void Update()
+        private void SendPlayerScaleInfo()
         {
-            //PassPlayerInfoToShader();
-        }
-
-        private void PassPlayerInfoToShader()
-        {
-            var info = new Vector4[4];
+            Vector2 circleScale = Vector2.zero;
+            Vector2 rectScale = Vector2.zero;
+            GameObject playerCircle = null;
+            GameObject playerRect = null;
+            
             foreach (var entity in _entities)
             {
                 if (entity is PlayerEntity playerEntity)
                 {
-                    var pos = renderCamera.WorldToViewportPoint(entity.transform.position);
-                    var scale = playerEntity.GetSize()/2;
+                    var scale = playerEntity.GetSize() / 2;
                     var cameraScale = renderCamera.ViewportToWorldPoint(Vector2.one)
-                                - renderCamera.ViewportToWorldPoint(Vector2.zero);
+                                      - renderCamera.ViewportToWorldPoint(Vector2.zero);
                     var width = scale / cameraScale.x;
                     var height = scale / cameraScale.y;
-                    var rotate = -Mathf.Deg2Rad * playerEntity.transform.rotation.eulerAngles.z;
-                    
+
                     if (playerEntity.IsCircle)
                     {
-                        info[0] = new Vector4(pos.x, pos.y, 0, 0);
-                        info[1] = new Vector4(width, height, rotate, 0);
+                        circleScale = new Vector2(width, height);
+                        playerCircle = playerEntity.gameObject;
                     }
                     else
                     {
-                        info[2] = new Vector4(pos.x, pos.y, 0, 0);
-                        info[3] = new Vector4(width, height, rotate, 0);
+                        rectScale = new Vector2(width, height);
+                        playerRect = playerEntity.gameObject;
                     }
                 }
-                
-                // シェーダに情報を渡す
-                material.SetVector(_sCirclePosition, info[0]);
-                material.SetVector(_sCircleInfo, info[1]);
-                material.SetVector(_sQuadPosition, info[2]);
-                material.SetVector(_sQuadInfo, info[3]);
-                
-                //Debug.Log("circle pos: " + info[0]);
-                // Debug.Log("circle info: " + info[1].x);
-                // Debug.Log("quad pos: " + info[2]);
-                // Debug.Log("quad info: " + info[3]);
             }
+            entityShaderBridge.SetPlayerScale(circleScale,rectScale);
+            entityShaderBridge.SetPlayerObject(playerCircle,playerRect);
+        }
+
+        private void Update()
+        {
+            entityShaderBridge.CalcShaderInfo();
         }
     }
 }
