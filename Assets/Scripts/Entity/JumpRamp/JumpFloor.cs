@@ -39,7 +39,6 @@ namespace Hackathon2023Winter.Entity
                 transform.localPosition = new Vector3(transform.localPosition.x, Height-0.5f, transform.localPosition.z);
                 rb.velocity = Vector2.zero;
                 rb.bodyType = RigidbodyType2D.Dynamic;
-                Debug.Log("ダイナミック");
             }
         }
 

@@ -61,7 +61,7 @@ namespace Hackathon2023Winter.Level
                         bool isCircle = playerEntity.IsCircle;
                         if (isOnline)
                         {
-                            playerEntity.Setup(isCircle, true);
+                            playerEntity.Setup(true, isCircle);
                         }
                         else
                         {

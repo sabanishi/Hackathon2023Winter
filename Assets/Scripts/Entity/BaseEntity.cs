@@ -45,15 +45,6 @@ namespace Hackathon2023Winter.Entity
                 Destroy(gameObject.GetComponent<PhotonTransformView>());
             }
 
-            if (gameObject.GetComponent<PhotonComponent>() != null)
-            {
-                Destroy(gameObject.GetComponent<PhotonComponent>());
-                if (GetComponent<Rigidbody2D>() != null)
-                {
-                    GetComponent<Rigidbody2D>().isKinematic = false;
-                }
-            }
-
             SetIsOnline(false);
             ChangeToOfflineInternal();
         }

@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 653088714578462493}
   - component: {fileID: 318825271915473814}
   - component: {fileID: 8798665787740468000}
-  - component: {fileID: 5524567598527678016}
   m_Layer: 0
   m_Name: MovableEntityCircle
   m_TagString: Untagged
@@ -224,15 +223,3 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 1
   m_TeleportIfDistanceGreaterThan: 3
---- !u!114 &5524567598527678016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6148214447458474124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efeab9c9dfc7458d828a58e43b717d54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

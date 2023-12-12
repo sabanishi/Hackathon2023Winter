@@ -6,18 +6,38 @@ namespace Hackathon2023Winter.Entity
     public class PlayerOnlineOperator : MonoBehaviourPun
     {
         [SerializeField] private PlayerMover mover;
-
-        public void SetKeySet(PlayerOperateKeySet keySet)
+        
+        private bool _isActive;
+        
+        private KeyConditions _keyConditions;
+        public void SetKeyConditions(KeyConditions keyConditions)
         {
-            photonView.RPC(nameof(RPC_SetKeySet), RpcTarget.All, keySet.Up, keySet.Down, keySet.Left, keySet.Right);
+            _keyConditions = keyConditions;
         }
 
+        public void SetKeyCondition2(KeyConditions keyConditions)
+        {
+            _keyConditions = keyConditions;
+        }
+        
+        public void SetActive(bool isActive)
+        {
+            photonView.RPC(nameof(RPC_SetActive), RpcTarget.All, isActive);
+        }
+
+        public void SetMoverActive(bool isActive)
+        {
+            mover.SetControlAuthority(isActive);
+        }
+        
         [PunRPC]
-        public void RPC_SetKeySet(KeyCode up, KeyCode down, KeyCode left, KeyCode right)
+        public void RPC_SetActive(bool isActive)
         {
-            var keySet = new PlayerOperateKeySet(up: up, down: down, left: left, right: right);
-            mover.SetKeySet(keySet);
+            _isActive = isActive;
         }
+
+        private PlayerOperateKeySet _keySet;
+        private bool _canControl;
 
         /// <summary>
         /// 操作権を与える
@@ -31,7 +51,7 @@ namespace Hackathon2023Winter.Entity
             }
             else
             {
-                mover.SetControlAuthority(true);
+                _canControl = true;
             }
         }
 
@@ -41,8 +61,25 @@ namespace Hackathon2023Winter.Entity
         [PunRPC]
         private void GetOwnership()
         {
-            photonView.RequestOwnership();
-            mover.SetControlAuthority(true);
+            _canControl = true;
+        }
+
+        private void Update()
+        {
+            if (!_isActive) return;
+            //キー入力をMoverに渡す
+            if(_keyConditions== null) return;
+            if (!photonView.IsMine) return;
+            
+            mover.Move(_keyConditions);
+            
+            //UP/Down系をfalseにする
+            _keyConditions.IsLeftDown = false;
+            _keyConditions.IsRightDown = false;
+            _keyConditions.IsJumpDown = false;
+            _keyConditions.IsLeftUp = false;
+            _keyConditions.IsRightUp = false;
+            _keyConditions.IsJumpUp = false;
         }
     }
 }

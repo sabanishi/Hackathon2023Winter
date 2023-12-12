@@ -6,6 +6,14 @@ namespace Hackathon2023Winter.Entity
     {
         [SerializeField] private PlayerMover mover;
 
+        private bool _isActive;
+        private PlayerOperateKeySet _keySet;
+        
+        public void SetActive(bool isActive)
+        {
+            _isActive = isActive;
+        }
+
         public void SetCanControl(bool canControl)
         {
             mover.SetControlAuthority(canControl);
@@ -13,7 +21,16 @@ namespace Hackathon2023Winter.Entity
 
         public void SetKeySet(PlayerOperateKeySet keySet)
         {
-            mover.SetKeySet(keySet);
+            _keySet = keySet;
+        }
+        
+        private void Update()
+        {
+            if (!_isActive) return;
+            var keyConditions = new KeyConditions();
+            keyConditions.SetKeySet(_keySet);
+            keyConditions.UpdateCondition();
+            mover.Move(keyConditions);
         }
         
     }

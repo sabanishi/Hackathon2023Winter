@@ -17,7 +17,6 @@ namespace Hackathon2023Winter.Entity
         [SerializeField] private float E = 1.0f;
         [SerializeField] private float F = 1.0f;
         
-        private PlayerOperateKeySet _keySet;
         private bool _canControl;
         
         //キャッシュ用の一時変数
@@ -26,38 +25,33 @@ namespace Hackathon2023Winter.Entity
         private float _stopTimer;
         private float _currentSpeed;
         
-        
-        public void SetKeySet(PlayerOperateKeySet keySet)
-        {
-            _keySet = keySet;
-        }
-        
         public void SetControlAuthority(bool canControl)
         {
             _canControl = canControl;
         }
 
-        private void Update()
+        /// <summary>
+        /// PlayerOperatorんから毎フレーム呼び出される
+        /// </summary>
+        public void Move(KeyConditions keyCondition)
         {
             if(!_canControl) return;
-            
-            if (Input.GetKeyDown(_keySet.Left))
+            if (keyCondition.IsLeftDown)
             {
-                rb.AddForce(new Vector2(-firstMoveImpulse,0),ForceMode2D.Impulse);
-            }else if(Input.GetKeyDown(_keySet.Right))
+                rb.AddForce(new Vector2(-firstMoveImpulse, 0), ForceMode2D.Impulse);
+            }else if(keyCondition.IsRightDown)
             {
                 rb.AddForce(new Vector2(firstMoveImpulse,0),ForceMode2D.Impulse);
             }
-            if (Input.GetKey(_keySet.Left))
+            if (keyCondition.IsLeft)
             {
-            
                 //左に回転する
-                _moveTimer+= Time.deltaTime;
-                float x = CalcMoveSpeed(_moveTimer/E);
+                _moveTimer += Time.deltaTime;
+                float x = CalcMoveSpeed(_moveTimer / E);
                 rb.AddTorque(x);
                 _isMoving = true;
                 _stopTimer = 0;
-            }else if (Input.GetKey(_keySet.Right))
+            }else if(keyCondition.IsRight)
             {
                 //右に回転する
                 _moveTimer+= Time.deltaTime;
@@ -65,7 +59,6 @@ namespace Hackathon2023Winter.Entity
                 rb.AddTorque(-x);
                 _isMoving = true;
                 _stopTimer = 0;
-            
             }
             else
             {
@@ -86,7 +79,7 @@ namespace Hackathon2023Winter.Entity
                 }
                 _moveTimer = 0;
             }
-            if (Input.GetKeyDown(_keySet.Up))
+            if(keyCondition.IsJumpDown)
             {
                 //上方向への衝撃を加える
                 rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
