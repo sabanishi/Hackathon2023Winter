@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5368827511078461725}
   - component: {fileID: 7360088445801307239}
   - component: {fileID: 5791987882968996815}
-  - component: {fileID: 480652813719229937}
+  - component: {fileID: 6172519995880168100}
   m_Layer: 0
   m_Name: MovableEntityRect
   m_TagString: Untagged
@@ -182,7 +182,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7360088445801307239}
-  - {fileID: 480652813719229937}
+  - {fileID: 6172519995880168100}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   type: 0
   isOnline: 1
   isCircle: 0
---- !u!114 &480652813719229937
+--- !u!114 &6172519995880168100
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,10 +226,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2155951955669819441}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3219aa221eb545dab03fef8a8046aa87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
-  m_TeleportEnabled: 1
-  m_TeleportIfDistanceGreaterThan: 3

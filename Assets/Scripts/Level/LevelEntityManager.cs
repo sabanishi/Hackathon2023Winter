@@ -78,7 +78,7 @@ namespace Hackathon2023Winter.Level
 
         private void Update()
         {
-            PassPlayerInfoToShader();
+            //PassPlayerInfoToShader();
         }
 
         private void PassPlayerInfoToShader()
