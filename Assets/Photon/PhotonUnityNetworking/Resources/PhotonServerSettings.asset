@@ -45,6 +45,7 @@ MonoBehaviour:
   - GetOwnership
   - RPC_SetIsActive
   - RPC_SetKeySet
+  - RPC_SetActive
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

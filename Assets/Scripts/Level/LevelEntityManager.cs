@@ -10,10 +10,17 @@ namespace Hackathon2023Winter.Level
     /// </summary>
     public class LevelEntityManager : MonoBehaviour
     {
-        [SerializeField]private Camera mainCamera;
+        [SerializeField] private Camera mainCamera;
+        [SerializeField] private Camera renderCamera;
         [SerializeField] private TilemapProvider tilemapProviderPrefab;
+        [SerializeField] private Material material;
 
         private List<BaseEntity> _entities;
+        
+        private readonly int _sCirclePosition = Shader.PropertyToID("circlePosition");
+        private readonly int _sCircleInfo = Shader.PropertyToID("circleInfo");
+        private readonly int _sQuadPosition = Shader.PropertyToID("quadPosition");
+        private readonly int _sQuadInfo = Shader.PropertyToID("quadInfo");
 
         public void Setup()
         {
@@ -88,13 +95,13 @@ namespace Hackathon2023Winter.Level
             {
                 if (entity is PlayerEntity playerEntity)
                 {
-                    var pos = mainCamera.WorldToViewportPoint(entity.transform.position);
+                    var pos = renderCamera.WorldToViewportPoint(entity.transform.position);
                     var scale = playerEntity.GetSize()/2;
-                    var cameraScale = mainCamera.WorldToViewportPoint(new Vector3(1,1,0))
-                                - mainCamera.WorldToViewportPoint(new Vector3(0,0,0));
+                    var cameraScale = renderCamera.ViewportToWorldPoint(Vector2.one)
+                                - renderCamera.ViewportToWorldPoint(Vector2.zero);
                     var width = scale / cameraScale.x;
                     var height = scale / cameraScale.y;
-                    var rotate = playerEntity.transform.rotation.eulerAngles.z;
+                    var rotate = -Mathf.Deg2Rad * playerEntity.transform.rotation.eulerAngles.z;
                     
                     if (playerEntity.IsCircle)
                     {
@@ -108,9 +115,16 @@ namespace Hackathon2023Winter.Level
                     }
                 }
                 
-                //TODO:Shaderに情報を渡す
-                //Info[0]と[1]が円の情報、[2]と[3]が四角形の情報
-                //[0]と[2]が中心座標、[1]と[3]が幅と高さ、回転角
+                // シェーダに情報を渡す
+                material.SetVector(_sCirclePosition, info[0]);
+                material.SetVector(_sCircleInfo, info[1]);
+                material.SetVector(_sQuadPosition, info[2]);
+                material.SetVector(_sQuadInfo, info[3]);
+                
+                //Debug.Log("circle pos: " + info[0]);
+                // Debug.Log("circle info: " + info[1].x);
+                // Debug.Log("quad pos: " + info[2]);
+                // Debug.Log("quad info: " + info[3]);
             }
         }
     }

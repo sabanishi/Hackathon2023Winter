@@ -9,7 +9,7 @@ namespace Hackathon2023Winter.Entity
         
         public override float GetSize()
         {
-           return Vector3.Distance(pos0.position, pos1.position);
+            return Vector3.Distance(pos0.position, pos1.position);
         }
     }
 }
