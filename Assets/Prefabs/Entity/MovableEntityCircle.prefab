@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1641776438669713233}
   - component: {fileID: 653088714578462493}
   - component: {fileID: 318825271915473814}
-  - component: {fileID: 8798665787740468000}
+  - component: {fileID: 1159020986031446596}
   m_Layer: 0
   m_Name: MovableEntityCircle
   m_TagString: Untagged
@@ -172,7 +172,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 653088714578462493}
-  - {fileID: 8798665787740468000}
+  - {fileID: 1159020986031446596}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -207,7 +207,7 @@ MonoBehaviour:
   type: 0
   isOnline: 1
   isCircle: 1
---- !u!114 &8798665787740468000
+--- !u!114 &1159020986031446596
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,10 +216,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6148214447458474124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3219aa221eb545dab03fef8a8046aa87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
-  m_TeleportEnabled: 1
-  m_TeleportIfDistanceGreaterThan: 3
