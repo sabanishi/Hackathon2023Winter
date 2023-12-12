@@ -20,11 +20,10 @@ namespace Hackathon2023Winter.Screen
         /**ScreenTypeとResourcesパスを対応させるDict*/
         private readonly Dictionary<ScreenType, string> _screenPathDictionary = new()
         {
-            { ScreenType.Test , "Screen/TestScreen"},
-            {ScreenType.Title, "Screen/TitleScreen"},
-            {ScreenType.Matching, "Screen/MatchingScreen"},
-            {ScreenType.StageSelect, "Screen/StageSelectScreen"},
-            {ScreenType.MainGame, "Screen/MainGameScreen"},
+            { ScreenType.Title, "Screen/TitleScreen" },
+            { ScreenType.Matching, "Screen/MatchingScreen" },
+            { ScreenType.StageSelect, "Screen/StageSelectScreen" },
+            { ScreenType.MainGame, "Screen/MainGameScreen" },
         };
 
         private BaseScreen _nowScreen;

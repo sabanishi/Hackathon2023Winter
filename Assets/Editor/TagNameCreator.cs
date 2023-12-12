@@ -13,10 +13,10 @@ namespace Sabanishi.Editor
     {
         private const string CommandName = "Tools/Create/Tag Name";
         private const string FilePath = "Assets/Scripts/Common/TagName.cs";
-        
+
         private static readonly string FileName = Path.GetFileName(FilePath);
         private static readonly string FileNameWithoutExtension = Path.GetFileNameWithoutExtension(FilePath);
-        
+
         // 無効な文字を管理する配列
         private static readonly string[] InvalidChars =
         {
@@ -43,7 +43,7 @@ namespace Sabanishi.Editor
 
             builder.AppendLine("namespace Sabanishi.Common");
             builder.AppendLine("{");
-            
+
             builder.Append("\t").AppendLine("/// <summary>");
             builder.Append("\t").AppendLine("/// タグ名を定数で管理するクラス");
             builder.Append("\t").AppendLine("/// </summary>");
@@ -52,18 +52,19 @@ namespace Sabanishi.Editor
 
             foreach (var tag in InternalEditorUtility.tags)
             {
-                builder.Append("\t").Append("\t").AppendLine($"public const string {RemoveInvalidChars(tag)} = \"{tag}\";");
+                builder.Append("\t").Append("\t")
+                    .AppendLine($"public const string {RemoveInvalidChars(tag)} = \"{tag}\";");
             }
 
             builder.Append("\t").AppendLine("}");
             builder.AppendLine("}");
-            
+
             var directoryName = Path.GetDirectoryName(FilePath);
             if (!Directory.Exists(directoryName))
             {
                 Directory.CreateDirectory(directoryName);
             }
-            
+
             File.WriteAllText(FilePath, builder.ToString(), Encoding.UTF8);
             AssetDatabase.Refresh(ImportAssetOptions.ImportRecursive);
         }
@@ -72,7 +73,7 @@ namespace Sabanishi.Editor
         {
             return !EditorApplication.isPlaying && !Application.isPlaying && !EditorApplication.isCompiling;
         }
-        
+
         /// <summary>
         /// 無効な文字を削除する
         /// </summary>
@@ -82,6 +83,7 @@ namespace Sabanishi.Editor
             {
                 str = str.Replace(c, "");
             }
+
             return str;
         }
     }

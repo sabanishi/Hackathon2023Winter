@@ -4,7 +4,10 @@ using UniRx;
 
 namespace Hackathon2023Winter.Matching
 {
-    public class MatchingCallBack:MonoBehaviourPunCallbacks
+    /// <summary>
+    /// 部屋に入った時のコールバックを受け取るクラス
+    /// </summary>
+    public class MatchingCallback : MonoBehaviourPunCallbacks
     {
         private Subject<Unit> _onJoinedRoomSubject;
         public IObservable<Unit> OnJoinedRoomSubject => _onJoinedRoomSubject;
@@ -18,7 +21,7 @@ namespace Hackathon2023Winter.Matching
         {
             _onJoinedRoomSubject.Dispose();
         }
-        
+
         public override void OnJoinedRoom()
         {
             _onJoinedRoomSubject?.OnNext(Unit.Default);

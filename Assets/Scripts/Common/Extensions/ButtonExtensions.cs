@@ -14,6 +14,7 @@ namespace Sabanishi.Common
                 Debug.Log("Buttonがnullです");
                 return Observable.Empty<Unit>();
             }
+
             return button.OnClickAsObservable();
         }
     }

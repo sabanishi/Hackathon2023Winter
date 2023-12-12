@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81adc55c5ec844a6b714637405157527, type: 3}
+  m_Name: EntityReferenceDict
+  m_EditorClassIdentifier: 
+  entityReferenceDictionary:
+    list:
+    - Key: 2
+      Value:
+        offlinePrefab: {fileID: 3760201495407720457, guid: 0613dc1fe424d4746a1d7bde0ea28f51, type: 3}
+    - Key: 3
+      Value:
+        offlinePrefab: {fileID: 5837681441989206613, guid: 2a3c74333f5124b2ba11a4d2214ec2fa, type: 3}
+    - Key: 4
+      Value:
+        offlinePrefab: {fileID: 4914585229995176528, guid: 6d554943fcef449bea9e8169dc9c504f, type: 3}
+    - Key: 5
+      Value:
+        offlinePrefab: {fileID: 8261927510919601706, guid: ade70b54ddc1b406f8b18ebeea3c61bd, type: 3}
+    - Key: 6
+      Value:
+        offlinePrefab: {fileID: 7198643928148266336, guid: 91243e2ec02aa409e8fad7687059d147, type: 3}
+    - Key: 7
+      Value:
+        offlinePrefab: {fileID: 4552287611649505955, guid: bcf82f9ab13cf466482e64aea997839d, type: 3}
+    - Key: 8
+      Value:
+        offlinePrefab: {fileID: 318825271915473814, guid: c855628cfbbf74c31bbb2aa1aeeb375e, type: 3}
+    - Key: 9
+      Value:
+        offlinePrefab: {fileID: 5791987882968996815, guid: d34b2d401395641728295020bf5ad258, type: 3}
+    - Key: 10
+      Value:
+        offlinePrefab: {fileID: 5487730675281840634, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}

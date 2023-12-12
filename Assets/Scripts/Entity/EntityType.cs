@@ -3,14 +3,15 @@ namespace Hackathon2023Winter.Entity
     public enum EntityType
     {
         None,
-        NormalBlock,
+        TerrainChip,
         Goal,
         CirclePlayer,
-        SquarePlayer,
-        CircleMoveBlock,
-        SquareMoveBlock,
-        JumpBlock,
+        RectPlayer,
         CircleSwitch,
-        SquareSwitch,
+        RectSwitch,
+        JumpRamp,
+        CircleMovableEntity,
+        RectMovableEntity,
+        ShiftBlock,
     }
 }

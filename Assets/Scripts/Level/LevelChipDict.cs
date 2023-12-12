@@ -6,9 +6,13 @@ using UnityEngine.Tilemaps;
 
 namespace Hackathon2023Winter.Level
 {
-    public class LevelChipDict:MonoBehaviour
+    /// <summary>
+    /// TileBaseとEntityTypeの対応関係を保持するクラス
+    /// </summary>
+    [CreateAssetMenu(fileName = "LevelChipDict", menuName = "ScriptableObject/LevelChipDict")]
+    public class LevelChipDict : ScriptableObject
     {
-        [SerializeField]private ChipDictionary chipDictionary;
+        [SerializeField] private ChipDictionary chipDictionary;
 
         /// <summary>
         /// keyに対応するEntityTypeを取得する
@@ -21,24 +25,24 @@ namespace Hackathon2023Winter.Level
                 Debug.LogError($"LevelChipDict#GetChipType: ChipDictionaryが設定されていません");
                 return EntityType.None;
             }
-            
-            if(dict.TryGetValue(key,out var value))
+
+            if (dict.TryGetValue(key, out var value))
             {
                 return value;
             }
-            
+
             Debug.LogError($"LevelChipDict#GetChipType: {key}が見つかりませんでした");
             return EntityType.None;
         }
     }
-    
+
     [Serializable]
-    public class ChipDictionary : InspectorDictionary<TileBase,EntityType,ChipPair>
+    public class ChipDictionary : InspectorDictionary<TileBase, EntityType, ChipPair>
     {
     }
-    
+
     [Serializable]
-    public class ChipPair : InspectorDictionaryPair<TileBase,EntityType>
+    public class ChipPair : InspectorDictionaryPair<TileBase, EntityType>
     {
         public ChipPair(Tile tile, EntityType value) : base(tile, value)
         {

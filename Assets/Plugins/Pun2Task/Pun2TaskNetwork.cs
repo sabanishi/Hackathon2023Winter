@@ -50,7 +50,7 @@ namespace Pun2Task
                 Pun2TaskCallback.OnDisconnectedAsync());
 
             PhotonNetwork.ConnectUsingSettings();
-
+            
             var (winIndex, _, disconnectCause) = await task.AttachExternalCancellation(token);
 
             if (winIndex == 0) return;

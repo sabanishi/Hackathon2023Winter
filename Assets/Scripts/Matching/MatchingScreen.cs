@@ -8,35 +8,39 @@ using UnityEngine;
 
 namespace Hackathon2023Winter.Matching
 {
-    public class MatchingScreen:BaseScreen
+    public class MatchingScreen : BaseScreen
     {
-        [SerializeField]private MatchingView matchingView;
-        [SerializeField]private MatchingCallBack matchingCallBack;
+        [SerializeField] private MatchingCallback matchingCallback;
+        [SerializeField] private MatchingScreenPresenter matchingScreenPresenter;
 
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
-            matchingView.Setup();
-            matchingCallBack.Setup();
-            matchingCallBack.OnJoinedRoomSubject.Subscribe(_ =>
+            matchingScreenPresenter.Setup();
+            matchingCallback.Setup();
+            matchingCallback.OnJoinedRoomSubject.Subscribe(SE_Enum =>
             {
-                //MainGameSceneに遷移
-                ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
+                //StageSelectScreenに遷移
+                ScreenTransition.Instance.Move(ScreenType.StageSelect).Forget();
             }).AddTo(gameObject);
-            
-            PhotonNetwork.NickName = "Player";
-            await Pun2TaskNetwork.ConnectUsingSettingsAsync(token:token);
-            PhotonNetwork.JoinLobby();
-        }
 
-        protected override async UniTask OpenAnimationInternal(CancellationToken token)
-        {
-            await NowLoadingPanel.Instance.OpenAnimation(0.5f, token);
+            PhotonNetwork.NickName = "Player";
+            //Photonに接続
+            await Pun2TaskNetwork.ConnectUsingSettingsAsync(token: token);
+            //ロビーに入る
+            PhotonNetwork.JoinLobby();
         }
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
-            var mainGameData = new MainGameData(true, 0);
+            matchingScreenPresenter.Cleanup();
+            var mainGameData = new StageSelectData(true, PhotonNetwork.IsMasterClient);
             return mainGameData;
+        }
+
+
+        protected override async UniTask OpenAnimationInternal(CancellationToken token)
+        {
+            await NowLoadingAnimation.Instance.OpenAnimation(0.5f, token);
         }
     }
 }

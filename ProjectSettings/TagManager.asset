@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
+  - SoundManager
+  - HostOperateReceiver
   layers:
   - Default
   - TransparentFX
@@ -11,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - ScreenChaneAnimation
-  - 
+  - ScreenChangeAnimation
+  - EntityTilemap
   - 
   - 
   - 
@@ -41,6 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: ScreenTransitionAnimation
-    uniqueID: 2415413061
+  - name: ScreenChangeAnimation
+    uniqueID: 4121920465
     locked: 0

@@ -79,12 +79,12 @@ namespace Hackathon2023Winter.Screen
 
         protected virtual async UniTask OpenAnimationInternal(CancellationToken token)
         {
-            await TmpScreenAnimation.Instance.OpenAnimation(0.5f, token);
+            await BlackoutScreenAnimation.Instance.OpenAnimation(0.5f, token);
         }
 
         protected virtual async UniTask CloseAnimationInternal(CancellationToken token)
         {
-            await TmpScreenAnimation.Instance.CloseAnimation(0.5f, token);
+            await BlackoutScreenAnimation.Instance.CloseAnimation(0.5f, token);
         }
     }
 }
