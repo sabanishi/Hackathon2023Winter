@@ -79,13 +79,16 @@ namespace Hackathon2023Winter.Level
                     case JumpRampEntity jumpRamp:
                         jumpRamp.Setup();
                         break;
+                    case ShiftBlock shiftBlock:
+                        shiftBlock.Setup();
+                        break;
                 }
             }
         }
 
         private void Update()
         {
-            PassPlayerInfoToShader();
+            //PassPlayerInfoToShader();
         }
 
         private void PassPlayerInfoToShader()

@@ -1,5 +1,3 @@
-using System;
-using Photon.Pun;
 using UniRx;
 using UnityEngine;
 
@@ -8,6 +6,7 @@ namespace Hackathon2023Winter.Entity
     public class SwitchEntity : BaseEntity, IEventGenerator
     {
         [SerializeField] private bool isCircle;
+        [SerializeField]private bool isPermanent;
 
         private ReactiveProperty<bool> _trigger;
         
@@ -46,6 +45,7 @@ namespace Hackathon2023Winter.Entity
                     }
                 }
             }
+            if (isPermanent) return;
             _trigger.Value = false;
         }
     }
