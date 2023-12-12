@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using UniRx;
@@ -11,7 +10,7 @@ namespace Hackathon2023Winter.Entity
         [SerializeField] private GameObject bar;
         [SerializeField] private JumpFloor floor;
         [SerializeField] private float height;
-        [SerializeField]　private SwitchEntity[] _eventGenerators;
+        [SerializeField]　private SwitchEntity[] eventGenerators;
         [Header("ジャンプ台の速度")][SerializeField] private float speed;
         [Header("ジャンプ台が停止してから使用可能になるまでの時間")][SerializeField]private float waitTime=0f;
         
@@ -36,9 +35,9 @@ namespace Hackathon2023Winter.Entity
         public void Setup()
         {
             floor.Setup(IsOwner);
-            foreach (var generator in _eventGenerators)
+            foreach (var generator in eventGenerators)
             {
-                generator.Trigger.Subscribe(_=>CheckSwitch()).AddTo(gameObject);
+                generator.Trigger.Skip(1).Subscribe(_=>CheckSwitch()).AddTo(gameObject);
             }
         }
 
@@ -51,7 +50,7 @@ namespace Hackathon2023Winter.Entity
             if (_isRunning) return;
             
             //全てのスイッチがONになっているか確認
-            foreach (var generator in _eventGenerators)
+            foreach (var generator in eventGenerators)
             {
                 if (!generator.Trigger.Value) return;
             }
@@ -93,7 +92,6 @@ namespace Hackathon2023Winter.Entity
             {
                 Destroy(floorGameObject.GetComponent<PUN2_RigidbodySync>());
             }
-            
         }
     }
 }

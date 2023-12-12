@@ -72,6 +72,9 @@ namespace Hackathon2023Winter.Level
                     case JumpRampEntity jumpRamp:
                         jumpRamp.Setup();
                         break;
+                    case ShiftBlock shiftBlock:
+                        shiftBlock.Setup();
+                        break;
                 }
             }
         }
