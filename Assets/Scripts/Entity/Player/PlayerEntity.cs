@@ -6,7 +6,7 @@ namespace Hackathon2023Winter.Entity
     /// <summary>
     /// ユーザーが動かすことのできるEntityの基底クラス
     /// </summary>
-    public class PlayerEntity : BaseEntity,IShapable
+    public abstract class PlayerEntity : BaseEntity,IShapable
     {
         [SerializeField] private PlayerOfflineOperator offlineOperator;
         [SerializeField] private PlayerOnlineOperator onlineOperator;
@@ -56,5 +56,7 @@ namespace Hackathon2023Winter.Entity
             
             base.ChangeToOfflineInternal();
         }
+        
+        public abstract float GetSize();
     }
 }
