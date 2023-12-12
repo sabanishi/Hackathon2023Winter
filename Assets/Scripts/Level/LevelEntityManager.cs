@@ -10,6 +10,7 @@ namespace Hackathon2023Winter.Level
     /// </summary>
     public class LevelEntityManager : MonoBehaviour
     {
+        [SerializeField]private Camera mainCamera;
         [SerializeField] private TilemapProvider tilemapProviderPrefab;
 
         private List<BaseEntity> _entities;
@@ -72,6 +73,44 @@ namespace Hackathon2023Winter.Level
                         jumpRamp.Setup();
                         break;
                 }
+            }
+        }
+
+        private void Update()
+        {
+            PassPlayerInfoToShader();
+        }
+
+        private void PassPlayerInfoToShader()
+        {
+            var info = new Vector4[4];
+            foreach (var entity in _entities)
+            {
+                if (entity is PlayerEntity playerEntity)
+                {
+                    var pos = mainCamera.WorldToViewportPoint(entity.transform.position);
+                    var scale = playerEntity.GetSize()/2;
+                    var cameraScale = mainCamera.WorldToViewportPoint(new Vector3(1,1,0))
+                                - mainCamera.WorldToViewportPoint(new Vector3(0,0,0));
+                    var width = scale / cameraScale.x;
+                    var height = scale / cameraScale.y;
+                    var rotate = playerEntity.transform.rotation.eulerAngles.z;
+                    
+                    if (playerEntity.IsCircle)
+                    {
+                        info[0] = new Vector4(pos.x, pos.y, 0, 0);
+                        info[1] = new Vector4(width, height, rotate, 0);
+                    }
+                    else
+                    {
+                        info[2] = new Vector4(pos.x, pos.y, 0, 0);
+                        info[3] = new Vector4(width, height, rotate, 0);
+                    }
+                }
+                
+                //TODO:Shaderに情報を渡す
+                //Info[0]と[1]が円の情報、[2]と[3]が四角形の情報
+                //[0]と[2]が中心座標、[1]と[3]が幅と高さ、回転角
             }
         }
     }
