@@ -1,71 +1,54 @@
 using UnityEngine;
 using Photon.Pun;
 
-
 namespace Hackathon2023Winter.Entity
 {
+    /// <summary>
+    /// Rigidbodyの同期を行う
+    /// </summary>
     public class PUN2_RigidbodySync : MonoBehaviourPun, IPunObservable
     {
-        Rigidbody2D r;
-        Vector3 latestPos;
-        Quaternion latestRot;
-        Vector2 velocity;
-        float angularVelocity;
+        private Transform _transform;
+        private Rigidbody2D _r;
+        private Vector3 _latestPos;
+        private Quaternion _latestRot;
+        private Vector2 _velocity;
+        private float _angularVelocity;
 
-        bool valuesReceived = false;
-
-        // Start is called before the first frame update
-        void Start()
+        private bool _valuesReceived = false;
+        
+        private void Start()
         {
-            r = GetComponent<Rigidbody2D>();
+            _transform = transform;
+            _r = GetComponent<Rigidbody2D>();
+        }
+        
+        private void Update()
+        {
+            if (photonView.IsMine || !_valuesReceived) return;
+            _transform.position = Vector3.Lerp(_transform.position, _latestPos, Time.deltaTime * 5);
+            _transform.rotation = Quaternion.Lerp(_transform.rotation, _latestRot, Time.deltaTime * 5);
+            _r.velocity = _velocity;
+            _r.angularVelocity = _angularVelocity;
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {
-                //We own this player: send the others our data
-                stream.SendNext(transform.position);
-                stream.SendNext(transform.rotation);
-                stream.SendNext(r.velocity);
-                stream.SendNext(r.angularVelocity);
+                stream.SendNext(_transform.position);
+                stream.SendNext(_transform.rotation);
+                stream.SendNext(_r.velocity);
+                stream.SendNext(_r.angularVelocity);
             }
             else
             {
-                //Network player, receive data
-                latestPos = (Vector3)stream.ReceiveNext();
-                latestRot = (Quaternion)stream.ReceiveNext();
-                velocity = (Vector2)stream.ReceiveNext();
-                angularVelocity = (float)stream.ReceiveNext();
+                _latestPos = (Vector3)stream.ReceiveNext();
+                _latestRot = (Quaternion)stream.ReceiveNext();
+                _velocity = (Vector2)stream.ReceiveNext();
+                _angularVelocity = (float)stream.ReceiveNext();
 
-                valuesReceived = true;
-            }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (!photonView.IsMine && valuesReceived)
-            {
-                //Update Object position and Rigidbody parameters
-                transform.position = Vector3.Lerp(transform.position, latestPos, Time.deltaTime * 5);
-                transform.rotation = Quaternion.Lerp(transform.rotation, latestRot, Time.deltaTime * 5);
-                r.velocity = velocity;
-                r.angularVelocity = angularVelocity;
-            }
-        }
-
-        void OnCollisionEnter(Collision contact)
-        {
-            return;
-            if (!photonView.IsMine)
-            {
-                Transform collisionObjectRoot = contact.transform.root;
-                if (collisionObjectRoot.CompareTag("Player"))
-                {
-                    //Transfer PhotonView of Rigidbody to our local player
-                    photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
-                }
+                _valuesReceived = true;
             }
         }
     }

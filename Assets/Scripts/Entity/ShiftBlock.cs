@@ -119,7 +119,6 @@ namespace Hackathon2023Winter.Entity
                     }));
                 cancellationToken.Cancel();
                 await UniTask.DelayFrame(1,cancellationToken:stopCts.Token);
-                Debug.Log("Stop");
                 rb.velocity = Vector2.zero;
                 transform.position = toPos;
             });

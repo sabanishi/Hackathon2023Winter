@@ -14,10 +14,10 @@ namespace Hackathon2023Winter.MainGame
         {
             if (screenData is MainGameData mainGameScreenData)
             {
+                levelEntityManager.Setup(mainGameScreenData.IsOnline,mainGameScreenData.IsHost);
                 //オンラインでないかホストの場合はステージを生成する
                 if (!mainGameScreenData.IsOnline || mainGameScreenData.IsHost)
                 {
-                    levelEntityManager.Setup();
                     levelEntityManager.CreateLevel(mainGameScreenData.IsOnline);
                 }
             }

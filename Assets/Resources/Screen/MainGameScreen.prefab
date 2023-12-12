@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: 4783059494982461104}
   - component: {fileID: 5963957048544020111}
   - component: {fileID: 3673630296501575605}
+  - component: {fileID: 2237507962031717075}
   m_Layer: 0
   m_Name: MainGameScreen
   m_TagString: Untagged
@@ -356,10 +357,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b4c6e653884588a3033e070d906e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 1803435860056920986}
   renderCamera: {fileID: 6105225832167687559}
   tilemapProviderPrefab: {fileID: 2563175991728385871, guid: 6953804351515463c9030912ea41dab4, type: 3}
   material: {fileID: 2100000, guid: 05afc87e681404036b24b8a431261878, type: 2}
+  entityShaderBridge: {fileID: 2237507962031717075}
+--- !u!114 &2237507962031717075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4328309713819930608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f42f2a063943c0bad660abde6ff3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 05afc87e681404036b24b8a431261878, type: 2}
+  passerPrefab: {fileID: 7767250513169698234, guid: 0836e75969ccb4ad4babc5274041daf4, type: 3}
+  receiverPrefab: {fileID: 5797069765777107891, guid: 4055502c0b8e643f48e05058e774df5f, type: 3}
+  renderCamera: {fileID: 6105225832167687559}
 --- !u!1 &5113597953238030856
 GameObject:
   m_ObjectHideFlags: 0
