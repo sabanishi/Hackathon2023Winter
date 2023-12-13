@@ -28,12 +28,20 @@ namespace Hackathon2023Winter.Level
         {
             if (_isReceived)
             {
-                var receiver = GameObject.FindWithTag(TagName.EntityShaderInfoReceiver)
-                    ?.GetComponent<PunEntityShaderInfoReceiver>();
-                receiver?.SetScales(_circleScale, _rectScale);
-                if (receiver != null)
+                var receivers = GameObject.FindGameObjectsWithTag(TagName.EntityShaderInfoReceiver);
+                if (receivers.IsNullOrEmpty()) return;
+                foreach (var obj in receivers)
                 {
-                    _isReceived = false;
+                    if (obj.TryGetComponent(typeof(PunEntityShaderInfoReceiver), out var receiverComponent))
+                    {
+                        var receiver = (PunEntityShaderInfoReceiver)receiverComponent;
+                        receiver?.SetScales(_circleScale, _rectScale);
+                        Debug.Log(receiver);
+                        if (receiver != null)
+                        {
+                            _isReceived = false;
+                        }
+                    }
                 }
             }
         }

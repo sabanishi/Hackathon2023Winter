@@ -417,6 +417,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadScreenType: 0
+  screenChangeMaterial: {fileID: 2100000, guid: 05afc87e681404036b24b8a431261878, type: 2}
+  screenChangeTexture_0: {fileID: 8400000, guid: c908b04f1fa244d4aba417cadc7396db, type: 2}
+  screenChangeTexture_1: {fileID: 8400000, guid: 7c175762214bd436783d40a02385ab84, type: 2}
 --- !u!4 &1235401808
 Transform:
   m_ObjectHideFlags: 0
