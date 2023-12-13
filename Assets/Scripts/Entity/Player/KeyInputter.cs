@@ -6,16 +6,17 @@ namespace Hackathon2023Winter.Entity
     /// <summary>
     /// ユーザーのキー入力を受け取るクラス
     /// </summary>
-    public class KeyInputter: MonoBehaviourPun,IPunObservable
+    public class KeyInputter : MonoBehaviourPun, IPunObservable
     {
         private KeyConditions _keyConditions;
         private PlayerOperateKeySet _keySet;
         [SerializeField] private PlayerOnlineOperator onlineOperator;
-        
+
         public void SetKeySet(PlayerOperateKeySet keySet)
         {
             photonView.RPC(nameof(RPC_SetKeySet), RpcTarget.All, keySet.Up, keySet.Down, keySet.Left, keySet.Right);
         }
+
         [PunRPC]
         public void RPC_SetKeySet(KeyCode up, KeyCode down, KeyCode left, KeyCode right)
         {
@@ -43,7 +44,7 @@ namespace Hackathon2023Winter.Entity
         {
             photonView.RequestOwnership();
         }
-        
+
         //キー入力を渡す
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
@@ -55,7 +56,7 @@ namespace Hackathon2023Winter.Entity
             }
             else
             {
-                if(stream.PeekNext() == null) return;
+                if (stream.PeekNext() == null) return;
                 var isLeft = false;
                 var isRight = false;
                 var isJump = false;
@@ -65,9 +66,10 @@ namespace Hackathon2023Winter.Entity
                     isRight = _keyConditions.IsRight;
                     isJump = _keyConditions.IsJump;
                 }
-                var nowIsLeft = (bool) stream.ReceiveNext();
-                var nowIsRight = (bool) stream.ReceiveNext();
-                var nowIsJump = (bool) stream.ReceiveNext();
+
+                var nowIsLeft = (bool)stream.ReceiveNext();
+                var nowIsRight = (bool)stream.ReceiveNext();
+                var nowIsJump = (bool)stream.ReceiveNext();
                 _keyConditions = new KeyConditions();
                 _keyConditions.SetKeySet(_keySet);
                 _keyConditions.IsLeft = nowIsLeft;
@@ -82,6 +84,7 @@ namespace Hackathon2023Winter.Entity
                 {
                     _keyConditions.IsLeftUp = false;
                 }
+
                 if (isRight && !nowIsRight)
                 {
                     _keyConditions.IsRightUp = true;
@@ -90,6 +93,7 @@ namespace Hackathon2023Winter.Entity
                 {
                     _keyConditions.IsRightUp = false;
                 }
+
                 if (isJump && !nowIsJump)
                 {
                     _keyConditions.IsJumpUp = true;
@@ -98,6 +102,7 @@ namespace Hackathon2023Winter.Entity
                 {
                     _keyConditions.IsJumpUp = false;
                 }
+
                 if (!isLeft && nowIsLeft)
                 {
                     _keyConditions.IsLeftDown = true;
@@ -106,6 +111,7 @@ namespace Hackathon2023Winter.Entity
                 {
                     _keyConditions.IsLeftDown = false;
                 }
+
                 if (!isRight && nowIsRight)
                 {
                     _keyConditions.IsRightDown = true;
@@ -114,6 +120,7 @@ namespace Hackathon2023Winter.Entity
                 {
                     _keyConditions.IsRightDown = false;
                 }
+
                 if (!isJump && nowIsJump)
                 {
                     _keyConditions.IsJumpDown = true;
@@ -122,6 +129,7 @@ namespace Hackathon2023Winter.Entity
                 {
                     _keyConditions.IsJumpDown = false;
                 }
+
                 onlineOperator.SetKeyCondition2(_keyConditions);
             }
         }

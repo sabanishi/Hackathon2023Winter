@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 5170550638996144593}
   - component: {fileID: 3803176367600333697}
   - component: {fileID: 3419871856296772742}
-  - component: {fileID: 5785662170158886922}
+  - component: {fileID: 3025798151792014712}
   - component: {fileID: 4105221016712212691}
   - component: {fileID: 5019751966861180526}
   - component: {fileID: 4758246082238195702}
@@ -313,6 +313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   isOnline: 1
+  rb: {fileID: 8792576885683161971}
   offlineOperator: {fileID: 3803176367600333697}
   onlineOperator: {fileID: 3419871856296772742}
   isCircle: 0
@@ -331,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5538c10127094008a8e05601694a9fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 5785662170158886922}
+  mover: {fileID: 3025798151792014712}
 --- !u!114 &3419871856296772742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,8 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caa48e05cf342ff96ec78c5c4320764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 5785662170158886922}
---- !u!114 &5785662170158886922
+  mover: {fileID: 3025798151792014712}
+--- !u!114 &3025798151792014712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -354,17 +355,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8436217441524702630}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5ea8d83b01b422bb377319c65fde988, type: 3}
+  m_Script: {fileID: 11500000, guid: 89d9fbe60af24e04907620e354c353a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 8792576885683161971}
   jumpPower: 15
-  firstMoveImpulse: 5
-  A: 50
-  B: 20
-  D: 3
-  E: 1
-  F: 1
+  moveSpeed: 7
+  rotateSpeed: 480
+  catchTransform: {fileID: 1009092107292107971}
 --- !u!114 &4105221016712212691
 MonoBehaviour:
   m_ObjectHideFlags: 0

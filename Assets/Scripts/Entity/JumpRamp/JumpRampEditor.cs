@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Hackathon2023Winter.Entity
 {
     [CustomEditor(typeof(JumpRampEntity))]
-    public class JumpRampEditor:Editor
+    public class JumpRampEditor : Editor
     {
         public override void OnInspectorGUI()
         {

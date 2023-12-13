@@ -17,7 +17,7 @@ namespace Hackathon2023Winter.Entity
         {
             IsOwner = isOwner;
         }
-        
+
         public void SetType(EntityType type)
         {
             this.type = type;
@@ -59,7 +59,7 @@ namespace Hackathon2023Winter.Entity
         public bool CheckIsCollide(Vector2 rotate)
         {
             var catchTransform = transform;
-            var hit = Physics2D.Raycast(catchTransform.position, rotate,catchTransform.localScale.x*7/4);
+            var hit = Physics2D.Raycast(catchTransform.position, rotate, catchTransform.localScale.x * 7 / 4);
             return hit.collider != null;
         }
     }

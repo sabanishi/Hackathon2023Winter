@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Hackathon2023Winter.Entity;
-using Hackathon2023Winter.Screen;
 using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
@@ -86,7 +85,7 @@ namespace Hackathon2023Winter.Level
             {
                 if (child.position.x == x && child.position.y == y) return;
             }
-            
+
 
             var obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject);
             Undo.RegisterCreatedObjectUndo(obj, "Create Entity");

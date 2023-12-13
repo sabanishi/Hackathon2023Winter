@@ -1,4 +1,3 @@
-using Photon.Pun;
 using UnityEngine;
 
 namespace Hackathon2023Winter.Entity
@@ -6,14 +5,17 @@ namespace Hackathon2023Winter.Entity
     /// <summary>
     /// ユーザーが動かすことのできるEntityの基底クラス
     /// </summary>
-    public abstract class PlayerEntity : BaseEntity,IShapable
+    public abstract class PlayerEntity : BaseEntity, IShapable
     {
+        [SerializeField] private Rigidbody2D rb;
         [SerializeField] private PlayerOfflineOperator offlineOperator;
         [SerializeField] private PlayerOnlineOperator onlineOperator;
         [SerializeField] private bool isCircle;
         [SerializeField] private KeyInputter keyInputter;
 
         public bool IsCircle => isCircle;
+        
+        private Vector2 _catchVelocity;
 
         /// <summary>
         /// PlayerEntityの初期化を行う
@@ -31,7 +33,6 @@ namespace Hackathon2023Winter.Entity
                 onlineOperator.SetMoverActive(true);
                 keyInputter.SetKeySet(keySet);
                 keyInputter.SetControlAuthority(isHostControl);
-                
             }
             else
             {
@@ -53,11 +54,20 @@ namespace Hackathon2023Winter.Entity
             {
                 Destroy(keyInputter.gameObject);
             }
-            
+
             base.ChangeToOfflineInternal();
         }
-        
+
+        private void OnCollisionExit2D(Collision2D other)
+        {
+            if (isOnline && !IsOwner) return;
+            //otherがIPushedを実装している時
+            if (other.gameObject.TryGetComponent(out IPushed pushed))
+            {
+                pushed.ExitPush();
+            }
+        }
+
         public abstract float GetSize();
-        
     }
 }

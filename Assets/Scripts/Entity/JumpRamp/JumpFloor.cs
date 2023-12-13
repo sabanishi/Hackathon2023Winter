@@ -1,11 +1,10 @@
 using System;
-using Photon.Pun;
 using UniRx;
 using UnityEngine;
 
 namespace Hackathon2023Winter.Entity
 {
-    public class JumpFloor:MonoBehaviour
+    public class JumpFloor : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D rb;
         public float Height;
@@ -13,12 +12,12 @@ namespace Hackathon2023Winter.Entity
 
         private bool _isOnline;
         private bool _isOwner;
-        
+
         public void SetIsOnline(bool isOnline)
         {
             _isOnline = isOnline;
         }
-        
+
         public void Setup(bool isOwner)
         {
             _isOwner = isOwner;
@@ -33,10 +32,12 @@ namespace Hackathon2023Winter.Entity
             {
                 return;
             }
+
             //一定以上の高さにならないようにする
-            if (transform.localPosition.y > Height-0.5f)
+            if (transform.localPosition.y > Height - 0.5f)
             {
-                transform.localPosition = new Vector3(transform.localPosition.x, Height-0.5f, transform.localPosition.z);
+                transform.localPosition =
+                    new Vector3(transform.localPosition.x, Height - 0.5f, transform.localPosition.z);
                 rb.velocity = Vector2.zero;
                 rb.bodyType = RigidbodyType2D.Dynamic;
             }

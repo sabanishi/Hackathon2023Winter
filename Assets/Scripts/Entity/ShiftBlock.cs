@@ -1,6 +1,5 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using ExitGames.Client.Photon.StructWrapping;
 using UniRx;
 using UnityEngine;
 
@@ -88,10 +87,10 @@ namespace Hackathon2023Winter.Entity
                             await UniTask.Yield();
                             whenAnyCts.Token.ThrowIfCancellationRequested();
                             //進んでいる方向に別のEntityが存在する場合
-                            var hits = Physics2D.RaycastAll(transform.position, velocity, _transform.localScale.x/2);
+                            var hits = Physics2D.RaycastAll(transform.position, velocity, _transform.localScale.x / 2);
                             if (hits != null)
                             {
-                                var isHit=false;
+                                var isHit = false;
                                 foreach (var hit in hits)
                                 {
                                     if (hit.collider != null)
@@ -112,13 +111,15 @@ namespace Hackathon2023Winter.Entity
                                         }
                                     }
                                 }
-                                if(isHit)continue;
+
+                                if (isHit) continue;
                             }
+
                             rb.velocity = velocity;
                         }
                     }));
                 cancellationToken.Cancel();
-                await UniTask.DelayFrame(1,cancellationToken:stopCts.Token);
+                await UniTask.DelayFrame(1, cancellationToken: stopCts.Token);
                 rb.velocity = Vector2.zero;
                 transform.position = toPos;
             });

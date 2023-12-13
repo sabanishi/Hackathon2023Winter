@@ -6,10 +6,10 @@ namespace Hackathon2023Winter.Entity
     public class SwitchEntity : BaseEntity, IEventGenerator
     {
         [SerializeField] private bool isCircle;
-        [SerializeField]private bool isPermanent;
+        [SerializeField] private bool isPermanent;
 
         private ReactiveProperty<bool> _trigger;
-        
+
         public IReadOnlyReactiveProperty<bool> Trigger => _trigger;
 
         private void Awake()
@@ -24,7 +24,7 @@ namespace Hackathon2023Winter.Entity
 
         private void Update()
         {
-            if(isOnline && !IsOwner) return;
+            if (isOnline && !IsOwner) return;
             CheckTrigger();
         }
 
@@ -45,6 +45,7 @@ namespace Hackathon2023Winter.Entity
                     }
                 }
             }
+
             if (isPermanent) return;
             _trigger.Value = false;
         }
