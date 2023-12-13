@@ -345,6 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelEntityManager: {fileID: 3673630296501575605}
+  punMainGameScreenPrefab: {fileID: 5835974486239607768, guid: 471f13e291d6d413bb2da25c2bb7b029, type: 3}
 --- !u!114 &3673630296501575605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,7 +360,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderCamera: {fileID: 6105225832167687559}
   tilemapProviderPrefab: {fileID: 2563175991728385871, guid: 6953804351515463c9030912ea41dab4, type: 3}
-  material: {fileID: 2100000, guid: 05afc87e681404036b24b8a431261878, type: 2}
   entityShaderBridge: {fileID: 2237507962031717075}
 --- !u!114 &2237507962031717075
 MonoBehaviour:
@@ -444,7 +444,7 @@ Camera:
   far clip plane: 1000
   field of view: 65.8
   orthographic: 1
-  orthographic size: 13.6
+  orthographic size: 13.5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
