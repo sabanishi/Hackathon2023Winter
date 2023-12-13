@@ -16,13 +16,13 @@ namespace Hackathon2023Winter.Entity
         private float _angularVelocity;
 
         private bool _valuesReceived = false;
-        
+
         private void Start()
         {
             _transform = transform;
             _r = GetComponent<Rigidbody2D>();
         }
-        
+
         private void Update()
         {
             if (photonView.IsMine || !_valuesReceived) return;

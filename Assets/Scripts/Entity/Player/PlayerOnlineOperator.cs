@@ -6,10 +6,11 @@ namespace Hackathon2023Winter.Entity
     public class PlayerOnlineOperator : MonoBehaviourPun
     {
         [SerializeField] private PlayerMover mover;
-        
+
         private bool _isActive;
-        
+
         private KeyConditions _keyConditions;
+
         public void SetKeyConditions(KeyConditions keyConditions)
         {
             _keyConditions = keyConditions;
@@ -19,7 +20,7 @@ namespace Hackathon2023Winter.Entity
         {
             _keyConditions = keyConditions;
         }
-        
+
         public void SetActive(bool isActive)
         {
             photonView.RPC(nameof(RPC_SetActive), RpcTarget.All, isActive);
@@ -29,7 +30,7 @@ namespace Hackathon2023Winter.Entity
         {
             mover.SetControlAuthority(isActive);
         }
-        
+
         [PunRPC]
         public void RPC_SetActive(bool isActive)
         {
@@ -68,11 +69,11 @@ namespace Hackathon2023Winter.Entity
         {
             if (!_isActive) return;
             //キー入力をMoverに渡す
-            if(_keyConditions== null) return;
+            if (_keyConditions == null) return;
             if (!photonView.IsMine) return;
-            
+
             mover.Move(_keyConditions);
-            
+
             //UP/Down系をfalseにする
             _keyConditions.IsLeftDown = false;
             _keyConditions.IsRightDown = false;

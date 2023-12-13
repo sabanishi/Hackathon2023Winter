@@ -8,7 +8,7 @@ namespace Hackathon2023Winter.Entity
 
         private bool _isActive;
         private PlayerOperateKeySet _keySet;
-        
+
         public void SetActive(bool isActive)
         {
             _isActive = isActive;
@@ -23,7 +23,7 @@ namespace Hackathon2023Winter.Entity
         {
             _keySet = keySet;
         }
-        
+
         private void Update()
         {
             if (!_isActive) return;
@@ -32,6 +32,5 @@ namespace Hackathon2023Winter.Entity
             keyConditions.UpdateCondition();
             mover.Move(keyConditions);
         }
-        
     }
 }

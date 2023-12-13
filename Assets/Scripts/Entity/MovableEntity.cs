@@ -13,6 +13,7 @@ namespace Hackathon2023Winter.Entity
             {
                 Destroy(gameObject.GetComponent<PUN2_RigidbodySync>());
             }
+
             base.ChangeToOfflineInternal();
         }
     }

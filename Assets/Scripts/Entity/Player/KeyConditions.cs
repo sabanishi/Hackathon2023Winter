@@ -16,9 +16,9 @@ namespace Hackathon2023Winter.Entity
         public bool IsLeftDown { get; set; }
         public bool IsRightDown { get; set; }
         public bool IsJumpDown { get; set; }
-        
+
         private PlayerOperateKeySet _keySet;
-        
+
         public void SetKeySet(PlayerOperateKeySet keySet)
         {
             _keySet = keySet;

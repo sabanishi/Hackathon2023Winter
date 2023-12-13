@@ -20,7 +20,7 @@ namespace Hackathon2023Winter.Level
         private bool _hasLevelData;
         private TilemapProvider _provider;
         private bool _isOnline;
-        
+
         private Subject<GameObject> _clearSubject;
         public IObservable<GameObject> OnClearObservable => _clearSubject;
 
@@ -62,7 +62,7 @@ namespace Hackathon2023Winter.Level
             var size = tilemap.size;
             float sX = (float)size.x / 2;
             float sY = (float)size.y / 2;
-            
+
             //Tileを生成する
             if (isOnline)
             {
@@ -112,7 +112,7 @@ namespace Hackathon2023Winter.Level
                         break;
                 }
             }
-            
+
             //PlayerのScaleをEntityShaderBridgeに渡す
             SendPlayerScaleInfo();
         }
@@ -123,7 +123,7 @@ namespace Hackathon2023Winter.Level
             Vector2 rectScale = Vector2.zero;
             GameObject playerCircle = null;
             GameObject playerRect = null;
-            
+
             foreach (var entity in _entities)
             {
                 if (entity is PlayerEntity playerEntity)
@@ -146,8 +146,9 @@ namespace Hackathon2023Winter.Level
                     }
                 }
             }
-            entityShaderBridge.SetPlayerScale(circleScale,rectScale);
-            entityShaderBridge.SetPlayerObject(playerCircle,playerRect);
+
+            entityShaderBridge.SetPlayerScale(circleScale, rectScale);
+            entityShaderBridge.SetPlayerObject(playerCircle, playerRect);
         }
 
         private void Update()

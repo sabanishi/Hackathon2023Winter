@@ -7,13 +7,13 @@ namespace Hackathon2023Winter.MainGame
     /// <summary>
     /// Photon下でPUN2に紐づく操作を行うためのMainGameScreen直下のコンポーネント
     /// </summary>
-    public class PunMainGameScreen:MonoBehaviourPunCallbacks
+    public class PunMainGameScreen : MonoBehaviourPunCallbacks
     {
         public void GoToStageSelectScreen()
         {
-            photonView.RPC(nameof(RPC_GoToStageSelectScreen),RpcTarget.All);
+            photonView.RPC(nameof(RPC_GoToStageSelectScreen), RpcTarget.All);
         }
-        
+
         [PunRPC]
         private void RPC_GoToStageSelectScreen()
         {

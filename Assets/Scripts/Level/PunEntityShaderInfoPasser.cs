@@ -13,8 +13,8 @@ namespace Hackathon2023Winter.Level
         private Vector2 _rectScale;
 
         private bool _isReceived;
-        
-        public void SetScales(Vector2 circleScale,Vector2 rectScale)
+
+        public void SetScales(Vector2 circleScale, Vector2 rectScale)
         {
             _circleScale = circleScale;
             _rectScale = rectScale;
@@ -30,7 +30,7 @@ namespace Hackathon2023Winter.Level
             {
                 var receiver = GameObject.FindWithTag(TagName.EntityShaderInfoReceiver)
                     ?.GetComponent<PunEntityShaderInfoReceiver>();
-                receiver?.SetScales(_circleScale,_rectScale);
+                receiver?.SetScales(_circleScale, _rectScale);
                 if (receiver != null)
                 {
                     _isReceived = false;
@@ -47,8 +47,8 @@ namespace Hackathon2023Winter.Level
             }
             else
             {
-                _circleScale = (Vector2) stream.ReceiveNext();
-                _rectScale = (Vector2) stream.ReceiveNext();
+                _circleScale = (Vector2)stream.ReceiveNext();
+                _rectScale = (Vector2)stream.ReceiveNext();
                 _isReceived = true;
             }
         }
