@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
 using Sabanishi.Common;
@@ -41,7 +42,32 @@ namespace Hackathon2023Winter.Matching
             {
                 MaxPlayers = 2
             };
-            PhotonNetwork.CreateRoom(roomNameInputField.text, roomOptions);
+            //部屋を作成する
+            RoomConnector.Instance.CreateRoom(roomNameInputField.text, roomOptions,this.GetCancellationTokenOnDestroy(),
+                failCallback: () =>
+                {
+                    //ルームの作成が失敗したら、再び入力を受け付ける
+                    canvasGroup.interactable = true;
+                    roomNameInputField.text = string.Empty;
+                });
+        }
+        
+        private void JoinRoom(RoomInfo roomInfo)
+        {
+            //ルーム参加処理中は入力を受け付けないようにする
+            canvasGroup.interactable = false;
+            //ルームに参加する
+            RoomConnector.Instance.JoinRoom(roomInfo.Name, this.GetCancellationTokenOnDestroy(),
+                successCallback: () =>
+                {
+                    //ルーム参加処理が完了したら、UIを非表示にする
+                    canvasGroup.interactable = false;
+                },
+                failCallback: () =>
+                {
+                    //ルーム参加処理が失敗したら、再び入力を受け付ける
+                    canvasGroup.interactable = true;
+                });
         }
 
         private void OnRoomNameInputFieldChanged(string roomName)
@@ -50,36 +76,9 @@ namespace Hackathon2023Winter.Matching
             createRoomButton.interactable = !string.IsNullOrEmpty(roomName);
         }
 
-        private void JoinRoom(RoomInfo roomInfo)
-        {
-            //ルーム参加処理中は入力を受け付けないようにする
-            canvasGroup.interactable = false;
-            //ルームに参加する
-            PhotonNetwork.JoinRoom(roomInfo.Name);
-        }
-
         public override void OnJoinedLobby()
         {
             //ロビーに参加したら、入力できるようにする
-            canvasGroup.interactable = true;
-        }
-
-        public override void OnCreateRoomFailed(short returnCode, string message)
-        {
-            //ルームの作成が失敗したら、再び入力を受け付ける
-            canvasGroup.interactable = true;
-            roomNameInputField.text = string.Empty;
-        }
-
-        public override void OnJoinedRoom()
-        {
-            //ルーム参加処理が完了したら、UIを非表示にする
-            canvasGroup.interactable = false;
-        }
-
-        public override void OnJoinRoomFailed(short returnCode, string message)
-        {
-            //ルーム参加処理が失敗したら、再び入力を受け付ける
             canvasGroup.interactable = true;
         }
     }

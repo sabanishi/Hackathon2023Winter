@@ -17,10 +17,18 @@ namespace Hackathon2023Winter.Matching
         {
             matchingScreenPresenter.Setup();
             matchingCallback.Setup();
-            matchingCallback.OnJoinedRoomSubject.Subscribe(SE_Enum =>
+            matchingCallback.OnJoinedRoomSubject.Subscribe(_ =>
             {
-                //StageSelectScreenに遷移
-                ScreenTransition.Instance.Move(ScreenType.StageSelect).Forget();
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    //ホストの場合はWaitMemberScreenに遷移
+                    ScreenTransition.Instance.Move(ScreenType.WaitMember).Forget();
+                }
+                else
+                {
+                    //StageSelectScreenに遷移
+                    ScreenTransition.Instance.Move(ScreenType.StageSelect).Forget();
+                }
             }).AddTo(gameObject);
 
             PhotonNetwork.NickName = "Player";
