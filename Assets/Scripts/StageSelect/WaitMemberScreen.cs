@@ -43,7 +43,7 @@ namespace Hackathon2023Winter.StageSelect
         private void Cancel()
         {
             //Photonから退出する
-            PhotonNetwork.LeaveRoom();
+            RoomConnector.Instance.LeaveRoom();
             ScreenTransition.Instance.Move(ScreenType.Title).Forget();
         }
         
