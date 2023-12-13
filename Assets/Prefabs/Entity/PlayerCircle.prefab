@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4399545418409505270}
   - component: {fileID: 4630230119831199394}
   - component: {fileID: 8956130941433010153}
-  - component: {fileID: 5820206577504121595}
+  - component: {fileID: 1509553496628266044}
   - component: {fileID: 2514679400634982659}
   - component: {fileID: 3220711542939716646}
   - component: {fileID: 1067184483052995386}
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5538c10127094008a8e05601694a9fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 5820206577504121595}
+  mover: {fileID: 1509553496628266044}
 --- !u!114 &8956130941433010153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,8 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caa48e05cf342ff96ec78c5c4320764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 5820206577504121595}
---- !u!114 &5820206577504121595
+  mover: {fileID: 1509553496628266044}
+--- !u!114 &1509553496628266044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,17 +213,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1437428368256468788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5ea8d83b01b422bb377319c65fde988, type: 3}
+  m_Script: {fileID: 11500000, guid: 4030a1b79d8e4f1ab24da3967026fb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3858345662305354196}
-  jumpPower: 15
-  firstMoveImpulse: 5
-  A: 100
-  B: 50
-  D: 3
-  E: 0.5
-  F: 1
+  jumpPower: 5
+  moveSpeed: 5
+  rotateCoefficient: 1
+  catchTransform: {fileID: 547761261009818395}
 --- !u!114 &2514679400634982659
 MonoBehaviour:
   m_ObjectHideFlags: 0
