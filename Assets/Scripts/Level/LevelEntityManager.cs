@@ -169,5 +169,19 @@ namespace Hackathon2023Winter.Level
         {
             entityShaderBridge.CalcShaderInfo();
         }
+
+        /// <summary>
+        /// ユーザーの操作を可能にする
+        /// </summary>
+        public void SetCanInput(bool canInput)
+        {
+            foreach (var entity in _entities)
+            {
+                if (entity is PlayerEntity playerEntity)
+                {
+                    playerEntity.SetCanInput(canInput);
+                }
+            }
+        }
     }
 }

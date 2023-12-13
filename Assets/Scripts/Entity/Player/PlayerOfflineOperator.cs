@@ -8,6 +8,7 @@ namespace Hackathon2023Winter.Entity
 
         private bool _isActive;
         private PlayerOperateKeySet _keySet;
+        private bool _canInput;
 
         public void SetActive(bool isActive)
         {
@@ -27,10 +28,16 @@ namespace Hackathon2023Winter.Entity
         private void Update()
         {
             if (!_isActive) return;
+            if (!_canInput) return;
             var keyConditions = new KeyConditions();
             keyConditions.SetKeySet(_keySet);
             keyConditions.UpdateCondition();
             mover.Move(keyConditions);
+        }
+        
+        public void SetCanInput(bool canInput)
+        {
+            _canInput = canInput;
         }
     }
 }

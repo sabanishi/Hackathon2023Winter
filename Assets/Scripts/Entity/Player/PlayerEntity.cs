@@ -69,5 +69,18 @@ namespace Hackathon2023Winter.Entity
         }
 
         public abstract float GetSize();
+
+        public void SetCanInput(bool canInput)
+        {
+            Debug.Log(canInput);
+            if (isOnline)
+            {
+                onlineOperator.SetCanInput(canInput);
+            }
+            else
+            {
+                offlineOperator.SetCanInput(canInput);
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
-using Cysharp.Threading.Tasks;
-using Hackathon2023Winter.Screen;
 using Photon.Pun;
+using Sabanishi.Common;
+using UnityEngine;
 
 namespace Hackathon2023Winter.MainGame
 {
@@ -9,15 +9,16 @@ namespace Hackathon2023Winter.MainGame
     /// </summary>
     public class PunMainGameScreen : MonoBehaviourPunCallbacks
     {
-        public void GoToStage()
+        public void GoToStage(int stageId)
         {
-            photonView.RPC(nameof(RPC_GoToStage), RpcTarget.All);
+            photonView.RPC(nameof(GoToStageRPC), RpcTarget.Others, stageId);
         }
-
+        
         [PunRPC]
-        private void RPC_GoToStage()
+        private void GoToStageRPC(int stageId)
         {
-            ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
+            var receiver = GameObject.FindWithTag(TagName.PunMainGameScreenReceiver)?.GetComponent<PunMainGameScreenReceiver>();
+            receiver?.GoTo(stageId);
         }
     }
 }
