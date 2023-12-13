@@ -15,14 +15,14 @@ namespace Hackathon2023Winter.StageSelect
         [SerializeField] private Button cancelButton;
         [SerializeField]private PunWaitMemberScreen punWaitMemberScreenPrefab;
         
-        private StageSelectData _stageSelectData;
+        private MainGameData _mainGameData;
         private PunWaitMemberScreen _punWaitMemberScreen;
         
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
-            if(screenData is StageSelectData stageSelectData)
+            if(screenData is MainGameData mainGameData)
             {
-                _stageSelectData = stageSelectData;
+                _mainGameData = mainGameData;
             }
             else
             {
@@ -37,7 +37,7 @@ namespace Hackathon2023Winter.StageSelect
 
         private void GoToStageSelect()
         {
-            ScreenTransition.Instance.Move(ScreenType.StageSelect).Forget();
+            ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
         }
 
         private void Cancel()
@@ -54,7 +54,8 @@ namespace Hackathon2023Winter.StageSelect
                 _punWaitMemberScreen.Cleanup();
                 PhotonNetwork.Destroy(_punWaitMemberScreen.gameObject);
             }
-            return _stageSelectData;
+
+            return _mainGameData;
         }
     }
 }

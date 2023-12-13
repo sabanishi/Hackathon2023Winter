@@ -9,15 +9,15 @@ namespace Hackathon2023Winter.MainGame
     /// </summary>
     public class PunMainGameScreen : MonoBehaviourPunCallbacks
     {
-        public void GoToStageSelectScreen()
+        public void GoToStage()
         {
-            photonView.RPC(nameof(RPC_GoToStageSelectScreen), RpcTarget.All);
+            photonView.RPC(nameof(RPC_GoToStage), RpcTarget.All);
         }
 
         [PunRPC]
-        private void RPC_GoToStageSelectScreen()
+        private void RPC_GoToStage()
         {
-            ScreenTransition.Instance.Move(ScreenType.StageSelect).Forget();
+            ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
         }
     }
 }

@@ -23,6 +23,8 @@ namespace Hackathon2023Winter.Level
 
         private Subject<GameObject> _clearSubject;
         public IObservable<GameObject> OnClearObservable => _clearSubject;
+        private Subject<int> _goToSubject;
+        public IObservable<int> OnGoToObservable => _goToSubject;
 
         public void Setup(bool isOnline, bool isHost)
         {
@@ -30,6 +32,7 @@ namespace Hackathon2023Winter.Level
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
             _clearSubject = new Subject<GameObject>();
+            _goToSubject = new Subject<int>();
         }
 
         public void Cleanup()
@@ -37,6 +40,7 @@ namespace Hackathon2023Winter.Level
             _entities.Clear();
             entityShaderBridge.Cleanup();
             _clearSubject?.Dispose();
+            _goToSubject?.Dispose();
             if (_provider != null)
             {
                 if (_isOnline)
@@ -109,6 +113,9 @@ namespace Hackathon2023Winter.Level
                         break;
                     case GoalEntity goalEntity:
                         goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext(x)).AddTo(gameObject);
+                        break;
+                    case GateEntity gateEntity:
+                        gateEntity.OnGoToObservable.Subscribe(x=>_goToSubject.OnNext(x)).AddTo(gameObject);
                         break;
                 }
             }

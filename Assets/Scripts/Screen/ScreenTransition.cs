@@ -22,7 +22,6 @@ namespace Hackathon2023Winter.Screen
         {
             { ScreenType.Title, "Screen/TitleScreen" },
             { ScreenType.Matching, "Screen/MatchingScreen" },
-            { ScreenType.StageSelect, "Screen/StageSelectScreen" },
             { ScreenType.MainGame, "Screen/MainGameScreen" },
             { ScreenType.WaitMember ,"Screen/WaitMemberScreen"}
         };
