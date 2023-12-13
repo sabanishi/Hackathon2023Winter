@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: TilemapProviderDict
   m_EditorClassIdentifier: Assembly-CSharp:Hackathon2023Winter.Level:TilemapProviderDict
   tilemapProviderDict:
-    list: []
+    list:
+    - Key: -1
+      Value: {fileID: 2563175991728385871, guid: 6953804351515463c9030912ea41dab4, type: 3}
+    - Key: 0
+      Value: {fileID: 4427515508670765758, guid: 7045b5705555d4f17b3acad20d5755b6, type: 3}

@@ -8,6 +8,8 @@ TagManager:
   - SoundManager
   - HostOperateReceiver
   - EntityShaderInfoReceiver
+  - KeyInputter
+  - PunMainGameScreenReceiver
   layers:
   - Default
   - TransparentFX
