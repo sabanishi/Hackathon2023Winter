@@ -8,6 +8,7 @@ namespace Hackathon2023Winter.Entity
         [SerializeField] private PlayerMover mover;
 
         private bool _isActive;
+        private bool _canInput;
 
         private KeyConditions _keyConditions;
 
@@ -68,10 +69,10 @@ namespace Hackathon2023Winter.Entity
         private void Update()
         {
             if (!_isActive) return;
+            if (!_canInput) return;
             //キー入力をMoverに渡す
             if (_keyConditions == null) return;
             if (!photonView.IsMine) return;
-
             mover.Move(_keyConditions);
 
             //UP/Down系をfalseにする
@@ -81,6 +82,11 @@ namespace Hackathon2023Winter.Entity
             _keyConditions.IsLeftUp = false;
             _keyConditions.IsRightUp = false;
             _keyConditions.IsJumpUp = false;
+        }
+        
+        public void SetCanInput(bool canInput)
+        {
+            _canInput = canInput;
         }
     }
 }

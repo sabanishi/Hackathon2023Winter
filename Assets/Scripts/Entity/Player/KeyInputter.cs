@@ -11,7 +11,7 @@ namespace Hackathon2023Winter.Entity
         private KeyConditions _keyConditions;
         private PlayerOperateKeySet _keySet;
         [SerializeField] private PlayerOnlineOperator onlineOperator;
-
+        
         public void SetKeySet(PlayerOperateKeySet keySet)
         {
             photonView.RPC(nameof(RPC_SetKeySet), RpcTarget.All, keySet.Up, keySet.Down, keySet.Left, keySet.Right);
