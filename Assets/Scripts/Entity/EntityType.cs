@@ -13,5 +13,6 @@ namespace Hackathon2023Winter.Entity
         CircleMovableEntity,
         RectMovableEntity,
         ShiftBlock,
+        Gate
     }
 }

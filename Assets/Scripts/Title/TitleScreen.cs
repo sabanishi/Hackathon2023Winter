@@ -30,7 +30,7 @@ namespace Hackathon2023Winter.Title
             if (_isTransitioning) return;
             _isTransitioning = true;
             _isOnline = isOnline;
-            var screenType = isOnline ? ScreenType.Matching : ScreenType.StageSelect;
+            var screenType = isOnline ? ScreenType.Matching : ScreenType.MainGame;
             ScreenTransition.Instance.Move(screenType).Forget();
         }
 
@@ -38,7 +38,7 @@ namespace Hackathon2023Winter.Title
         {
             return _isOnline
                 ? null
-                : new StageSelectData(false, false);
+                : new MainGameData(false, false,-1);
         }
 
         protected override async UniTask CloseAnimationInternal(CancellationToken token)

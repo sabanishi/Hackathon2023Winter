@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Hackathon2023Winter.StageSelect
 {
-    public class StageSelectScreen : BaseScreen
+    /*public class StageSelectScreen : BaseScreen
     {
         [SerializeField] private StageSelectScreenPresenter presenter;
 
@@ -30,5 +30,5 @@ namespace Hackathon2023Winter.StageSelect
             //TODO: タイトルに戻る場合の処理
             return new MainGameData(_stageSelectData.IsOnline, _stageSelectData.IsHost, 0);
         }
-    }
+    }*/
 }

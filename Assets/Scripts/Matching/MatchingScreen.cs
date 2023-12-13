@@ -27,7 +27,7 @@ namespace Hackathon2023Winter.Matching
                 else
                 {
                     //StageSelectScreenに遷移
-                    ScreenTransition.Instance.Move(ScreenType.StageSelect).Forget();
+                    ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
                 }
             }).AddTo(gameObject);
 
@@ -41,7 +41,7 @@ namespace Hackathon2023Winter.Matching
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
             matchingScreenPresenter.Cleanup();
-            var mainGameData = new StageSelectData(true, PhotonNetwork.IsMasterClient);
+            var mainGameData = new MainGameData(true, PhotonNetwork.IsMasterClient,-1);
             return mainGameData;
         }
 

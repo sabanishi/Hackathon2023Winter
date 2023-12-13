@@ -13,16 +13,18 @@ namespace Hackathon2023Winter.Level
     public class LevelEntityManager : MonoBehaviour
     {
         [SerializeField] private Camera renderCamera;
-        [SerializeField] private TilemapProvider tilemapProviderPrefab;
         [SerializeField] private EntityShaderBridge entityShaderBridge;
 
         private List<BaseEntity> _entities;
         private bool _hasLevelData;
         private TilemapProvider _provider;
         private bool _isOnline;
+        private TilemapProviderDict _tilemapProviderDict;
 
         private Subject<GameObject> _clearSubject;
         public IObservable<GameObject> OnClearObservable => _clearSubject;
+        private Subject<int> _goToSubject;
+        public IObservable<int> OnGoToObservable => _goToSubject;
 
         public void Setup(bool isOnline, bool isHost)
         {
@@ -30,6 +32,8 @@ namespace Hackathon2023Winter.Level
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
             _clearSubject = new Subject<GameObject>();
+            _goToSubject = new Subject<int>();
+            _tilemapProviderDict = Resources.Load<TilemapProviderDict>("TilemapProviderDict");
         }
 
         public void Cleanup()
@@ -37,6 +41,7 @@ namespace Hackathon2023Winter.Level
             _entities.Clear();
             entityShaderBridge.Cleanup();
             _clearSubject?.Dispose();
+            _goToSubject?.Dispose();
             if (_provider != null)
             {
                 if (_isOnline)
@@ -54,8 +59,14 @@ namespace Hackathon2023Winter.Level
         /// オフラインモードまたはオンラインモードのHostの時、Levelを生成する
         /// </summary>
         /// <param name="isOnline"></param>
-        public void CreateLevel(bool isOnline)
+        public void CreateLevel(bool isOnline,int stageId)
         {
+            if (!_tilemapProviderDict.TryGetPrefab(stageId, out var tilemapProviderPrefab))
+            {
+                Debug.LogError($"LevelEntityManager#CreateLevel: {stageId}が見つかりませんでした");
+                return;
+            }
+            
             _hasLevelData = true;
             var tilemap = tilemapProviderPrefab.TerrainTilemap;
             tilemap.CompressBounds();
@@ -109,6 +120,9 @@ namespace Hackathon2023Winter.Level
                         break;
                     case GoalEntity goalEntity:
                         goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext(x)).AddTo(gameObject);
+                        break;
+                    case GateEntity gateEntity:
+                        gateEntity.OnGoToObservable.Subscribe(x=>_goToSubject.OnNext(x)).AddTo(gameObject);
                         break;
                 }
             }

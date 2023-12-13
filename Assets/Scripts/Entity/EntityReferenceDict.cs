@@ -53,7 +53,7 @@ namespace Hackathon2023Winter.Entity
                 return true;
             }
 
-            Debug.LogError($"EntityFactory#Create: {type}が見つかりませんでした");
+            Debug.LogError($"EntityFactory#TryGetValue: {type}が見つかりませんでした");
             prefab = null;
             return false;
         }

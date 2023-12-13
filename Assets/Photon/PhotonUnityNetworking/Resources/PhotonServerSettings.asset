@@ -47,6 +47,7 @@ MonoBehaviour:
   - RPC_SetKeySet
   - RPC_SetActive
   - RPC_GoToStageSelectScreen
+  - RPC_GoToStage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

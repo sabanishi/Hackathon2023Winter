@@ -4,7 +4,6 @@ namespace Hackathon2023Winter.Screen
     {
         Title,
         Matching,
-        StageSelect,
         MainGame,
         WaitMember,
     }
