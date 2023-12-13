@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Hackathon2023Winter.Entity;
 using Photon.Pun;
+using UniRx;
 using UnityEngine;
 
 namespace Hackathon2023Winter.Level
@@ -12,22 +14,26 @@ namespace Hackathon2023Winter.Level
     {
         [SerializeField] private Camera renderCamera;
         [SerializeField] private TilemapProvider tilemapProviderPrefab;
-        [SerializeField] private Material material;
         [SerializeField] private EntityShaderBridge entityShaderBridge;
 
         private List<BaseEntity> _entities;
         private bool _hasLevelData;
+        
+        private Subject<GameObject> _clearSubject;
+        public IObservable<GameObject> OnClearObservable => _clearSubject;
 
         public void Setup(bool isOnline, bool isHost)
         {
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
+            _clearSubject = new Subject<GameObject>();
         }
 
         public void Cleanup()
         {
             _entities.Clear();
             entityShaderBridge.Cleanup();
+            _clearSubject?.Dispose();
         }
 
         /// <summary>
@@ -87,6 +93,9 @@ namespace Hackathon2023Winter.Level
                         break;
                     case ShiftBlock shiftBlock:
                         shiftBlock.Setup();
+                        break;
+                    case GoalEntity goalEntity:
+                        goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext(x)).AddTo(gameObject);
                         break;
                 }
             }
