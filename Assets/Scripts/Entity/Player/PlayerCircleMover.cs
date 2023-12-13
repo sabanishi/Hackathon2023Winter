@@ -15,13 +15,13 @@ namespace Hackathon2023Winter.Entity
             {
                 rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
                 //左回転する
-                catchTransform.Rotate(0,0,moveSpeed*Time.deltaTime);
+                catchTransform.Rotate(0,0,360*Time.deltaTime);
             }
             else if(keyCondition.IsRight)
             {
                 rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
                 //右回転する
-                catchTransform.Rotate(0,0,-moveSpeed*Time.deltaTime);
+                catchTransform.Rotate(0,0,-360*Time.deltaTime);
             }
             else
             {

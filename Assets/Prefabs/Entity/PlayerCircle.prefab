@@ -217,9 +217,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3858345662305354196}
-  jumpPower: 5
+  jumpPower: 15
   moveSpeed: 5
-  rotateCoefficient: 1
   catchTransform: {fileID: 547761261009818395}
 --- !u!114 &2514679400634982659
 MonoBehaviour:

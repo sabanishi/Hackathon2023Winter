@@ -565,6 +565,56 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 17, y: 2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 18, y: 2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 19, y: 2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 20, y: 2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 21, y: 2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 47, y: 2, z: 0}
     second:
       serializedVersion: 2
@@ -1537,13 +1587,13 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 149
+  - m_RefCount: 154
     m_Data: {fileID: 11400000, guid: e703c4a10ca364e7786d097d6a40eb31, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 149
+  - m_RefCount: 154
     m_Data: {fileID: 21300000, guid: 3eb440bea2cfe4eeea9378066fafc84e, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 149
+  - m_RefCount: 154
     m_Data:
       e00: 1
       e01: 0
@@ -1562,7 +1612,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 149
+  - m_RefCount: 154
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -2234,6 +2284,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovableEntityRect
       objectReference: {fileID: 0}
+    - target: {fileID: 2155951955669819441, guid: d34b2d401395641728295020bf5ad258, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4246222360221873187, guid: d34b2d401395641728295020bf5ad258, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -2307,6 +2361,10 @@ PrefabInstance:
     - target: {fileID: 6148214447458474124, guid: c855628cfbbf74c31bbb2aa1aeeb375e, type: 3}
       propertyPath: m_Name
       value: MovableEntityCircle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148214447458474124, guid: c855628cfbbf74c31bbb2aa1aeeb375e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8858493168380107027, guid: c855628cfbbf74c31bbb2aa1aeeb375e, type: 3}
       propertyPath: m_RootOrder
@@ -2518,6 +2576,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShiftBlock
       objectReference: {fileID: 0}
+    - target: {fileID: 2775139133223496511, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3954288337916630279, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -2639,6 +2701,10 @@ PrefabInstance:
     - target: {fileID: 4474825097701817410, guid: 91243e2ec02aa409e8fad7687059d147, type: 3}
       propertyPath: m_Name
       value: SwitchRect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4474825097701817410, guid: 91243e2ec02aa409e8fad7687059d147, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198643928148266336, guid: 91243e2ec02aa409e8fad7687059d147, type: 3}
       propertyPath: type
