@@ -6,25 +6,24 @@ namespace Hackathon2023Winter.Entity
 {
     public class PlayerRectMover:PlayerMover
     {
-        [SerializeField]private float moveJumpPower = 2.0f;
         [SerializeField]private float moveSpeed = 5.0f;
+        [SerializeField] private float rotateSpeed = 480f;
         [SerializeField]private Transform catchTransform;
         
         public override void Move(KeyConditions keyCondition)
         {
             if (!CanControl) return;
-
             if (keyCondition.IsLeft)
             {
                 rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
                 //左回転する
-                catchTransform.Rotate(0,0,360*Time.deltaTime);
+                catchTransform.Rotate(0,0,rotateSpeed*Time.deltaTime);
             }
             else if(keyCondition.IsRight)
             {
                 rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
                 //右回転する
-                catchTransform.Rotate(0,0,-360*Time.deltaTime);
+                catchTransform.Rotate(0,0,-rotateSpeed*Time.deltaTime);
             }
             else
             {

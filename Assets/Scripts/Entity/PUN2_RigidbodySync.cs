@@ -26,8 +26,8 @@ namespace Hackathon2023Winter.Entity
         private void Update()
         {
             if (photonView.IsMine || !_valuesReceived) return;
-            _transform.position = Vector3.Lerp(_transform.position, _latestPos, Time.deltaTime * 5);
-            _transform.rotation = Quaternion.Lerp(_transform.rotation, _latestRot, Time.deltaTime * 5);
+            _transform.position = Vector3.Lerp(_transform.position, _latestPos, Time.deltaTime * 20);
+            _transform.rotation = Quaternion.Lerp(_transform.rotation, _latestRot, Time.deltaTime * 30);
             _r.velocity = _velocity;
             _r.angularVelocity = _angularVelocity;
         }

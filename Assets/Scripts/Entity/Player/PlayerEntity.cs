@@ -60,6 +60,7 @@ namespace Hackathon2023Winter.Entity
 
         private void OnCollisionExit2D(Collision2D other)
         {
+            if (isOnline && !IsOwner) return;
             //otherがIPushedを実装している時
             if (other.gameObject.TryGetComponent(out IPushed pushed))
             {
