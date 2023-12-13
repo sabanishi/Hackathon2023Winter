@@ -6,5 +6,6 @@ namespace Hackathon2023Winter.Screen
         Matching,
         StageSelect,
         MainGame,
+        WaitMember,
     }
 }
