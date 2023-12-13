@@ -69,6 +69,10 @@ namespace Hackathon2023Winter.StageSelect
         public void Cleanup()
         {
             _hostOperateReceiver?.Cleanup();
+            if (_hostOperatePasser != null)
+            {
+                PhotonNetwork.Destroy(_hostOperatePasser.gameObject);
+            }
         }
     }
 }

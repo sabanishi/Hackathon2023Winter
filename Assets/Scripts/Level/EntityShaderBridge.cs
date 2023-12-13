@@ -1,4 +1,5 @@
 using Hackathon2023Winter.Entity;
+using Photon.Pun;
 using Sabanishi.Common;
 using UniRx;
 using UnityEngine;
@@ -35,14 +36,14 @@ namespace Hackathon2023Winter.Level
             {
                 if (isHost)
                 {
-                    _passer = Photon.Pun.PhotonNetwork.Instantiate(passerPrefab.name, Vector3.zero, Quaternion.identity)
+                    _passer = PhotonNetwork.Instantiate(passerPrefab.name, Vector3.zero, Quaternion.identity)
                         .GetComponent<PunEntityShaderInfoPasser>();
                     _passer.transform.parent = transform;
                     _passer.Setup();
                 }
                 else
                 {
-                    _receiver = Photon.Pun.PhotonNetwork.Instantiate(receiverPrefab.name, Vector3.zero, Quaternion.identity)
+                    _receiver = PhotonNetwork.Instantiate(receiverPrefab.name, Vector3.zero, Quaternion.identity)
                         .GetComponent<PunEntityShaderInfoReceiver>();
                     _receiver.transform.parent = transform;
                     _receiver.Setup();
@@ -56,12 +57,12 @@ namespace Hackathon2023Winter.Level
         {
             if (_passer != null)
             {
-                Destroy(_passer.gameObject);
+                PhotonNetwork.Destroy(_passer.gameObject);
             }
             if (_receiver != null)
             {
                 _receiver.Cleanup();
-                Destroy(_receiver.gameObject);
+                PhotonNetwork.Destroy(_receiver.gameObject);
             }
         }
         

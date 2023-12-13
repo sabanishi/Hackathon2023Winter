@@ -25,6 +25,7 @@ namespace Hackathon2023Winter.StageSelect
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
+            presenter.Cleanup();
             //TODO: レベルIDを渡す
             //TODO: タイトルに戻る場合の処理
             return new MainGameData(_stageSelectData.IsOnline, _stageSelectData.IsHost, 0);

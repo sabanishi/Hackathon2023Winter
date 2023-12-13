@@ -18,12 +18,15 @@ namespace Hackathon2023Winter.Level
 
         private List<BaseEntity> _entities;
         private bool _hasLevelData;
+        private TilemapProvider _provider;
+        private bool _isOnline;
         
         private Subject<GameObject> _clearSubject;
         public IObservable<GameObject> OnClearObservable => _clearSubject;
 
         public void Setup(bool isOnline, bool isHost)
         {
+            _isOnline = isOnline;
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
             _clearSubject = new Subject<GameObject>();
@@ -34,6 +37,17 @@ namespace Hackathon2023Winter.Level
             _entities.Clear();
             entityShaderBridge.Cleanup();
             _clearSubject?.Dispose();
+            if (_provider != null)
+            {
+                if (_isOnline)
+                {
+                    PhotonNetwork.Destroy(_provider.gameObject);
+                }
+                else
+                {
+                    Destroy(_provider.gameObject);
+                }
+            }
         }
 
         /// <summary>
@@ -48,27 +62,26 @@ namespace Hackathon2023Winter.Level
             var size = tilemap.size;
             float sX = (float)size.x / 2;
             float sY = (float)size.y / 2;
-
-            TilemapProvider provider;
+            
             //Tileを生成する
             if (isOnline)
             {
-                provider = PhotonNetwork.Instantiate(tilemapProviderPrefab.name, Vector3.zero, Quaternion.identity)
+                _provider = PhotonNetwork.Instantiate(tilemapProviderPrefab.name, Vector3.zero, Quaternion.identity)
                     .GetComponent<TilemapProvider>();
             }
             else
             {
-                provider = Instantiate(tilemapProviderPrefab);
-                provider.SwitchToOffline();
+                _provider = Instantiate(tilemapProviderPrefab);
+                _provider.SwitchToOffline();
             }
 
-            var transform1 = provider.transform;
+            var transform1 = _provider.transform;
             transform1.parent = transform;
             transform1.localPosition = new Vector3(sX, sY, 0) * (-1.0f);
             transform1.localScale = Vector3.one;
 
             //TilemapProvider内のEntityを全て取得する
-            _entities = provider.GetEntities();
+            _entities = _provider.GetEntities();
 
             //初期化処理
             foreach (var entity in _entities)
