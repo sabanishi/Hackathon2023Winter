@@ -13,6 +13,10 @@ namespace Hackathon2023Winter.Screen
     public class ScreenTransition : SingletonMonoBehaviour<ScreenTransition>
     {
         [SerializeField] private ScreenType loadScreenType;
+        [SerializeField]private Material screenChangeMaterial;
+        [SerializeField]private RenderTexture screenChangeTexture_0;
+        [SerializeField]private RenderTexture screenChangeTexture_1;
+        private bool _isScreenChangeAnimationFlag=false;
 
         private bool _isTransitioning;
 
@@ -56,6 +60,10 @@ namespace Hackathon2023Winter.Screen
                 await _nowScreen.CloseDeal(token);
                 await _nowScreen.CloseAnimation(token);
                 screenData = await _nowScreen.Dispose(token);
+                if(_nowScreen is MainGameScreen mainGameScreen)
+                {
+                    mainGameScreen.Dispose();
+                }
                 Destroy(_nowScreen.gameObject);
             }
 
@@ -139,17 +147,49 @@ namespace Hackathon2023Winter.Screen
             //前の画面を破棄する
             if (beforeScreen != null)
             {
+                if(beforeScreen is MainGameScreen mainGameScreen)
+                {
+                    mainGameScreen.Dispose();
+                }
                 Destroy(beforeScreen.gameObject);
             }
 
             _isTransitioning = false;
         }
 
+        
+        private readonly int _mainTex = Shader.PropertyToID("_MainTex");
+        private readonly int _subTex = Shader.PropertyToID("_SubTex");
+        private readonly int _isTransition = Shader.PropertyToID("isTransition");
+        private readonly int _transitionTime = Shader.PropertyToID("transitionTime");
+        private const float _transitionTimeValue = 1.5f;
+        
         private async UniTask ShowMainGameTransitionAnimation(Camera beforeCamera, Camera afterCamera)
         {
-            Debug.Log("MainGameTransitionAnimation");
-            //3秒待機
-            await UniTask.Delay(3000);
+            if (!_isScreenChangeAnimationFlag)
+            {
+                afterCamera.targetTexture = screenChangeTexture_1;
+                Debug.Log(afterCamera.targetTexture.name);
+            }
+            else
+            {
+                afterCamera.targetTexture = screenChangeTexture_0;
+            }
+            _isScreenChangeAnimationFlag = !_isScreenChangeAnimationFlag;
+            
+            screenChangeMaterial.SetTexture(_subTex,beforeCamera.targetTexture);
+            screenChangeMaterial.SetTexture(_mainTex,afterCamera.targetTexture);
+            screenChangeMaterial.SetInt(_isTransition,1);
+            //毎フレーム実行する
+            float time = 0;
+            await UniTask.WaitUntil(() =>
+            {
+                time += Time.deltaTime;
+                screenChangeMaterial.SetFloat(_transitionTime,time/_transitionTimeValue);
+                return time > _transitionTimeValue;
+            });
+            screenChangeMaterial.SetInt(_isTransition,0);
+            
         }
 
         /// <summary>

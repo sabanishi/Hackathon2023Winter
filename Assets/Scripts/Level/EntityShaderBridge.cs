@@ -15,6 +15,8 @@ namespace Hackathon2023Winter.Level
         [SerializeField] private PunEntityShaderInfoPasser passerPrefab;
         [SerializeField] private PunEntityShaderInfoReceiver receiverPrefab;
         [SerializeField] private Camera renderCamera;
+        [SerializeField]private RenderTexture renderTexture_0;
+        [SerializeField]private RenderTexture renderTexture_1;
 
         private readonly int _sCirclePosition = Shader.PropertyToID("circlePosition");
         private readonly int _sCircleInfo = Shader.PropertyToID("circleInfo");
@@ -29,9 +31,12 @@ namespace Hackathon2023Winter.Level
 
         private GameObject _playerCircle;
         private GameObject _playerRect;
-
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int SubTexture = Shader.PropertyToID("_SubTexture");
         public void Setup(bool isOnline, bool isHost)
         {
+            material.SetTexture(MainTex, renderTexture_0);
+            material.SetTexture(SubTexture,renderTexture_1 );
             if (isOnline)
             {
                 if (isHost)
@@ -43,11 +48,17 @@ namespace Hackathon2023Winter.Level
                 }
                 else
                 {
+                    Debug.Log("Setup");
                     _receiver = PhotonNetwork.Instantiate(receiverPrefab.name, Vector3.zero, Quaternion.identity)
                         .GetComponent<PunEntityShaderInfoReceiver>();
                     _receiver.transform.parent = transform;
                     _receiver.Setup();
-                    _receiver.CircleScale.Subscribe(x => _circleScale = x).AddTo(gameObject);
+                    _receiver.CircleScale.Subscribe(x =>
+                    {
+                        _circleScale = x;
+                        Debug.Log("CircleScale"+_circleScale);
+                    }).AddTo(gameObject);
+                    Debug.Log(_receiver.gameObject.GetHashCode());
                     _receiver.RectScale.Subscribe(x => _rectScale = x).AddTo(gameObject);
                 }
             }
@@ -70,6 +81,7 @@ namespace Hackathon2023Winter.Level
         public void SetPlayerScale(Vector2 circleScale, Vector2 rectScale)
         {
             _circleScale = circleScale;
+            Debug.Log("SetPlayerScale"+_circleScale);
             _rectScale = rectScale;
             if (_passer != null)
             {
@@ -85,20 +97,36 @@ namespace Hackathon2023Winter.Level
 
         public void CalcShaderInfo()
         {
+            
             if (_playerCircle == null || _playerRect == null)
             {
                 SearchPlayers();
-                if (_playerCircle == null || _playerRect == null) return;
+                if (_playerCircle == null || _playerRect == null)
+                {
+                    Debug.LogError("Playerが見つかりませんでした");
+                    material.SetVector(_sCirclePosition, new Vector4(-1, -1, 0, 0));
+                    material.SetVector(_sCircleInfo, new Vector4(0.01f, 0.01f, 0, 0));
+                    material.SetVector(_sQuadPosition, new Vector4(-1, -1, 0, 0));
+                    material.SetVector(_sQuadInfo, new Vector4(0.01f, 0.01f, 0, 0));
+                    return;
+                }
             }
 
             (float x, float y, float r) circleInfo = CalcInfo(_playerCircle.transform);
             (float x, float y, float r) rectInfo = CalcInfo(_playerRect.transform);
 
             // シェーダに情報を渡す
+            
             material.SetVector(_sCirclePosition, new Vector4(circleInfo.x, circleInfo.y, 0, 0));
             material.SetVector(_sCircleInfo, new Vector4(_circleScale.x, _circleScale.y, circleInfo.r, 0));
             material.SetVector(_sQuadPosition, new Vector4(rectInfo.x, rectInfo.y, 0, 0));
             material.SetVector(_sQuadInfo, new Vector4(_rectScale.x, _rectScale.y, rectInfo.r, 0));
+            
+           /* Debug.Log(new Vector4(circleInfo.x, circleInfo.y, 0, 0));
+            Debug.Log(new Vector4(_circleScale.x, _circleScale.y, circleInfo.r, 0));
+            Debug.Log(new Vector4(rectInfo.x, rectInfo.y, 0, 0));
+            Debug.Log(new Vector4(_rectScale.x, _rectScale.y, rectInfo.r, 0));*/
+            
         }
 
         private (float x, float y, float rotate) CalcInfo(Transform target)

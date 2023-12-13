@@ -80,6 +80,11 @@ namespace Hackathon2023Winter.MainGame
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
+            return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,levelId: _nextStageId);
+        }
+
+        public void Dispose()
+        {
             levelEntityManager.Cleanup();
             if (_punMainGameScreen != null)
             {
@@ -89,8 +94,6 @@ namespace Hackathon2023Winter.MainGame
             {
                 PhotonNetwork.Destroy(_punMainGameScreenReceiver.gameObject);
             }
-
-            return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,levelId: _nextStageId);
         }
 
         private async UniTask GoToStage(int stageId)
