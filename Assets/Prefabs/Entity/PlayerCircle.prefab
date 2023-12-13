@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   isOnline: 1
+  rb: {fileID: 3858345662305354196}
   offlineOperator: {fileID: 4630230119831199394}
   onlineOperator: {fileID: 8956130941433010153}
   isCircle: 1

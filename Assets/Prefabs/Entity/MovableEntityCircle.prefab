@@ -206,6 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   isOnline: 1
+  rb: {fileID: 5068855886155262410}
   isCircle: 1
 --- !u!114 &1159020986031446596
 MonoBehaviour:
