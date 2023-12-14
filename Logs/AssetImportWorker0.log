@@ -2717,3 +2717,19 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 3949.968697 seconds.
+  path: Assets/Sandbox/Sabanishi/TextScene.unity
+  artifactKey: Guid(8598fa1452cec41e5bfc3af1e5da5375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sandbox/Sabanishi/TextScene.unity using Guid(8598fa1452cec41e5bfc3af1e5da5375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07fca7ed8f27db09dc8b7cc6fe60be50') in 0.012670 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 212.659361 seconds.
+  path: Assets/Sandbox/Sabanishi/TextScene.unity
+  artifactKey: Guid(8598fa1452cec41e5bfc3af1e5da5375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sandbox/Sabanishi/TextScene.unity using Guid(8598fa1452cec41e5bfc3af1e5da5375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c8b7eb3c2e4ea9953fd9b4f68f53e00e') in 0.000928 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
