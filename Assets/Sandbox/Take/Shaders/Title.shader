@@ -18,7 +18,7 @@ CGPROGRAM
 
 #define PI 3.14159265
 #define TAU (PI * 2.0)
-#define MAX_PARTICLE 512
+#define MAX_PARTICLE 1024
 
 struct appdata
 {
@@ -35,7 +35,8 @@ struct v2f
 uniform sampler2D _MainTex;
 uniform float4 _MainTex_ST;
 uniform float4 particlePositions[MAX_PARTICLE]; // position
-uniform float4 particleInfo[MAX_PARTICLE]; // scale and rotation (radians)
+uniform float4 particleInfo[MAX_PARTICLE]; // scale (xy) and rotation (yz) (radians)
+uniform float4 particleColors[MAX_PARTICLE];
 uniform int particleNum;
 
 float2x2 rotate2D(float rad)
@@ -43,7 +44,7 @@ float2x2 rotate2D(float rad)
     return float2x2(cos(rad), -sin(rad), sin(rad), cos(rad));
 }
 
-float3 quad(float2 uv, float2 pos, float3 info)
+float3 quad(float2 uv, float2 pos, float3 info, float3 color)
 {
     if (info.x * info.y == 0) { return float3(0.0, 0.0, 0.0); }
     
@@ -55,7 +56,7 @@ float3 quad(float2 uv, float2 pos, float3 info)
     float s = 0.01 / abs(r-d);
     s = sqrt(r)*s*s;
 
-    return float3(s*s, s, s*0.4);
+    return color * s;
 }
 
 v2f vert (appdata v)
@@ -68,14 +69,17 @@ v2f vert (appdata v)
 
 fixed4 frag (v2f i) : SV_Target
 {
-    float3 col = float3(0.0, 0.0, 0.0);
-
+    float3 quads;
     for (int j = 0; j < particleNum; j++)
     {
-        col += quad(i.uv, particlePositions[j].xy, particleInfo[j].xyz);
+        quads += quad(i.uv, particlePositions[j].xy, particleInfo[j].xyz, particleColors[j].xyz);
     }
+
+    //fixed4 col = fixed4(0.1171875, 0.1171875, 0.1171875, 1.0); // 30 / 256 = 0.1171875
+    fixed4 col = fixed4(0.0F, 0.0F, 0.0F, 0.0F);
+    col += fixed4(quads.x, quads.y, quads.z, 0.0);
     
-    return tex2D(_MainTex, i.uv) +  fixed4(col.x, col.y, col.z, 1.0);
+    return col;
 }
 ENDCG
         }

@@ -37,7 +37,7 @@ public class Particle : MonoBehaviour
         // 大きさを計算
         float rand = Random.value;
         rand *= rand;
-        float scale = (1.0F - rand) * particleScale.x + rand * particleScale.y;
+        float scale = Mathf.Lerp(particleScale.x, particleScale.y, rand);
         myTransform.localScale = new Vector3(scale, scale, 0.0F);
         
         // 物理演算用パラメータ設定

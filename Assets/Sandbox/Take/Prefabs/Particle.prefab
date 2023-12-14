@@ -131,7 +131,7 @@ MonoBehaviour:
   maxForce: 32
   distThresh: 4
   mouseRadius: 3
-  particleScale: {x: 0.1, y: 0.6}
+  particleScale: {x: 0.05, y: 0.4}
 --- !u!61 &-3127066073884788748
 BoxCollider2D:
   m_ObjectHideFlags: 0
