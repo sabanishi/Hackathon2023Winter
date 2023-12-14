@@ -10,7 +10,7 @@ public class InteractiveShape : MonoBehaviour
     [SerializeField] private Camera renderCamera;
     [SerializeField] private Material renderMaterial;
     [SerializeField] private GameObject particle;
-    [SerializeField] private float rangeRadius = 4.0F;
+    [SerializeField] private Vector2 edgeLength = new Vector2(8.0F, 4.0F);
     [SerializeField] private int maxParticle = 256;
 
     private List<Particle> _particles;
@@ -70,9 +70,12 @@ public class InteractiveShape : MonoBehaviour
             part.MouseOffset = _mouseOffset;
             
             // 目的地を与える
-            float r = Mathf.Sqrt(Random.value) * rangeRadius;
-            float t = Random.value * Mathf.PI * 2.0F;
-            part.Destination = (Vector2) myTransform.position + new Vector2(Mathf.Cos(t), Mathf.Sin(t)) * r;
+            // float r = Mathf.Sqrt(Random.value) * rangeRadius;
+            // float t = Random.value * Mathf.PI * 2.0F;
+            // part.Destination = (Vector2) myTransform.position + new Vector2(Mathf.Cos(t), Mathf.Sin(t)) * r;
+            float x = (Random.value - 0.5F) * edgeLength.x;
+            float y = (Random.value - 0.5F) * edgeLength.y;
+            part.Destination = (Vector2) myTransform.position + new Vector2(x, y);
         }
     }
 }
