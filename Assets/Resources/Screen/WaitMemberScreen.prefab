@@ -635,7 +635,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: searching for partner...
+  m_text: Searching for Partner...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
   m_sharedMaterial: {fileID: -2601759147593020727, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
