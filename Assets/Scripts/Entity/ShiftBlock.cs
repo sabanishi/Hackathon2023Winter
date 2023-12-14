@@ -134,5 +134,11 @@ namespace Hackathon2023Winter.Entity
 
             base.ChangeToOfflineInternal();
         }
+        
+        protected override void SetIsSimulateInternal(bool isSimulate)
+        {
+            rb.simulated = isSimulate;
+            base.SetIsSimulateInternal(isSimulate);
+        }
     }
 }

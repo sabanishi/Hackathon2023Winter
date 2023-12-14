@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Hackathon2023Winter.Entity;
 using Photon.Pun;
 using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Hackathon2023Winter.Level
@@ -21,8 +22,8 @@ namespace Hackathon2023Winter.Level
         private bool _isOnline;
         private TilemapProviderDict _tilemapProviderDict;
 
-        private Subject<GameObject> _clearSubject;
-        public IObservable<GameObject> OnClearObservable => _clearSubject;
+        private Subject<(GameObject,GameObject)> _clearSubject;
+        public IObservable<(GameObject clearObj,GameObject goalObj)> OnClearObservable => _clearSubject;
         private Subject<int> _goToSubject;
         public IObservable<int> OnGoToObservable => _goToSubject;
 
@@ -31,7 +32,7 @@ namespace Hackathon2023Winter.Level
             _isOnline = isOnline;
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
-            _clearSubject = new Subject<GameObject>();
+            _clearSubject = new Subject<(GameObject,GameObject)>();
             _goToSubject = new Subject<int>();
             _tilemapProviderDict = Resources.Load<TilemapProviderDict>("TilemapProviderDict");
         }
@@ -119,7 +120,7 @@ namespace Hackathon2023Winter.Level
                         shiftBlock.Setup();
                         break;
                     case GoalEntity goalEntity:
-                        goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext(x)).AddTo(gameObject);
+                        goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext((x,goalEntity.gameObject))).AddTo(gameObject);
                         break;
                     case GateEntity gateEntity:
                         gateEntity.OnGoToObservable.Subscribe(x=>_goToSubject.OnNext(x)).AddTo(gameObject);
@@ -137,32 +138,42 @@ namespace Hackathon2023Winter.Level
             Vector2 rectScale = Vector2.zero;
             GameObject playerCircle = null;
             GameObject playerRect = null;
+            //GameObject,isGoal
+            var goalObjects = new List<(GameObject,bool)>();
 
             foreach (var entity in _entities)
             {
-                if (entity is PlayerEntity playerEntity)
+                switch (entity)
                 {
-                    var scale = playerEntity.GetSize() / 2;
-                    var cameraScale = renderCamera.ViewportToWorldPoint(Vector2.one)
-                                      - renderCamera.ViewportToWorldPoint(Vector2.zero);
-                    var width = scale / cameraScale.x;
-                    var height = scale / cameraScale.y;
+                    case PlayerEntity playerEntity:
+                        var scale = playerEntity.GetSize() / 2;
+                        var cameraScale = renderCamera.ViewportToWorldPoint(Vector2.one)
+                                          - renderCamera.ViewportToWorldPoint(Vector2.zero);
+                        var width = scale / cameraScale.x;
+                        var height = scale / cameraScale.y;
 
-                    if (playerEntity.IsCircle)
-                    {
-                        circleScale = new Vector2(width, height);
-                        playerCircle = playerEntity.gameObject;
-                    }
-                    else
-                    {
-                        rectScale = new Vector2(width, height);
-                        playerRect = playerEntity.gameObject;
-                    }
+                        if (playerEntity.IsCircle)
+                        {
+                            circleScale = new Vector2(width, height);
+                            playerCircle = playerEntity.gameObject;
+                        }
+                        else
+                        {
+                            rectScale = new Vector2(width, height);
+                            playerRect = playerEntity.gameObject;
+                        }
+                        break;
+                    case GoalEntity goalEntity:
+                        goalObjects.Add((goalEntity.gameObject,true));
+                        break;
+                    case GateEntity gateEntity:
+                        goalObjects.Add((gateEntity.gameObject,true));
+                        break;
                 }
             }
 
             entityShaderBridge.SetPlayerScale(circleScale, rectScale);
-            entityShaderBridge.SetPlayerObject(playerCircle, playerRect);
+            entityShaderBridge.SetEntityObject(playerCircle, playerRect,goalObjects);
         }
 
         private void Update()
@@ -182,6 +193,19 @@ namespace Hackathon2023Winter.Level
                     playerEntity.SetCanInput(canInput);
                 }
             }
+        }
+
+        public void SetIsSimulateActive(bool isActive)
+        {
+            foreach (var entity in _entities)
+            {
+                entity.SetIsSimulate(isActive);
+            }
+        }
+
+        public List<BaseEntity> GetEntities()
+        {
+            return _entities;
         }
     }
 }

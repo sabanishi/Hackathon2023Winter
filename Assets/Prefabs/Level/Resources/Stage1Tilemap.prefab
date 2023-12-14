@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1277000418520244404}
   - component: {fileID: 3168472208601049582}
+  - component: {fileID: 5425976194548588448}
+  - component: {fileID: 4867333517180442579}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -84,6 +86,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5425976194548588448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52086867056344539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4867333517180442579}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4867333517180442579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52086867056344539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 0
 --- !u!1 &3196144852695388464
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +135,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1931677781138022936}
   - component: {fileID: 7419708925973927818}
+  - component: {fileID: 7242782409088665659}
+  - component: {fileID: 1810731278304391448}
   m_Layer: 0
   m_Name: TerrianShader
   m_TagString: Untagged
@@ -168,6 +211,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7242782409088665659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3196144852695388464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1810731278304391448}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1810731278304391448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3196144852695388464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 0
 --- !u!1 &6620321900577917402
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +317,8 @@ MonoBehaviour:
   terrainTilemap: {fileID: 489619551342497106}
   entityParent: {fileID: 8389130012008678805}
   signTile: {fileID: 11400000, guid: 21ad86a0660514a3bb78c8922f3da3e4, type: 2}
+  terrainShader: {fileID: 3196144852695388464}
+  BackGround: {fileID: 52086867056344539}
 --- !u!114 &7934707904726127874
 MonoBehaviour:
   m_ObjectHideFlags: 0

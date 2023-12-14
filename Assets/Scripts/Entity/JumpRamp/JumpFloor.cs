@@ -49,5 +49,10 @@ namespace Hackathon2023Winter.Entity
             rb.bodyType = RigidbodyType2D.Kinematic;
             rb.velocity = new Vector2(0, speed);
         }
+
+        public void SetIsSimulateActive(bool isActive)
+        {
+            rb.simulated = isActive;
+        }
     }
 }

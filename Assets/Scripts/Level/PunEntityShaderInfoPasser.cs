@@ -36,7 +36,6 @@ namespace Hackathon2023Winter.Level
                     {
                         var receiver = (PunEntityShaderInfoReceiver)receiverComponent;
                         receiver?.SetScales(_circleScale, _rectScale);
-                        Debug.Log(receiver);
                         if (receiver != null)
                         {
                             _isReceived = false;

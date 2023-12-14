@@ -81,5 +81,11 @@ namespace Hackathon2023Winter.Entity
                 offlineOperator.SetCanInput(canInput);
             }
         }
+
+        protected override void SetIsSimulateInternal(bool isSimulate)
+        {
+            rb.simulated = isSimulate;
+            base.SetIsSimulateInternal(isSimulate);
+        }
     }
 }
