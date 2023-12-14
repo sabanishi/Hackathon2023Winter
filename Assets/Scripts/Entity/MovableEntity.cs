@@ -31,5 +31,11 @@ namespace Hackathon2023Winter.Entity
                 pushed.ExitPush();
             }
         }
+        
+        protected override void SetIsSimulateInternal(bool isSimulate)
+        {
+            rb.simulated = isSimulate;
+            base.SetIsSimulateInternal(isSimulate);
+        }
     }
 }

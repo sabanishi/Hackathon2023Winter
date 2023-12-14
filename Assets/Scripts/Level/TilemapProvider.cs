@@ -14,6 +14,8 @@ namespace Hackathon2023Winter.Level
         [SerializeField] private Tilemap terrainTilemap;
         [SerializeField] private Transform entityParent;
         [SerializeField] private Tile signTile;
+        [SerializeField] private GameObject terrainShader;
+        [SerializeField] private GameObject BackGround;
         public Tilemap TerrainTilemap => terrainTilemap;
 
         /// <summary>
@@ -104,7 +106,6 @@ namespace Hackathon2023Winter.Level
             {
                 Destroy(gameObject.GetComponent<PhotonView>());
             }
-
             if (gameObject.GetComponent<PhotonTransformView>() != null)
             {
                 Destroy(gameObject.GetComponent<PhotonTransformView>());
@@ -114,10 +115,25 @@ namespace Hackathon2023Winter.Level
             {
                 Destroy(terrainTilemap.gameObject.GetComponent<PhotonView>());
             }
-
             if (terrainTilemap.gameObject.GetComponent<PhotonTransformView>() != null)
             {
                 Destroy(terrainTilemap.gameObject.GetComponent<PhotonTransformView>());
+            }
+            if(terrainShader.GetComponent<PhotonView>() != null)
+            {
+                Destroy(terrainShader.GetComponent<PhotonView>());
+            }
+            if(terrainShader.GetComponent<PhotonTransformView>() != null)
+            {
+                Destroy(terrainShader.GetComponent<PhotonTransformView>());
+            }
+            if(BackGround.GetComponent<PhotonView>() != null)
+            {
+                Destroy(BackGround.GetComponent<PhotonView>());
+            }
+            if(BackGround.GetComponent<PhotonTransformView>() != null)
+            {
+                Destroy(BackGround.GetComponent<PhotonTransformView>());
             }
 
             foreach (Transform child in entityParent)

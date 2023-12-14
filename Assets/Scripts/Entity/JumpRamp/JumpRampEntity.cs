@@ -97,5 +97,11 @@ namespace Hackathon2023Winter.Entity
                 Destroy(floorGameObject.GetComponent<PUN2_RigidbodySync>());
             }
         }
+        
+        protected override void SetIsSimulateInternal(bool isSimulate)
+        {
+            floor.SetIsSimulateActive(isSimulate);
+            base.SetIsSimulateInternal(isSimulate);
+        }
     }
 }

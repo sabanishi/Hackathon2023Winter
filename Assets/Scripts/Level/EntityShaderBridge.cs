@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Hackathon2023Winter.Entity;
 using Photon.Pun;
 using Sabanishi.Common;
@@ -32,6 +33,8 @@ namespace Hackathon2023Winter.Level
 
         private GameObject _playerCircle;
         private GameObject _playerRect;
+        private List<(GameObject obj,bool isGoal)> _warpObjects;
+        
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
         private static readonly int SubTexture = Shader.PropertyToID("_SubTexture");
         public void Setup(bool isOnline, bool isHost)
@@ -86,18 +89,18 @@ namespace Hackathon2023Winter.Level
             }
         }
 
-        public void SetPlayerObject(GameObject circle, GameObject rect)
+        public void SetEntityObject(GameObject circle, GameObject rect,List<(GameObject,bool)> warpObjects)
         {
             _playerCircle = circle;
             _playerRect = rect;
+            _warpObjects = warpObjects;
         }
 
         public void CalcShaderInfo()
         {
-            
-            if (_playerCircle == null || _playerRect == null)
+            if (_playerCircle == null || _playerRect == null || _warpObjects == null)
             {
-                SearchPlayers();
+                SearchEntities();
                 if (_playerCircle == null || _playerRect == null)
                 {
                     material.SetVector(_sCirclePosition, new Vector4(-1, -1, 0, 0));
@@ -113,17 +116,20 @@ namespace Hackathon2023Winter.Level
             (float x, float y, float r) rectInfo = CalcInfo(_playerRect.transform);
 
             // シェーダに情報を渡す
-            
             material.SetVector(_sCirclePosition, new Vector4(circleInfo.x, circleInfo.y, 0, 0));
             material.SetVector(_sCircleInfo, new Vector4(_circleScale.x, _circleScale.y, circleInfo.r, 0));
             material.SetVector(_sQuadPosition, new Vector4(rectInfo.x, rectInfo.y, 0, 0));
             material.SetVector(_sQuadInfo, new Vector4(_rectScale.x, _rectScale.y, rectInfo.r, 0));
-            
-           /* Debug.Log(new Vector4(circleInfo.x, circleInfo.y, 0, 0));
-            Debug.Log(new Vector4(_circleScale.x, _circleScale.y, circleInfo.r, 0));
-            Debug.Log(new Vector4(rectInfo.x, rectInfo.y, 0, 0));
-            Debug.Log(new Vector4(_rectScale.x, _rectScale.y, rectInfo.r, 0));*/
-            
+           
+            //TODO:Goal,Gateで違うフラグを渡す、複数のobjの情報を渡せるようにする
+            if (_warpObjects.IsNullOrEmpty()) return;
+            foreach (var tuple in _warpObjects)
+            {
+                if(tuple.obj == null) continue;
+                (float x, float y, float r) goalInfo = CalcInfo(tuple.obj.transform);
+                material.SetVector(_warpInfo,new Vector4(goalInfo.x,goalInfo.y,0,0));
+                break;
+            }
         }
 
         private (float x, float y, float rotate) CalcInfo(Transform target)
@@ -133,7 +139,7 @@ namespace Hackathon2023Winter.Level
             return (pos.x, pos.y, rotate);
         }
 
-        private void SearchPlayers()
+        private void SearchEntities()
         {
             var players = GameObject.FindGameObjectsWithTag(TagName.Player);
             foreach (var obj in players)
@@ -147,6 +153,19 @@ namespace Hackathon2023Winter.Level
                 {
                     _playerRect = obj;
                 }
+            }
+
+            _warpObjects = new();
+            var goals = GameObject.FindGameObjectsWithTag(TagName.GoalEntity);
+            foreach (var obj in goals)
+            {
+                _warpObjects.Add((obj,true));
+            }
+
+            var gates = GameObject.FindGameObjectsWithTag(TagName.GateEntity);
+            foreach (var obj in gates)
+            {
+                _warpObjects.Add((obj,false));
             }
         }
     }

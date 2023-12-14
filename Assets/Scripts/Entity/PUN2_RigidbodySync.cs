@@ -30,7 +30,6 @@ namespace Hackathon2023Winter.Entity
             //positionのズレが大き過ぎたらワープする
             if (Vector3.Distance(_transform.position, _latestPos) > warpDistance)
             {
-                Debug.Log("Warp"+gameObject.name);
                 _transform.position = _latestPos;
             }
             else
