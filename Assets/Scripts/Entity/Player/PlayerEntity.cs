@@ -72,7 +72,6 @@ namespace Hackathon2023Winter.Entity
 
         public void SetCanInput(bool canInput)
         {
-            Debug.Log(canInput);
             if (isOnline)
             {
                 onlineOperator.SetCanInput(canInput);

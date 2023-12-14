@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4601364538400032154}
   - component: {fileID: 4427515508670765758}
   - component: {fileID: 7934707904726127874}
-  - component: {fileID: 7306156266743598036}
   m_Layer: 0
   m_Name: Stage1Tilemap
   m_TagString: Untagged
@@ -85,26 +84,10 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 7306156266743598036}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &7306156266743598036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6620321900577917402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 1
-  m_UseLocal: 0
 --- !u!1 &6710389728005908679
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +361,7 @@ GameObject:
   - component: {fileID: 2447178952254490854}
   - component: {fileID: 3554433923436961170}
   - component: {fileID: 841241569203294562}
-  - component: {fileID: 2797154617870214205}
+  - component: {fileID: 9195935472827379364}
   m_Layer: 0
   m_Name: TerrianTilemap
   m_TagString: Untagged
@@ -3177,11 +3160,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 2797154617870214205}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2797154617870214205
+--- !u!114 &9195935472827379364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

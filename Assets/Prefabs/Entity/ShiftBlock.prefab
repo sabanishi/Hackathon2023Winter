@@ -202,7 +202,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!114 &7586410763324657246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3219aa221eb545dab03fef8a8046aa87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  warpDistance: 30
 --- !u!1 &5502087807011693058
 GameObject:
   m_ObjectHideFlags: 0

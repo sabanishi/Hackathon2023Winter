@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1428712450891480093}
   - component: {fileID: 5500253177239988347}
   - component: {fileID: 8764837152214515621}
-  - component: {fileID: 5804549504956092851}
   - component: {fileID: 7572581858401594680}
+  - component: {fileID: -8825851002732897786}
   m_Layer: 0
   m_Name: GoalEntity
   m_TagString: Untagged
@@ -152,26 +152,10 @@ MonoBehaviour:
   OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 5804549504956092851}
+  - {fileID: -8825851002732897786}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &5804549504956092851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3913764041386736402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 1
-  m_UseLocal: 1
 --- !u!114 &7572581858401594680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,3 +170,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   isOnline: 1
+--- !u!114 &-8825851002732897786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3913764041386736402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 0

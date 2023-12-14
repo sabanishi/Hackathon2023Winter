@@ -169,7 +169,6 @@ namespace Hackathon2023Winter.Screen
             if (!_isScreenChangeAnimationFlag)
             {
                 afterCamera.targetTexture = screenChangeTexture_1;
-                Debug.Log(afterCamera.targetTexture.name);
             }
             else
             {
