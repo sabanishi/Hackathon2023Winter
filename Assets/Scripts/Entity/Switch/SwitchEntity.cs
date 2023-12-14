@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Hackathon2023Winter.Entity
 {
@@ -7,19 +9,32 @@ namespace Hackathon2023Winter.Entity
     {
         [SerializeField] private bool isCircle;
         [SerializeField] private bool isPermanent;
+        [SerializeField] private PunSwitchColorChanger punSwitchColorChanger;
+        [SerializeField] private Tilemap wires;
 
         private ReactiveProperty<bool> _trigger;
+
+        private static readonly Color CircleColor = Color.red;
+        private static readonly Color RectColor = Color.green;
+        private static readonly Color DefaultColor = Color.white;
 
         public IReadOnlyReactiveProperty<bool> Trigger => _trigger;
 
         private void Awake()
         {
             _trigger = new ReactiveProperty<bool>(false);
+            _trigger.Skip(1).Subscribe(ChangeWireColor).AddTo(gameObject);
+            if (punSwitchColorChanger != null)
+            {
+                punSwitchColorChanger.Setup();
+                punSwitchColorChanger.OnColorChangeObservable.Subscribe(OnChangeWireColorDeal).AddTo(gameObject);
+            }
         }
 
         private void OnDestroy()
         {
             _trigger.Dispose();
+            punSwitchColorChanger?.Cleanup();
         }
 
         private void Update()
@@ -48,6 +63,40 @@ namespace Hackathon2023Winter.Entity
 
             if (isPermanent) return;
             _trigger.Value = false;
+        }
+
+        private void ChangeWireColor(bool isOn)
+        {
+            if (isOnline)
+            {
+                punSwitchColorChanger.ChangeColor(isOn);
+            }
+            else
+            {
+                OnChangeWireColorDeal(isOn);
+            }
+        }
+
+        private void OnChangeWireColorDeal(bool isOn)
+        {
+            if (isOn)
+            {
+                wires.color = isCircle ? CircleColor : RectColor;
+            }
+            else
+            {
+                wires.color = DefaultColor;
+            }
+        }
+
+        protected override void ChangeToOfflineInternal()
+        {
+            if (gameObject.TryGetComponent(typeof(PunSwitchColorChanger), out var component))
+            {
+                var colorChanger = (PunSwitchColorChanger) component;
+                Destroy(colorChanger);
+            }
+            base.ChangeToOfflineInternal();
         }
     }
 }

@@ -51,6 +51,8 @@ MonoBehaviour:
   - GoToStageRPC
   - RPC_SendMakeRequest
   - RPC_SendTakeRequest
+  - RPC_CreateLevel
+  - RPC_ChangeColor
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
