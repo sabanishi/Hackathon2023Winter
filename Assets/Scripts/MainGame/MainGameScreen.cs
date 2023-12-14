@@ -71,7 +71,7 @@ namespace Hackathon2023Winter.MainGame
                 if (!isOnline ||isHost)
                 {
                     levelEntityManager.CreateLevel(isOnline,levelId);
-                    _punMainGameScreen.SendCreateLevel();
+                    _punMainGameScreen?.SendCreateLevel();
                 }
                 else
                 {
