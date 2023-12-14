@@ -5,10 +5,7 @@ using UnityEngine;
 public class RenderQuad : MonoBehaviour
 {
     [SerializeField] private Transform tra;
-    [SerializeField] private Material mat;
     [SerializeField] private Camera cam;
-    
-    private readonly int _sPosition = Shader.PropertyToID("position");
     
     void Start()
     {
@@ -16,12 +13,5 @@ public class RenderQuad : MonoBehaviour
         tra.position = new Vector3(center.x, center.y, 0.0F);
         tra.localScale = cam.ViewportToWorldPoint(Vector2.one)
             - cam.ViewportToWorldPoint(Vector2.zero);
-    }
-    
-    void Update()
-    {
-        Vector3 mousePosition = Input.mousePosition;
-        Vector3 position = cam.ScreenToViewportPoint(mousePosition);
-        mat.SetVector(_sPosition, position);
     }
 }
