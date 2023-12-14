@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1107782802312779891}
   - component: {fileID: 7107988178818011738}
+  - component: {fileID: 7077078336984478576}
+  - component: {fileID: 8471996649409558229}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -84,6 +86,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7077078336984478576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010067570861207592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 8471996649409558229}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &8471996649409558229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010067570861207592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 0
 --- !u!1 &3076288239185849044
 GameObject:
   m_ObjectHideFlags: 0
@@ -4163,21 +4204,9 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 403
     m_Data: {fileID: 11400000, guid: e703c4a10ca364e7786d097d6a40eb31, type: 2}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 403
     m_Data: {fileID: 21300000, guid: 3eb440bea2cfe4eeea9378066fafc84e, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 403
     m_Data:
@@ -4415,6 +4444,8 @@ MonoBehaviour:
   terrainTilemap: {fileID: 688415156959217754}
   entityParent: {fileID: 7214766351963419090}
   signTile: {fileID: 11400000, guid: 21ad86a0660514a3bb78c8922f3da3e4, type: 2}
+  terrainShader: {fileID: 3650017355310293754}
+  BackGround: {fileID: 3010067570861207592}
 --- !u!114 &7014666345481627705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4487,6 +4518,8 @@ GameObject:
   m_Component:
   - component: {fileID: 268185200966857869}
   - component: {fileID: 8948812629324922082}
+  - component: {fileID: 8022730390665569008}
+  - component: {fileID: 3124272288750885899}
   m_Layer: 0
   m_Name: TerrianShader
   m_TagString: Untagged
@@ -4561,6 +4594,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8022730390665569008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3650017355310293754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 0
+--- !u!114 &3124272288750885899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3650017355310293754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 8022730390665569008}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4043703049342210043
 GameObject:
   m_ObjectHideFlags: 0

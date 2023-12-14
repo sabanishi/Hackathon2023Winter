@@ -62,5 +62,17 @@ namespace Hackathon2023Winter.Entity
             var hit = Physics2D.Raycast(catchTransform.position, rotate, catchTransform.localScale.x * 7 / 4);
             return hit.collider != null;
         }
+
+        /// <summary>
+        /// 物理演算を有効化するかを切り替える
+        /// </summary>
+        public void SetIsSimulate(bool isSimulate)
+        {
+            SetIsSimulateInternal(isSimulate);
+        }
+
+        protected virtual void SetIsSimulateInternal(bool isSimulate)
+        {
+        }
     }
 }

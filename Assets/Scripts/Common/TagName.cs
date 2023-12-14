@@ -19,5 +19,7 @@
 		public const string KeyInputter = "KeyInputter";
 		public const string PunMainGameScreenReceiver = "PunMainGameScreenReceiver";
 		public const string MainGameCommandReceiver = "MainGameCommandReceiver";
+		public const string GoalEntity = "GoalEntity";
+		public const string GateEntity = "GateEntity";
 	}
 }

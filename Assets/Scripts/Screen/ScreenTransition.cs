@@ -134,7 +134,7 @@ namespace Hackathon2023Winter.Screen
                 _nowScreen = nextScreen;
                 var nextScreenDestroyToken = nextScreen.gameObject.GetCancellationTokenOnDestroy();
                 var nextScreenCts = CancellationTokenSource.CreateLinkedTokenSource(token, nextScreenDestroyToken);
-                await nextScreen.Initialize(screenData, nextScreenCts.Token);
+                nextScreen.Initialize(screenData, nextScreenCts.Token).Forget();
                 //遷移アニメーションの開始
                 if(beforeScreen is MainGameScreen mainGameScreen && nextScreen is MainGameScreen nextMainGameScreen)
                 {
@@ -185,14 +185,14 @@ namespace Hackathon2023Winter.Screen
                 Random.value*1000,
                 Random.value*1000,
                 Random.value*1000);
-            Debug.Log(vec);
             screenChangeMaterial.SetVector(_seed,vec);
+            screenChangeMaterial.SetFloat(_transitionTime,0);
             //毎フレーム実行する
             float time = 0;
             await UniTask.WaitUntil(() =>
             {
-                time += Time.deltaTime;
                 screenChangeMaterial.SetFloat(_transitionTime,time/_transitionTimeValue);
+                time += Time.deltaTime;
                 return time > _transitionTimeValue;
             });
             screenChangeMaterial.SetInt(_isTransition,0);

@@ -153,7 +153,7 @@ fixed4 warpHole(float2 uv, float2 pos, float time, float2 seed)
     l *= lerp(0.6, 1.0, n*n);
     // float r = 0.03 / l;
     // r = r*r*r*r;
-    float r = exp2(-128.0 * l + 3.0);
+    float r = exp2(-200.0 * l + 3.0);
     //r = clamp(r, 0., 1.);
     float3 col = float3(r*r*4.0, 0.4*r/l, 1.6*r/l);
 
@@ -182,7 +182,7 @@ fixed4 frag (v2f i) : SV_Target
         fixed4 circleCol = circle(i.uv, circlePosition, circleInfo);
         fixed4 quadCol = quad(i.uv, quadPosition, quadInfo);
         col = tex2D(_MainTex, i.uv) + circleCol + quadCol;
-        col += warpHole(i.uv, float2(0.5, 0.5), _Time.y * 0.5, seed.yw);
+        col += warpHole(i.uv, warpInfo.xy, _Time.y * 0.5, seed.yw);
     }
     
     return col;

@@ -1,12 +1,14 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Hackathon2023Winter.Entity;
+using DG.Tweening;
 using Hackathon2023Winter.Level;
 using Hackathon2023Winter.Matching;
 using Hackathon2023Winter.Screen;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Hackathon2023Winter.MainGame
 {
@@ -16,13 +18,13 @@ namespace Hackathon2023Winter.MainGame
         [SerializeField] private LevelEntityManager levelEntityManager;
         [SerializeField] private MainGameCommandManager commandManager;
         [SerializeField] private PunMainGameScreen punMainGameScreenPrefab;
-        [SerializeField]private PunMainGameScreenReceiver punMainGameScreenReceiverPrefab;
+        [SerializeField] private PunMainGameScreenReceiver punMainGameScreenReceiverPrefab;
 
         private bool _isTransition;
         private MainGameData _mainGameData;
         private PunMainGameScreen _punMainGameScreen;
         private PunMainGameScreenReceiver _punMainGameScreenReceiver;
-        private int _nextStageId=-1;
+        private int _nextStageId = -1;
 
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
@@ -33,10 +35,10 @@ namespace Hackathon2023Winter.MainGame
                 var isHost = mainGameScreenData.IsHost;
                 var levelId = mainGameScreenData.LevelId;
                 var isHostCreateLevel = false;
-                
+
                 commandManager.Setup(isOnline);
                 commandManager.OnCommandObservable.Subscribe(TakeCommand).AddTo(gameObject);
-                
+
                 //Photonの通信を行う機構を作る
                 if (isOnline)
                 {
@@ -58,32 +60,26 @@ namespace Hackathon2023Winter.MainGame
                             _nextStageId = x;
                             ScreenTransition.Instance.MoveFromGameToGame().Forget();
                         }).AddTo(gameObject);
-                        _punMainGameScreenReceiver.OnCreateLevelObservable.Subscribe(_=>isHostCreateLevel=true).AddTo(gameObject);
+                        _punMainGameScreenReceiver.OnCreateLevelObservable.Subscribe(_ => isHostCreateLevel = true)
+                            .AddTo(gameObject);
                     }
                 }
-                
+
                 //ステージIDに応じてx座標をずらす
-                transform.position = new Vector3(levelId*1000, 0, 0);
-                
+                transform.position = new Vector3(levelId * 1000, 0, 0);
+
                 _mainGameData = mainGameScreenData;
                 levelEntityManager.Setup(isOnline, isHost);
                 //オンラインでないかホストの場合はステージを生成する
-                if (!isOnline ||isHost)
+                if (!isOnline || isHost)
                 {
-                    levelEntityManager.CreateLevel(isOnline,levelId);
+                    levelEntityManager.CreateLevel(isOnline, levelId);
                     _punMainGameScreen?.SendCreateLevel();
-                }
-                else
-                {
-                    //ホストがステージを生成するのを待つ
-                    /*await UniTask.WhenAny(
-                        UniTask.WaitUntil(() => isHostCreateLevel,cancellationToken:token),
-                        UniTask.Delay(100, cancellationToken: token)
-                        );*/
                 }
 
                 //TODO:ゴールに触れた時の処理
-                levelEntityManager.OnClearObservable.Subscribe(x => GameClear(x).Forget()).AddTo(gameObject);
+                levelEntityManager.OnClearObservable.Subscribe(x => GameClear(x.clearObj, x.goalObj).Forget())
+                    .AddTo(gameObject);
                 levelEntityManager.OnGoToObservable.Subscribe(x => GoToStage(x).Forget()).AddTo(gameObject);
             }
             else
@@ -101,7 +97,8 @@ namespace Hackathon2023Winter.MainGame
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
             commandManager.Cleanup();
-            return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,levelId: _nextStageId);
+            return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,
+                levelId: _nextStageId);
         }
 
         public void Dispose()
@@ -111,6 +108,7 @@ namespace Hackathon2023Winter.MainGame
             {
                 PhotonNetwork.Destroy(_punMainGameScreen.gameObject);
             }
+
             if (_punMainGameScreenReceiver != null)
             {
                 PhotonNetwork.Destroy(_punMainGameScreenReceiver.gameObject);
@@ -120,33 +118,86 @@ namespace Hackathon2023Winter.MainGame
         private async UniTask GoToStage(int stageId)
         {
             if (_isTransition) return;
-            _isTransition= true;
+            _isTransition = true;
             _nextStageId = stageId;
-            
+
             if (_mainGameData.IsOnline)
             {
-                
                 _punMainGameScreen.GoToStage(stageId);
             }
+
             ScreenTransition.Instance.MoveFromGameToGame().Forget();
         }
 
-        private async UniTask GameClear(GameObject clearObject)
+        private async UniTask GameClear(GameObject clearObject, GameObject goalObject)
         {
             if (_isTransition) return;
-            _isTransition= true;
+            var token = this.GetCancellationTokenOnDestroy();
+            _isTransition = true;
             _nextStageId = -1;
 
-            //TODO:クリア演出
+            //全てのEntityの物理演算を切る
+            levelEntityManager.SetIsSimulateActive(false);
+            //Goalに触れたオブジェクトをゴール位置の位置までサイズを小さくしながら近づける
+            float clearObjTime = 0.1f;
+            UniTask.WhenAll(
+                clearObject.transform.DOMove(goalObject.transform.position, clearObjTime).SetEase(Ease.InCubic)
+                    .ToUniTask(cancellationToken: token),
+                clearObject.transform.DOScale(0.01f, clearObjTime).ToUniTask(cancellationToken: token));
+            if (token.IsCancellationRequested) return;
 
+            //全てのEntityをゴールの位置までサイズを小さくしながら近づける
+            float entityTime = 0.8f;
+            float intervalTime = 0.1f;
+            float rotateSpeed = 300f;
+            var entities = levelEntityManager.GetEntities();
+            //entitiesをgoalObjectに近い順に並び替える
+            entities.Sort((a, b) =>
+            {
+                var aPos = a.transform.position;
+                var bPos = b.transform.position;
+                var aDis = Vector3.Distance(aPos, goalObject.transform.position);
+                var bDis = Vector3.Distance(bPos, goalObject.transform.position);
+                return aDis.CompareTo(bDis);
+            });
+            //順にゴールまでスケールを小さくしながら移動させる
+            int i = 0;
+            int counter = 0;
+            foreach (var entity in entities)
+            {
+                if (entity == clearObject) continue;
+                var entityTransform = entity.transform;
+                var time = entityTime * (Random.value / 4 + i * 0.2f + 0.75f);
+                var interval = intervalTime * (Random.value / 4 * i * 0.2f + 0.75f);
+                var rotateAngle = 360f * (Random.value / 4 * i * 0.2f + 0.75f);
+                UniTask.Void(async () =>
+                {
+                    await UniTask.WhenAll(
+                        entityTransform.DOMove(goalObject.transform.position, time).SetEase(Ease.InCubic)
+                            .ToUniTask(cancellationToken: token),
+                        entityTransform.DOScale(0.01f, time).SetEase(Ease.InQuart).ToUniTask(cancellationToken: token),
+                        entityTransform.DORotate(new Vector3(0,0,rotateAngle),time,RotateMode.FastBeyond360).SetEase(Ease.InQuad).ToUniTask(cancellationToken:token));
+                    counter++;
+                });
+                await UniTask.Delay(TimeSpan.FromSeconds(interval), cancellationToken: token);
+                if (token.IsCancellationRequested) return;
+                i++;
+            }
+
+            await UniTask.WaitUntil(() => counter == entities.Count, cancellationToken: token);
+            
+            //TODO:GoalのScaleが小さくなるアニメーション
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+            
             //ステージセレクト画面に遷移する
             if (_mainGameData.IsOnline)
             {
                 _punMainGameScreen.GoToStage(-1);
             }
+
             ScreenTransition.Instance.MoveFromGameToGame().Forget();
         }
-        
+
         public Camera GetCamera()
         {
             return myCamera;
@@ -175,6 +226,7 @@ namespace Hackathon2023Winter.MainGame
                     {
                         RoomConnector.Instance.LeaveRoom();
                     }
+
                     ScreenTransition.Instance.Move(ScreenType.Title).Forget();
                     break;
                 default:
