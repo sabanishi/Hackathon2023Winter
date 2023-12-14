@@ -21,5 +21,6 @@
 		public const string MainGameCommandReceiver = "MainGameCommandReceiver";
 		public const string GoalEntity = "GoalEntity";
 		public const string GateEntity = "GateEntity";
+		public const string MainGameMoveStageReceiver = "MainGameMoveStageReceiver";
 	}
 }

@@ -11,6 +11,10 @@ TagManager:
   - KeyInputter
   - PunMainGameScreenReceiver
   - MainGameCommandReceiver
+  - GoalEntity
+  - GateEntity
+  - MainGameMoveStageReceiver
+  - MianGameMoveStageReceiver
   layers:
   - Default
   - TransparentFX

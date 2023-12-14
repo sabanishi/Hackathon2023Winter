@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Hackathon2023Winter.Entity;
 using Photon.Pun;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Hackathon2023Winter.Level
@@ -24,8 +23,11 @@ namespace Hackathon2023Winter.Level
 
         private Subject<(GameObject,GameObject)> _clearSubject;
         public IObservable<(GameObject clearObj,GameObject goalObj)> OnClearObservable => _clearSubject;
-        private Subject<int> _goToSubject;
-        public IObservable<int> OnGoToObservable => _goToSubject;
+        
+        private Subject<(int,bool)> _onEnterSubject;
+        private Subject<(int,bool)> _onExitSubject;
+        public IObservable<(int stageId, bool isCircle)> OnEnterObservable => _onEnterSubject;
+        public IObservable<(int stageId, bool isCircle)> OnExitObservable => _onExitSubject;
 
         public void Setup(bool isOnline, bool isHost)
         {
@@ -33,16 +35,22 @@ namespace Hackathon2023Winter.Level
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
             _clearSubject = new Subject<(GameObject,GameObject)>();
-            _goToSubject = new Subject<int>();
+            _onEnterSubject = new Subject<(int,bool)>();
+            _onExitSubject = new Subject<(int,bool)>();
             _tilemapProviderDict = Resources.Load<TilemapProviderDict>("TilemapProviderDict");
+        }
+
+        private void OnDestroy()
+        {
+            _clearSubject?.Dispose();
+            _onEnterSubject?.Dispose();
+            _onExitSubject?.Dispose();
         }
 
         public void Cleanup()
         {
             _entities.Clear();
             entityShaderBridge.Cleanup();
-            _clearSubject?.Dispose();
-            _goToSubject?.Dispose();
             if (_provider != null)
             {
                 if (_isOnline)
@@ -98,6 +106,7 @@ namespace Hackathon2023Winter.Level
             //初期化処理
             foreach (var entity in _entities)
             {
+                if(entity==null)continue;
                 entity.SetIsOwner(true);
                 switch (entity)
                 {
@@ -123,7 +132,11 @@ namespace Hackathon2023Winter.Level
                         goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext((x,goalEntity.gameObject))).AddTo(gameObject);
                         break;
                     case GateEntity gateEntity:
-                        gateEntity.OnGoToObservable.Subscribe(x=>_goToSubject.OnNext(x)).AddTo(gameObject);
+                        gateEntity.OnEnterObservable.Subscribe(x => _onEnterSubject.OnNext(x)).AddTo(gameObject);
+                        gateEntity.OnExitObservable.Subscribe(x =>
+                        {
+                            _onExitSubject?.OnNext(x);
+                        }).AddTo(gameObject);
                         break;
                 }
             }
