@@ -20,5 +20,17 @@ namespace Hackathon2023Winter.MainGame
             var receiver = GameObject.FindWithTag(TagName.PunMainGameScreenReceiver)?.GetComponent<PunMainGameScreenReceiver>();
             receiver?.GoTo(stageId);
         }
+
+        public void SendCreateLevel()
+        {
+            photonView.RPC(nameof(RPC_CreateLevel), RpcTarget.Others);
+        }
+        
+        [PunRPC]
+        private void RPC_CreateLevel()
+        {
+            var receiver = GameObject.FindWithTag(TagName.PunMainGameScreenReceiver)?.GetComponent<PunMainGameScreenReceiver>();
+            receiver?.ReceiveCreateLevel();
+        }
     }
 }

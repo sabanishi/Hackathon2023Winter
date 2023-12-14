@@ -203,7 +203,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!114 &8261927510919601706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,3 +219,4 @@ MonoBehaviour:
   type: 0
   isOnline: 1
   isCircle: 1
+  isPermanent: 0

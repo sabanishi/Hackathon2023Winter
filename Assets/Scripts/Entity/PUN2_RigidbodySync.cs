@@ -8,6 +8,7 @@ namespace Hackathon2023Winter.Entity
     /// </summary>
     public class PUN2_RigidbodySync : MonoBehaviourPun, IPunObservable
     {
+        [SerializeField]private float warpDistance = 30f;
         private Transform _transform;
         private Rigidbody2D _r;
         private Vector3 _latestPos;
@@ -26,7 +27,17 @@ namespace Hackathon2023Winter.Entity
         private void Update()
         {
             if (photonView.IsMine || !_valuesReceived) return;
-            _transform.position = Vector3.Lerp(_transform.position, _latestPos, Time.deltaTime * 20);
+            //positionのズレが大き過ぎたらワープする
+            if (Vector3.Distance(_transform.position, _latestPos) > warpDistance)
+            {
+                Debug.Log("Warp"+gameObject.name);
+                _transform.position = _latestPos;
+            }
+            else
+            {
+                //補間
+                _transform.position = Vector3.Lerp(_transform.position, _latestPos, Time.deltaTime * 20);
+            }
             _transform.rotation = Quaternion.Lerp(_transform.rotation, _latestRot, Time.deltaTime * 30);
             _r.velocity = _velocity;
             _r.angularVelocity = _angularVelocity;

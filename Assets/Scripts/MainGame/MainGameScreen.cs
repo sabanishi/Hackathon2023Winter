@@ -32,22 +32,12 @@ namespace Hackathon2023Winter.MainGame
                 var isOnline = mainGameScreenData.IsOnline;
                 var isHost = mainGameScreenData.IsHost;
                 var levelId = mainGameScreenData.LevelId;
+                var isHostCreateLevel = false;
                 
                 commandManager.Setup(isOnline);
                 commandManager.OnCommandObservable.Subscribe(TakeCommand).AddTo(gameObject);
                 
-                //ステージIDに応じてx座標をずらす
-                transform.position = new Vector3(levelId*1000, 0, 0);
-                
-                _mainGameData = mainGameScreenData;
-                levelEntityManager.Setup(isOnline, isHost);
-                //オンラインでないかホストの場合はステージを生成する
-                if (!isOnline ||isHost)
-                {
-                    levelEntityManager.CreateLevel(isOnline,levelId);
-                }
-
-                //オンラインである時はPunMainGameScreenを生成する
+                //Photonの通信を行う機構を作る
                 if (isOnline)
                 {
                     if (isHost)
@@ -68,7 +58,28 @@ namespace Hackathon2023Winter.MainGame
                             _nextStageId = x;
                             ScreenTransition.Instance.MoveFromGameToGame().Forget();
                         }).AddTo(gameObject);
+                        _punMainGameScreenReceiver.OnCreateLevelObservable.Subscribe(_=>isHostCreateLevel=true).AddTo(gameObject);
                     }
+                }
+                
+                //ステージIDに応じてx座標をずらす
+                transform.position = new Vector3(levelId*1000, 0, 0);
+                
+                _mainGameData = mainGameScreenData;
+                levelEntityManager.Setup(isOnline, isHost);
+                //オンラインでないかホストの場合はステージを生成する
+                if (!isOnline ||isHost)
+                {
+                    levelEntityManager.CreateLevel(isOnline,levelId);
+                    _punMainGameScreen.SendCreateLevel();
+                }
+                else
+                {
+                    //ホストがステージを生成するのを待つ
+                    /*await UniTask.WhenAny(
+                        UniTask.WaitUntil(() => isHostCreateLevel,cancellationToken:token),
+                        UniTask.Delay(100, cancellationToken: token)
+                        );*/
                 }
 
                 //TODO:ゴールに触れた時の処理

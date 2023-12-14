@@ -48,7 +48,6 @@ namespace Hackathon2023Winter.Level
                 }
                 else
                 {
-                    Debug.Log("Setup");
                     _receiver = PhotonNetwork.Instantiate(receiverPrefab.name, Vector3.zero, Quaternion.identity)
                         .GetComponent<PunEntityShaderInfoReceiver>();
                     _receiver.transform.parent = transform;
@@ -56,9 +55,7 @@ namespace Hackathon2023Winter.Level
                     _receiver.CircleScale.Subscribe(x =>
                     {
                         _circleScale = x;
-                        Debug.Log("CircleScale"+_circleScale);
                     }).AddTo(gameObject);
-                    Debug.Log(_receiver.gameObject.GetHashCode());
                     _receiver.RectScale.Subscribe(x => _rectScale = x).AddTo(gameObject);
                 }
             }

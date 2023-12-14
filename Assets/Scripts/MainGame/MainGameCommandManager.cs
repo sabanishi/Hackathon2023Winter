@@ -139,6 +139,7 @@ namespace Hackathon2023Winter.MainGame
         {
             //コマンドを実行する
             _commandSubject.OnNext(type);
+            _isActive = false;
         }
 
         private void CheckCommand(MainGameCommandType type)
