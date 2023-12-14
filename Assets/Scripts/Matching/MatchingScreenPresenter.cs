@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Hackathon2023Winter.Screen;
 using Photon.Pun;
 using Photon.Realtime;
 using Sabanishi.Common;
@@ -15,12 +16,14 @@ namespace Hackathon2023Winter.Matching
         [SerializeField] private TMP_InputField roomNameInputField;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Button createRoomButton;
+        [SerializeField] private Button goTitleButton;
 
         public void Setup()
         {
             roomListView.Setup();
             roomListView.OnJoinRoomAsObservable.Subscribe(JoinRoom).AddTo(gameObject);
             createRoomButton.SafeOnClickAsObservable().Subscribe(_ => OnCreateRoomButtonClicked()).AddTo(gameObject);
+            goTitleButton.SafeOnClickAsObservable().Subscribe(_=>ScreenTransition.Instance.Move(ScreenType.Title).Forget()).AddTo(gameObject);
             roomNameInputField.onValueChanged.AddListener(OnRoomNameInputFieldChanged);
             canvasGroup.interactable = false;
             OnRoomNameInputFieldChanged(roomNameInputField.text);
