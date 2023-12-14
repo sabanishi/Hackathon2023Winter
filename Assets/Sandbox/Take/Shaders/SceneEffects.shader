@@ -48,7 +48,7 @@ uniform float2 quadPosition;
 uniform float3 quadInfo; // scale and rotation
 
 // warp hole
-uniform float4 warpInfo; // position and scale
+uniform float3 warpInfo; // position and color; color: 0: blue, otherwise: pink
 uniform float isVanishing; // 0: not vanishing, otherwise: vanishing
 uniform float vanishTime; // normalized: 0-1
 uniform float2 waprSeed;
@@ -138,7 +138,7 @@ fixed4 sceneTransition(float2 uv, float time, float4 seed)
     return fixed4(col.x, col.y, col.z, 1.0);
 }
 
-fixed4 warpHole(float2 uv, float2 pos, float time, float2 seed)
+fixed4 warpHole(float2 uv, float2 pos, float colorType, float time, float2 seed)
 {
     uv -= pos;
     float ratio = _MainTex_TexelSize.z * _MainTex_TexelSize.w == 0
@@ -155,8 +155,9 @@ fixed4 warpHole(float2 uv, float2 pos, float time, float2 seed)
     float r = exp2(-200.0 * l + 3.0);
     if (isVanishing != 0) { r *= max(1.0 - vanishTime, 0.0); }
     float3 col = float3(r*r*4.0, 0.4*r/l, 1.6*r/l);
+    fixed4 c = colorType == 0 ? fixed4(col.x, col.y, col.z, 1.0) : fixed4(col.z, col.y, col.x, 1.0);
 
-    return fixed4(col.x, col.y, col.z, 1.0);
+    return c;
 }
 
 v2f vert (appdata v)
@@ -181,7 +182,7 @@ fixed4 frag (v2f i) : SV_Target
         fixed4 circleCol = circle(i.uv, circlePosition, circleInfo);
         fixed4 quadCol = quad(i.uv, quadPosition, quadInfo);
         col = tex2D(_MainTex, i.uv) + circleCol + quadCol;
-        col += warpHole(i.uv, warpInfo.xy, _Time.y * 0.5, waprSeed);
+        col += warpHole(i.uv, warpInfo.xy, warpInfo.z, _Time.y * 0.5, waprSeed);
     }
     
     return col;
