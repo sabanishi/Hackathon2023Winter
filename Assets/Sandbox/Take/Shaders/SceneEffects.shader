@@ -41,9 +41,6 @@ uniform float4 _SubTex_ST;
 uniform float4 _MainTex_TexelSize;
 uniform float _AspectRatio;
 
-// seed
-uniform float4 seed;
-
 // player info
 uniform float2 circlePosition;
 uniform float3 circleInfo; // scale and rotation
@@ -52,10 +49,14 @@ uniform float3 quadInfo; // scale and rotation
 
 // warp hole
 uniform float4 warpInfo; // position and scale
+uniform float isVanishing; // 0: not vanishing, otherwise: vanishing
+uniform float vanishTime; // normalized: 0-1
+uniform float2 waprSeed;
 
 // scene transition
 uniform int isTransition; // 0: not transition, otherwise: transition
 uniform float transitionTime; // normalized: 0-1
+uniform float4 transitionSeed;
 
 float2x2 rotate2D(float rad)
 {
@@ -151,10 +152,8 @@ fixed4 warpHole(float2 uv, float2 pos, float time, float2 seed)
     val *= 8.0;
     float n = noise(val + seed);
     l *= lerp(0.6, 1.0, n*n);
-    // float r = 0.03 / l;
-    // r = r*r*r*r;
     float r = exp2(-200.0 * l + 3.0);
-    //r = clamp(r, 0., 1.);
+    if (isVanishing != 0) { r *= max(1.0 - vanishTime, 0.0); }
     float3 col = float3(r*r*4.0, 0.4*r/l, 1.6*r/l);
 
     return fixed4(col.x, col.y, col.z, 1.0);
@@ -174,7 +173,7 @@ fixed4 frag (v2f i) : SV_Target
     
     if (isTransition)
     {
-        col = sceneTransition(i.uv, transitionTime, seed);
+        col = sceneTransition(i.uv, transitionTime, transitionSeed);
     }
     else
     {
@@ -182,7 +181,7 @@ fixed4 frag (v2f i) : SV_Target
         fixed4 circleCol = circle(i.uv, circlePosition, circleInfo);
         fixed4 quadCol = quad(i.uv, quadPosition, quadInfo);
         col = tex2D(_MainTex, i.uv) + circleCol + quadCol;
-        col += warpHole(i.uv, warpInfo.xy, _Time.y * 0.5, seed.yw);
+        col += warpHole(i.uv, warpInfo.xy, _Time.y * 0.5, waprSeed);
     }
     
     return col;
