@@ -162,6 +162,7 @@ namespace Hackathon2023Winter.Screen
         private readonly int _subTex = Shader.PropertyToID("_SubTex");
         private readonly int _isTransition = Shader.PropertyToID("isTransition");
         private readonly int _transitionTime = Shader.PropertyToID("transitionTime");
+        private readonly int _seed = Shader.PropertyToID("seed");
         private const float _transitionTimeValue = 1.5f;
         
         private async UniTask ShowMainGameTransitionAnimation(Camera beforeCamera, Camera afterCamera)
@@ -169,7 +170,6 @@ namespace Hackathon2023Winter.Screen
             if (!_isScreenChangeAnimationFlag)
             {
                 afterCamera.targetTexture = screenChangeTexture_1;
-                Debug.Log(afterCamera.targetTexture.name);
             }
             else
             {
@@ -180,6 +180,13 @@ namespace Hackathon2023Winter.Screen
             screenChangeMaterial.SetTexture(_subTex,beforeCamera.targetTexture);
             screenChangeMaterial.SetTexture(_mainTex,afterCamera.targetTexture);
             screenChangeMaterial.SetInt(_isTransition,1);
+            var vec = new Vector4(
+                Random.value*1000,
+                Random.value*1000,
+                Random.value*1000,
+                Random.value*1000);
+            Debug.Log(vec);
+            screenChangeMaterial.SetVector(_seed,vec);
             //毎フレーム実行する
             float time = 0;
             await UniTask.WaitUntil(() =>

@@ -22,6 +22,7 @@ namespace Hackathon2023Winter.Level
         private readonly int _sCircleInfo = Shader.PropertyToID("circleInfo");
         private readonly int _sQuadPosition = Shader.PropertyToID("quadPosition");
         private readonly int _sQuadInfo = Shader.PropertyToID("quadInfo");
+        private readonly int _warpInfo = Shader.PropertyToID("warpInfo");
 
         private PunEntityShaderInfoPasser _passer;
         private PunEntityShaderInfoReceiver _receiver;
@@ -48,7 +49,6 @@ namespace Hackathon2023Winter.Level
                 }
                 else
                 {
-                    Debug.Log("Setup");
                     _receiver = PhotonNetwork.Instantiate(receiverPrefab.name, Vector3.zero, Quaternion.identity)
                         .GetComponent<PunEntityShaderInfoReceiver>();
                     _receiver.transform.parent = transform;
@@ -56,9 +56,7 @@ namespace Hackathon2023Winter.Level
                     _receiver.CircleScale.Subscribe(x =>
                     {
                         _circleScale = x;
-                        Debug.Log("CircleScale"+_circleScale);
                     }).AddTo(gameObject);
-                    Debug.Log(_receiver.gameObject.GetHashCode());
                     _receiver.RectScale.Subscribe(x => _rectScale = x).AddTo(gameObject);
                 }
             }
@@ -81,7 +79,6 @@ namespace Hackathon2023Winter.Level
         public void SetPlayerScale(Vector2 circleScale, Vector2 rectScale)
         {
             _circleScale = circleScale;
-            Debug.Log("SetPlayerScale"+_circleScale);
             _rectScale = rectScale;
             if (_passer != null)
             {
@@ -103,11 +100,11 @@ namespace Hackathon2023Winter.Level
                 SearchPlayers();
                 if (_playerCircle == null || _playerRect == null)
                 {
-                    Debug.LogError("Playerが見つかりませんでした");
                     material.SetVector(_sCirclePosition, new Vector4(-1, -1, 0, 0));
                     material.SetVector(_sCircleInfo, new Vector4(0.01f, 0.01f, 0, 0));
                     material.SetVector(_sQuadPosition, new Vector4(-1, -1, 0, 0));
                     material.SetVector(_sQuadInfo, new Vector4(0.01f, 0.01f, 0, 0));
+                    material.SetVector(_warpInfo,new Vector4(0,0,0,0));
                     return;
                 }
             }

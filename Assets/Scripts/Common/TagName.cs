@@ -18,5 +18,6 @@
 		public const string EntityShaderInfoReceiver = "EntityShaderInfoReceiver";
 		public const string KeyInputter = "KeyInputter";
 		public const string PunMainGameScreenReceiver = "PunMainGameScreenReceiver";
+		public const string MainGameCommandReceiver = "MainGameCommandReceiver";
 	}
 }
