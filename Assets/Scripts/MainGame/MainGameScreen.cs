@@ -17,6 +17,7 @@ namespace Hackathon2023Winter.MainGame
         [SerializeField] private Camera myCamera;
         [SerializeField] private LevelEntityManager levelEntityManager;
         [SerializeField] private MainGameCommandManager commandManager;
+        [SerializeField]private MainGameMoveStageManager moveStageManager;
         [SerializeField] private PunMainGameScreen punMainGameScreenPrefab;
         [SerializeField] private PunMainGameScreenReceiver punMainGameScreenReceiverPrefab;
 
@@ -38,6 +39,8 @@ namespace Hackathon2023Winter.MainGame
 
                 commandManager.Setup(isOnline);
                 commandManager.OnCommandObservable.Subscribe(TakeCommand).AddTo(gameObject);
+                moveStageManager.Setup(isOnline,isHost);
+                moveStageManager.MoveStageObservable.Subscribe(GoToStage).AddTo(gameObject);
 
                 //Photonの通信を行う機構を作る
                 if (isOnline)
@@ -76,11 +79,11 @@ namespace Hackathon2023Winter.MainGame
                     levelEntityManager.CreateLevel(isOnline, levelId);
                     _punMainGameScreen?.SendCreateLevel();
                 }
-
-                //TODO:ゴールに触れた時の処理
+                
                 levelEntityManager.OnClearObservable.Subscribe(x => GameClear(x.clearObj, x.goalObj).Forget())
                     .AddTo(gameObject);
-                levelEntityManager.OnGoToObservable.Subscribe(x => GoToStage(x).Forget()).AddTo(gameObject);
+                levelEntityManager.OnEnterObservable.Subscribe(x => moveStageManager.OnCanStageSelect(x.stageId,x.isCircle||!isOnline)).AddTo(gameObject);
+                levelEntityManager.OnExitObservable.Subscribe(x => moveStageManager.OnCannotStageSelect(x.isCircle||!isOnline)).AddTo(gameObject);
             }
             else
             {
@@ -97,6 +100,7 @@ namespace Hackathon2023Winter.MainGame
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
             commandManager.Cleanup();
+            moveStageManager.Cleanup();
             return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,
                 levelId: _nextStageId);
         }
@@ -115,7 +119,10 @@ namespace Hackathon2023Winter.MainGame
             }
         }
 
-        private async UniTask GoToStage(int stageId)
+        /// <summary>
+        /// 指定したステージに遷移する
+        /// </summary>
+        private void GoToStage(int stageId)
         {
             if (_isTransition) return;
             _isTransition = true;
