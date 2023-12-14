@@ -81,7 +81,6 @@ namespace Hackathon2023Winter.Level
         public void SetPlayerScale(Vector2 circleScale, Vector2 rectScale)
         {
             _circleScale = circleScale;
-            Debug.Log("SetPlayerScale"+_circleScale);
             _rectScale = rectScale;
             if (_passer != null)
             {
@@ -103,7 +102,6 @@ namespace Hackathon2023Winter.Level
                 SearchPlayers();
                 if (_playerCircle == null || _playerRect == null)
                 {
-                    Debug.LogError("Playerが見つかりませんでした");
                     material.SetVector(_sCirclePosition, new Vector4(-1, -1, 0, 0));
                     material.SetVector(_sCircleInfo, new Vector4(0.01f, 0.01f, 0, 0));
                     material.SetVector(_sQuadPosition, new Vector4(-1, -1, 0, 0));

@@ -2,6 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Hackathon2023Winter.Entity;
 using Hackathon2023Winter.Level;
+using Hackathon2023Winter.Matching;
 using Hackathon2023Winter.Screen;
 using Photon.Pun;
 using UniRx;
@@ -13,6 +14,7 @@ namespace Hackathon2023Winter.MainGame
     {
         [SerializeField] private Camera myCamera;
         [SerializeField] private LevelEntityManager levelEntityManager;
+        [SerializeField] private MainGameCommandManager commandManager;
         [SerializeField] private PunMainGameScreen punMainGameScreenPrefab;
         [SerializeField]private PunMainGameScreenReceiver punMainGameScreenReceiverPrefab;
 
@@ -27,21 +29,28 @@ namespace Hackathon2023Winter.MainGame
             _isTransition = false;
             if (screenData is MainGameData mainGameScreenData)
             {
+                var isOnline = mainGameScreenData.IsOnline;
+                var isHost = mainGameScreenData.IsHost;
+                var levelId = mainGameScreenData.LevelId;
+                
+                commandManager.Setup(isOnline);
+                commandManager.OnCommandObservable.Subscribe(TakeCommand).AddTo(gameObject);
+                
                 //ステージIDに応じてx座標をずらす
-                transform.position = new Vector3(mainGameScreenData.LevelId*1000, 0, 0);
+                transform.position = new Vector3(levelId*1000, 0, 0);
                 
                 _mainGameData = mainGameScreenData;
-                levelEntityManager.Setup(mainGameScreenData.IsOnline, mainGameScreenData.IsHost);
+                levelEntityManager.Setup(isOnline, isHost);
                 //オンラインでないかホストの場合はステージを生成する
-                if (!mainGameScreenData.IsOnline || mainGameScreenData.IsHost)
+                if (!isOnline ||isHost)
                 {
-                    levelEntityManager.CreateLevel(mainGameScreenData.IsOnline,mainGameScreenData.LevelId);
+                    levelEntityManager.CreateLevel(isOnline,levelId);
                 }
 
                 //オンラインである時はPunMainGameScreenを生成する
-                if (mainGameScreenData.IsOnline)
+                if (isOnline)
                 {
-                    if (mainGameScreenData.IsHost)
+                    if (isHost)
                     {
                         _punMainGameScreen = PhotonNetwork
                             .Instantiate(punMainGameScreenPrefab.name, Vector3.zero, Quaternion.identity)
@@ -80,6 +89,7 @@ namespace Hackathon2023Winter.MainGame
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
+            commandManager.Cleanup();
             return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,levelId: _nextStageId);
         }
 
@@ -129,6 +139,37 @@ namespace Hackathon2023Winter.MainGame
         public Camera GetCamera()
         {
             return myCamera;
+        }
+
+        /// <summary>
+        /// CommandManagerからコマンドを受け取った時の処理
+        /// </summary>
+        private void TakeCommand(MainGameCommandType type)
+        {
+            switch (type)
+            {
+                case MainGameCommandType.Restart:
+                    //最初からやり直す
+                    _nextStageId = _mainGameData.LevelId;
+                    ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
+                    break;
+                case MainGameCommandType.GoBack:
+                    //ステージセレクト画面に戻る
+                    _nextStageId = -1;
+                    ScreenTransition.Instance.Move(ScreenType.MainGame).Forget();
+                    break;
+                case MainGameCommandType.Escape:
+                    //Photonから接続してタイトルに戻る
+                    if (_mainGameData.IsOnline)
+                    {
+                        RoomConnector.Instance.LeaveRoom();
+                    }
+                    ScreenTransition.Instance.Move(ScreenType.Title).Forget();
+                    break;
+                default:
+                    Debug.LogError("MainGameScreenで不正なコマンドが渡されました");
+                    break;
+            }
         }
     }
 }
