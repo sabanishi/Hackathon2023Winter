@@ -50,3 +50,6 @@ sysinfo.txt
 
 # for Mac
 .DS_Store
+
+#Log
+Logs/
