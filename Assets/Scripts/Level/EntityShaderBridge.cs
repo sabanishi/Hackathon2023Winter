@@ -22,6 +22,7 @@ namespace Hackathon2023Winter.Level
         private readonly int _sCircleInfo = Shader.PropertyToID("circleInfo");
         private readonly int _sQuadPosition = Shader.PropertyToID("quadPosition");
         private readonly int _sQuadInfo = Shader.PropertyToID("quadInfo");
+        private readonly int _warpInfo = Shader.PropertyToID("warpInfo");
 
         private PunEntityShaderInfoPasser _passer;
         private PunEntityShaderInfoReceiver _receiver;
@@ -103,6 +104,7 @@ namespace Hackathon2023Winter.Level
                     material.SetVector(_sCircleInfo, new Vector4(0.01f, 0.01f, 0, 0));
                     material.SetVector(_sQuadPosition, new Vector4(-1, -1, 0, 0));
                     material.SetVector(_sQuadInfo, new Vector4(0.01f, 0.01f, 0, 0));
+                    material.SetVector(_warpInfo,new Vector4(0,0,0,0));
                     return;
                 }
             }
