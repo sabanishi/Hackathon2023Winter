@@ -3808,6 +3808,10 @@ PrefabInstance:
       propertyPath: type
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8261927510919601706, guid: ade70b54ddc1b406f8b18ebeea3c61bd, type: 3}
+      propertyPath: isPermanent
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9041062485914066553, guid: ade70b54ddc1b406f8b18ebeea3c61bd, type: 3}
       propertyPath: m_Name
       value: SwitchCircle
