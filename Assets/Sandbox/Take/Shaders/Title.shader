@@ -3,6 +3,7 @@ Shader "Unlit/Title"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _SubTex ("Texture", 2D) = "black" {}
     }
     SubShader
     {
@@ -18,7 +19,7 @@ CGPROGRAM
 
 #define PI 3.14159265
 #define TAU (PI * 2.0)
-#define MAX_PARTICLE 1024
+#define MAX_PARTICLE 512
 
 struct appdata
 {
@@ -33,7 +34,9 @@ struct v2f
 };
 
 uniform sampler2D _MainTex;
+uniform sampler2D _SubTex;
 uniform float4 _MainTex_ST;
+uniform float4 _SubTex_ST;
 uniform float4 particlePositions[MAX_PARTICLE]; // position
 uniform float4 particleInfo[MAX_PARTICLE]; // scale (xy) and rotation (yz) (radians)
 uniform float4 particleColors[MAX_PARTICLE];
@@ -78,6 +81,7 @@ fixed4 frag (v2f i) : SV_Target
     //fixed4 col = fixed4(0.1171875, 0.1171875, 0.1171875, 1.0); // 30 / 256 = 0.1171875
     fixed4 col = fixed4(0.0F, 0.0F, 0.0F, 0.0F);
     col += fixed4(quads.x, quads.y, quads.z, 0.0);
+    col += tex2D(_SubTex, i.uv);
     
     return col;
 }
