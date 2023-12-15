@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Hackathon2023Winter.Entity;
 using Photon.Pun;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,7 +19,7 @@ namespace Hackathon2023Winter.Level
         [SerializeField] private GameObject terrainShader;
         [SerializeField] private GameObject BackGround;
         public Tilemap TerrainTilemap => terrainTilemap;
-
+#if UNITY_EDITOR
         /// <summary>
         /// TilemapからEntityを生成する<br />
         /// エディタ上でのみ動作する
@@ -96,7 +98,7 @@ namespace Hackathon2023Winter.Level
             var entity = obj.GetComponent<BaseEntity>();
             entity.SetType(type);
         }
-
+#endif
         /// <summary>
         /// オフラインモードのプレハブに変更する
         /// </summary>
