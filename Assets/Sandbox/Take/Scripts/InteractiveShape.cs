@@ -103,7 +103,6 @@ public class InteractiveShape : MonoBehaviour
         _startPos = 0;
         while (_startPos < maxParticle)
         {
-            Debug.Log(_startPos);
             _canCreateParticle = true;
             await UniTask.WaitUntil(() => !_canCreateParticle);
             this.GetCancellationTokenOnDestroy().ThrowIfCancellationRequested();
