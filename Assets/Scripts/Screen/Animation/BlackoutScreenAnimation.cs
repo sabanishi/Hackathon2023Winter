@@ -39,5 +39,19 @@ namespace Hackathon2023Winter.Screen
             image.color = new Color(0, 0, 0, 0);
             await image.DOFade(1, time).ToUniTask(cancellationToken: token);
         }
+
+        
+        public void SetActive(bool isActive)
+        {
+            if (isActive)
+            {
+                image.enabled = true;
+                image.color = new Color(0, 0, 0, 1);
+            }
+            else
+            {
+                image.enabled = false;
+            }
+        }
     }
 }

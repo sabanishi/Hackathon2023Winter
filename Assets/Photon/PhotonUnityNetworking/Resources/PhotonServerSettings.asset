@@ -55,6 +55,7 @@ MonoBehaviour:
   - RPC_ChangeColor
   - RPC_SendCanStageSelect
   - RPC_SendCannotStageSelect
+  - RPC_SendGoToStage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
