@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,7 @@ public class InteractiveShape : MonoBehaviour
     [SerializeField] private GameObject positionObjA;
     [SerializeField] private GameObject positionObjR;
     [SerializeField] private GameObject positionObjP;
+    [Header("1フレームあたりに生成する数")][SerializeField] private int instantiateNum;
 
     private List<Particle> _particles;
     private Vector2 _mouseOffset;
@@ -30,7 +32,7 @@ public class InteractiveShape : MonoBehaviour
     private readonly int _sColors = Shader.PropertyToID("particleColors");
     private readonly int _sNum = Shader.PropertyToID("particleNum");
     
-    void Start()
+    public async UniTask Initialize()
     {
         _particles = new List<Particle>();
         _mouseOffset = myTransform.position - mainCamera.transform.position;
@@ -38,6 +40,7 @@ public class InteractiveShape : MonoBehaviour
         _positionA = positionObjA.transform.position;
         _positionR = positionObjR.transform.position;
         _positionP = positionObjP.transform.position;
+        await CreateParticles();
     }
     
     void Update()
@@ -77,22 +80,57 @@ public class InteractiveShape : MonoBehaviour
         //     _isCreateParticles = false;
         // }
     }
+    
+    private int _startPos;
+    private Texture2D _tex;
+    private List<Vector4> _colors;
+    private bool _canCreateParticle;
 
-    void CreateParticles()
+    private async UniTask CreateParticles()
     {
         _particles.Clear();
         
-        List<Vector4> colors = new List<Vector4>();
+        _colors = new List<Vector4>();
         
         // 画面上の色を保存するためのテクスチャ
-        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGB24, false);
+        _tex = new Texture2D(1, 1, TextureFormat.RGB24, false);
         
         // アクティブなレンダーテクスチャの切り替え
         RenderTexture cacheTex = RenderTexture.active;
         RenderTexture.active = renderTexture;
         
-        for (int i = 0; i < maxParticle; i++)
+        //パーティクルの生成を行う
+        _startPos = 0;
+        while (_startPos < maxParticle)
         {
+            Debug.Log(_startPos);
+            _canCreateParticle = true;
+            await UniTask.WaitUntil(() => !_canCreateParticle);
+            this.GetCancellationTokenOnDestroy().ThrowIfCancellationRequested();
+        }
+        
+        // アクティブなレンダーテクスチャを戻す
+        RenderTexture.active = cacheTex;
+        
+        renderMaterial.SetVectorArray(_sColors, _colors);
+        _isCreateParticles = true;
+            
+        //全てのパーティクルをアクティブにする
+        _particles.ForEach(p => p.gameObject.SetActive(true));
+    }
+
+    private int CreatePartParticles()
+    {
+        int counter = 0;
+        int i;
+        for (i = _startPos; i < maxParticle; i++)
+        {
+            if(counter>= instantiateNum)
+            {
+                return i;
+            }
+            counter++;
+            
             // 目的地を計算
             // float r = Mathf.Sqrt(Random.value) * rangeRadius;
             // float t = Random.value * Mathf.PI * 2.0F;
@@ -106,11 +144,11 @@ public class InteractiveShape : MonoBehaviour
             positionOnTex *= new Vector2(renderTexture.width, renderTexture.height);
             
             // レンダーテクスチャ上の色をテクスチャ(Texture2D)に書き込む
-            tex.ReadPixels(new Rect(positionOnTex.x, positionOnTex.y, 1, 1), 0, 0);
-            tex.Apply();
+            _tex.ReadPixels(new Rect(positionOnTex.x, positionOnTex.y, 1, 1), 0, 0);
+            _tex.Apply();
             
             // Texture2Dから色を取得
-            Color col = tex.GetPixel(0, 0);
+            Color col = _tex.GetPixel(0, 0);
             Vector4 colVec = new Vector4(col.r, col.g, col.b, 1.0F);
 
             Vector2 createPosition;
@@ -132,7 +170,7 @@ public class InteractiveShape : MonoBehaviour
                 i--;
                 continue;
             }
-            colors.Add(colVec);
+            _colors.Add(colVec);
             
             // パーティクルの生成
             GameObject obj = Instantiate(particle, createPosition, Quaternion.identity, myTransform);
@@ -144,19 +182,16 @@ public class InteractiveShape : MonoBehaviour
             part.MainCamera = mainCamera;
             part.MouseOffset = _mouseOffset;
             part.Destination = dest;
+            //全てのパーティクルが生成されるまで非アクティブにする
+            part.gameObject.SetActive(false);
         }
-        
-        // アクティブなレンダーテクスチャを戻す
-        RenderTexture.active = cacheTex;
-        
-        renderMaterial.SetVectorArray(_sColors, colors);
+        return i;
     }
 
     void OnPostRender()
     {
-        if (_isCreateParticles) { return; }
-        
-        CreateParticles();
-        _isCreateParticles = true;
+        if (!_canCreateParticle) { return; }
+        _startPos = CreatePartParticles();
+        _canCreateParticle = false;
     }
 }

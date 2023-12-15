@@ -10,19 +10,21 @@ namespace Hackathon2023Winter.Title
 {
     public class TitleScreen : BaseScreen
     {
-        [SerializeField] private Button offlineButton;
-        [SerializeField] private Button onlineButton;
+        [SerializeField]private Button clickSoloButton;
+        [SerializeField]private Button clickDuoButton;
+        [SerializeField]private Button clickInstructionsButton;
+        [SerializeField] private InteractiveShape interactiveShape;
 
         private bool _isOnline;
         private bool _isTransitioning;
 
-        protected override UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
+        protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
             _isTransitioning = false;
-            offlineButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(false)).AddTo(gameObject);
-            onlineButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(true)).AddTo(gameObject);
-
-            return base.InitializeInternal(screenData, token);
+            clickSoloButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(false)).AddTo(gameObject);
+            clickDuoButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(true)).AddTo(gameObject);
+            
+            await interactiveShape.Initialize();
         }
 
         private void GoToNextScreen(bool isOnline)
@@ -51,6 +53,11 @@ namespace Hackathon2023Winter.Title
             {
                 await BlackoutScreenAnimation.Instance.CloseAnimation(0.5f, token);
             }
+        }
+        
+        protected override async UniTask OpenAnimationInternal(CancellationToken token)
+        {
+            await NowLoadingAnimation.Instance.OpenAnimation(0.2f, token);
         }
     }
 }

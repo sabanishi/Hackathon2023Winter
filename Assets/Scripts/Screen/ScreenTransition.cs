@@ -35,6 +35,7 @@ namespace Hackathon2023Winter.Screen
 
         private void Start()
         {
+            NowLoadingAnimation.Instance.CloseAnimation(0f, this.GetCancellationTokenOnDestroy()).Forget();
             Move(loadScreenType).Forget();
         }
 
@@ -58,7 +59,15 @@ namespace Hackathon2023Winter.Screen
             if (_nowScreen != null)
             {
                 await _nowScreen.CloseDeal(token);
-                await _nowScreen.CloseAnimation(token);
+                if (nextScreenType == ScreenType.Title)
+                {
+                    //Now Loadingを表示する
+                    await NowLoadingAnimation.Instance.CloseAnimation(0.5f, token);
+                }
+                else
+                {
+                    await _nowScreen.CloseAnimation(token);
+                }
                 screenData = await _nowScreen.Dispose(token);
                 if(_nowScreen is MainGameScreen mainGameScreen)
                 {
