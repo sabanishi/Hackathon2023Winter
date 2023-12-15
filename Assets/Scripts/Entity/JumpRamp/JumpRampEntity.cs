@@ -15,6 +15,8 @@ namespace Hackathon2023Winter.Entity
 
         [Header("ジャンプ台が停止してから使用可能になるまでの時間")] [SerializeField]
         private float waitTime = 0f;
+        [Header("スイッチが起動してからジャンプ台が動き出すまでの時間")] [SerializeField]
+        private float startTime = 0f;
 
         private bool _isRunning;
 
@@ -70,6 +72,8 @@ namespace Hackathon2023Winter.Entity
             UniTask.Void(async () =>
             {
                 _isRunning = true;
+                //startTime秒待機
+                await UniTask.Delay((int)(startTime * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
                 //ジャンプ台を起動
                 floor.Run(speed);
                 //1フレーム待機(Floorが動き出すのを待つため)
