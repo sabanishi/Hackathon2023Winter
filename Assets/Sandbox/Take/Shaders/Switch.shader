@@ -53,10 +53,15 @@ fixed4 frag (v2f i) : SV_Target
         col = min(float3(uv.x, uv.x*uv.x, uv.x*uv.x*0.3),
                   float3(uv.y, uv.y*uv.y, uv.y*uv.y*0.3));
     }
-    else
+    else if (_ColorType == 1)
     {
         col = min(float3(uv.x*uv.x, uv.x, uv.x*0.4),
                   float3(uv.y*uv.y, uv.y, uv.y*0.4));
+    }
+    else
+    {
+        col = min(float3(uv.x, uv.x, uv.x),
+                  float3(uv.y, uv.y, uv.y));
     }
     col *= col;
     
