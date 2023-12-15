@@ -1,4 +1,6 @@
 using System;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Photon.Pun;
 using TMPro;
 using UniRx;
@@ -14,6 +16,7 @@ namespace Hackathon2023Winter.MainGame
         [SerializeField] private TMP_Text explainText;
         [SerializeField] private MainGameCommandPasser passerPrefab;
         [SerializeField] private MainGameCommandReceiver receiverPrefab;
+        [SerializeField] private RectTransform explainPanelTransform;
 
         private const KeyCode RestartKey = KeyCode.R;
         private const KeyCode GoBackKey = KeyCode.T;
@@ -23,8 +26,8 @@ namespace Hackathon2023Winter.MainGame
         private const string TakeRestartRequestText = "Taking Restart Request.\n Please Press R Key.";
         private const string MakeGoBackRequestText = "Making GoBack Request...\n Please Wait.";
         private const string TakeGoBackRequestText = "Taking GoBack Request.\n Please Press T Key.";
-        private const string MakeEscapeRequestText = "Making Escape Request...\n Please Wait.";
-        private const string TakeEscapeRequestText = "Taking Escape Request.\n Please Press Escape Key.";
+
+        private const float AnimationTime = 0.2f;
 
         private bool _isActive;
         private bool _isOnline;
@@ -35,6 +38,8 @@ namespace Hackathon2023Winter.MainGame
         public IObservable<MainGameCommandType> OnCommandObservable => _commandSubject;
 
         private CommandState _commandState;
+        private Tween _tween;
+        private bool _isPanelActive;
 
         public void Setup(bool isOnline)
         {
@@ -72,6 +77,11 @@ namespace Hackathon2023Winter.MainGame
             }
         }
 
+        private void OnDestroy()
+        {
+            KillTween();
+        }
+
         private void SetText(CommandState state)
         {
             switch (state.Type)
@@ -86,12 +96,41 @@ namespace Hackathon2023Winter.MainGame
                     explainText.text = state.IsMaking ? MakeGoBackRequestText : TakeGoBackRequestText;
                     break;
                 case MainGameCommandType.Escape:
-                    explainText.text = state.IsMaking ? MakeEscapeRequestText : TakeEscapeRequestText;
-                    break;
+                    return;
                 default:
                     Debug.LogError($"CommandStateが不正です: {state}");
                     break;
             }
+
+            if (state.Type == MainGameCommandType.None)
+            {
+                SetPanelActive(false);
+            }
+            else
+            {
+                if (_isPanelActive)
+                {
+                    UniTask.Void(async () =>
+                    {
+                        SetPanelActive(false);
+                        await UniTask.Delay(TimeSpan.FromSeconds(AnimationTime),
+                            cancellationToken: this.GetCancellationTokenOnDestroy());
+                        SetPanelActive(true);
+                    });
+                }
+                else
+                {
+                    SetPanelActive(true);
+                }
+            }
+        }
+
+        private void SetPanelActive(bool isActive)
+        {
+            KillTween();
+            var posY = isActive ? 300 : 600;
+            _tween = explainPanelTransform?.DOAnchorPos(new Vector2(0, posY), AnimationTime);
+            _isPanelActive = isActive;
         }
 
         private void Update()
@@ -156,6 +195,12 @@ namespace Hackathon2023Winter.MainGame
                 SetText(_commandState);
                 _passer.SendMakeRequest(type);
             }
+        }
+
+        private void KillTween()
+        {
+            if (_tween != null || !_tween.IsActive()) return;
+            _tween.Kill();
         }
     }
 
