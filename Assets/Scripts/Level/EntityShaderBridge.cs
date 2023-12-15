@@ -116,7 +116,6 @@ namespace Hackathon2023Winter.Level
                     material.SetVector(_sCircleInfo, new Vector4(0.01f, 0.01f, 0, 0));
                     material.SetVector(_sQuadPosition, new Vector4(-1, -1, 0, 0));
                     material.SetVector(_sQuadInfo, new Vector4(0.01f, 0.01f, 0, 0));
-                    material.SetVector(_warpInfo,new Vector4(0,0,0,0));
                     return;
                 }
             }
@@ -145,7 +144,6 @@ namespace Hackathon2023Winter.Level
                 if (tuple.obj == null)
                 {
                     deleteList.Add(i);
-                    Debug.Log("null");
                     continue;
                 }
                 (float x, float y, float r) goalInfo = CalcInfo(tuple.obj.transform);
@@ -181,6 +179,9 @@ namespace Hackathon2023Winter.Level
             return (pos.x, pos.y, rotate);
         }
 
+        /// <summary>
+        /// Client側がHostが生成したEntityを探す
+        /// </summary>
         private void SearchEntities()
         {
             var players = GameObject.FindGameObjectsWithTag(TagName.Player);
