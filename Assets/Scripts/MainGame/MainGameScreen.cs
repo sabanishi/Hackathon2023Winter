@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Hackathon2023Winter.Entity;
 using Hackathon2023Winter.Level;
 using Hackathon2023Winter.Matching;
 using Hackathon2023Winter.Screen;
@@ -80,7 +81,7 @@ namespace Hackathon2023Winter.MainGame
                     _punMainGameScreen?.SendCreateLevel();
                 }
                 
-                levelEntityManager.OnClearObservable.Subscribe(x => GameClear(x.clearObj, x.goalObj).Forget())
+                levelEntityManager.OnClearObservable.Subscribe(x => GameClear(x.clearObj, x.goalEntity).Forget())
                     .AddTo(gameObject);
                 levelEntityManager.OnEnterObservable.Subscribe(x => moveStageManager.OnCanStageSelect(x.stageId,x.isCircle||!isOnline)).AddTo(gameObject);
                 levelEntityManager.OnExitObservable.Subscribe(x => moveStageManager.OnCannotStageSelect(x.isCircle||!isOnline)).AddTo(gameObject);
@@ -136,9 +137,10 @@ namespace Hackathon2023Winter.MainGame
             ScreenTransition.Instance.MoveFromGameToGame().Forget();
         }
 
-        private async UniTask GameClear(GameObject clearObject, GameObject goalObject)
+        private async UniTask GameClear(GameObject clearObject, GoalEntity goalEntity)
         {
             if (_isTransition) return;
+            var goalObject = goalEntity.gameObject;
             var token = this.GetCancellationTokenOnDestroy();
             _isTransition = true;
             _nextStageId = -1;
@@ -172,7 +174,11 @@ namespace Hackathon2023Winter.MainGame
             int counter = 0;
             foreach (var entity in entities)
             {
-                if (entity == clearObject) continue;
+                if (entity.gameObject == clearObject || entity.gameObject == goalObject)
+                {
+                    counter++;
+                    continue;
+                }
                 var entityTransform = entity.transform;
                 var time = entityTime * (Random.value / 4 + i * 0.2f + 0.75f);
                 var interval = intervalTime * (Random.value / 4 * i * 0.2f + 0.75f);
@@ -190,11 +196,24 @@ namespace Hackathon2023Winter.MainGame
                 if (token.IsCancellationRequested) return;
                 i++;
             }
+            
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, token);
+            UniTask.Void(async () =>
+            {
+                while (true)
+                {
+                    cts.Token.ThrowIfCancellationRequested();
+                    levelEntityManager?.SendPlayerScaleInfo();
+                    await UniTask.Yield();
+                }
+            });
 
             await UniTask.WaitUntil(() => counter == entities.Count, cancellationToken: token);
+            cancellationTokenSource.Cancel();
             
             //TODO:GoalのScaleが小さくなるアニメーション
-            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+            await goalEntity.PlayGoalAnimation(0.8f, token);
             
             //ステージセレクト画面に遷移する
             if (_mainGameData.IsOnline)

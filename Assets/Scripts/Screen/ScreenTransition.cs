@@ -171,7 +171,7 @@ namespace Hackathon2023Winter.Screen
         private readonly int _subTex = Shader.PropertyToID("_SubTex");
         private readonly int _isTransition = Shader.PropertyToID("isTransition");
         private readonly int _transitionTime = Shader.PropertyToID("transitionTime");
-        private readonly int _seed = Shader.PropertyToID("seed");
+        private readonly int _seed = Shader.PropertyToID("transitionSeed");
         private const float _transitionTimeValue = 1.5f;
         
         private async UniTask ShowMainGameTransitionAnimation(Camera beforeCamera, Camera afterCamera)

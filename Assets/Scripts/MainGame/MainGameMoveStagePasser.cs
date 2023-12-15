@@ -26,7 +26,6 @@ namespace Hackathon2023Winter.MainGame
             {
                 if (obj.TryGetComponent(typeof(MainGameMoveStageReceiver), out var receiverComponent))
                 {
-                    Debug.Log("SendCanStageSelect");
                     var receiver = (MainGameMoveStageReceiver) receiverComponent;
                     receiver.ReceiverCanStageSelect(stageId);
                 }

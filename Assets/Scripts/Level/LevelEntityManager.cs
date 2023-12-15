@@ -4,6 +4,7 @@ using Hackathon2023Winter.Entity;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Hackathon2023Winter.Level
 {
@@ -21,8 +22,8 @@ namespace Hackathon2023Winter.Level
         private bool _isOnline;
         private TilemapProviderDict _tilemapProviderDict;
 
-        private Subject<(GameObject,GameObject)> _clearSubject;
-        public IObservable<(GameObject clearObj,GameObject goalObj)> OnClearObservable => _clearSubject;
+        private Subject<(GameObject,GoalEntity)> _clearSubject;
+        public IObservable<(GameObject clearObj,GoalEntity goalEntity)> OnClearObservable => _clearSubject;
         
         private Subject<(int,bool)> _onEnterSubject;
         private Subject<(int,bool)> _onExitSubject;
@@ -34,7 +35,7 @@ namespace Hackathon2023Winter.Level
             _isOnline = isOnline;
             _entities = new List<BaseEntity>();
             entityShaderBridge.Setup(isOnline, isHost);
-            _clearSubject = new Subject<(GameObject,GameObject)>();
+            _clearSubject = new Subject<(GameObject,GoalEntity)>();
             _onEnterSubject = new Subject<(int,bool)>();
             _onExitSubject = new Subject<(int,bool)>();
             _tilemapProviderDict = Resources.Load<TilemapProviderDict>("TilemapProviderDict");
@@ -129,7 +130,7 @@ namespace Hackathon2023Winter.Level
                         shiftBlock.Setup();
                         break;
                     case GoalEntity goalEntity:
-                        goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext((x,goalEntity.gameObject))).AddTo(gameObject);
+                        goalEntity.OnClearObservable.Subscribe(x => _clearSubject.OnNext((x,goalEntity))).AddTo(gameObject);
                         break;
                     case GateEntity gateEntity:
                         gateEntity.OnEnterObservable.Subscribe(x => _onEnterSubject.OnNext(x)).AddTo(gameObject);
@@ -143,17 +144,13 @@ namespace Hackathon2023Winter.Level
 
             //PlayerのScaleをEntityShaderBridgeに渡す
             SendPlayerScaleInfo();
+            SendEntityInfo();
         }
 
-        private void SendPlayerScaleInfo()
+        public void SendPlayerScaleInfo()
         {
             Vector2 circleScale = Vector2.zero;
             Vector2 rectScale = Vector2.zero;
-            GameObject playerCircle = null;
-            GameObject playerRect = null;
-            //GameObject,isGoal
-            var goalObjects = new List<(GameObject,bool)>();
-
             foreach (var entity in _entities)
             {
                 switch (entity)
@@ -168,24 +165,49 @@ namespace Hackathon2023Winter.Level
                         if (playerEntity.IsCircle)
                         {
                             circleScale = new Vector2(width, height);
-                            playerCircle = playerEntity.gameObject;
                         }
                         else
                         {
                             rectScale = new Vector2(width, height);
+                        }
+                        break;
+                }
+            }
+            entityShaderBridge.SetPlayerScale(circleScale, rectScale);
+        }
+
+        private void SendEntityInfo()
+        {
+            GameObject playerCircle = null;
+            GameObject playerRect = null;
+            //GameObject,isGoal
+            var goalObjects = new List<(GameObject,bool,Vector2)>();
+
+            foreach (var entity in _entities)
+            {
+                switch (entity)
+                {
+                    case PlayerEntity playerEntity:
+                        if (playerEntity.IsCircle)
+                        {
+                            playerCircle = playerEntity.gameObject;
+                        }
+                        else
+                        {
                             playerRect = playerEntity.gameObject;
                         }
                         break;
                     case GoalEntity goalEntity:
-                        goalObjects.Add((goalEntity.gameObject,true));
+                        var goalSeed = new Vector2(Random.value * 100,Random.value * 100);
+                        goalObjects.Add((goalEntity.gameObject,true,goalSeed));
                         break;
                     case GateEntity gateEntity:
-                        goalObjects.Add((gateEntity.gameObject,true));
+                        var gateSeed = new Vector2(Random.value * 100,Random.value * 100);
+                        goalObjects.Add((gateEntity.gameObject,false,gateSeed));
                         break;
                 }
             }
-
-            entityShaderBridge.SetPlayerScale(circleScale, rectScale);
+            
             entityShaderBridge.SetEntityObject(playerCircle, playerRect,goalObjects);
         }
 
