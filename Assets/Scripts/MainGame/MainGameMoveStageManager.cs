@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
@@ -10,9 +11,11 @@ namespace Hackathon2023Winter.MainGame
     {
         [SerializeField] private MainGameMoveStagePasser passerPrefab;
         [SerializeField] private MainGameMoveStageReceiver receiverPrefab;
-        [SerializeField] private GameObject explainPanel;
+        [SerializeField] private RectTransform explainPanelTransform;
         
         private static readonly KeyCode SpaceKey = KeyCode.Space;
+        
+        private const float AnimationTime = 0.2f;
         
         private bool _isActive;
         private bool _isOnline;
@@ -25,6 +28,8 @@ namespace Hackathon2023Winter.MainGame
 
         private Subject<int> _moveStageSubject;
         public IObservable<int> MoveStageObservable => _moveStageSubject;
+        
+        private Tween _tween;
         
         public void Setup(bool isOnline,bool isHost)
         {
@@ -108,7 +113,22 @@ namespace Hackathon2023Winter.MainGame
         {
             _canSelectStage = canStageSelect;
             _stageId = stageId;
-            explainPanel.SetActive(_canSelectStage);
+            if (!_canSelectStage)
+            {
+                SetPanelActive(false);
+            }
+            else
+            {
+                SetPanelActive(true);
+            }
+        }
+        
+        private void SetPanelActive(bool isActive)
+        {
+            Debug.Log(isActive);
+            KillTween();
+            var posY = isActive ? 300 : 600;
+            _tween = explainPanelTransform?.DOAnchorPos(new Vector2(0, posY), AnimationTime);
         }
 
         private void Update()
@@ -129,6 +149,17 @@ namespace Hackathon2023Winter.MainGame
                     _passer.SendGoToStage(_stageId);
                 }
             }
+        }
+        
+        private void OnDestroy()
+        {
+            KillTween();
+        }
+        
+        private void KillTween()
+        {
+            if (_tween != null || !_tween.IsActive()) return;
+            _tween.Kill();
         }
     }
 }
