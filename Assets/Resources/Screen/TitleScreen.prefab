@@ -1470,7 +1470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5406915948779571827, guid: b33484d7aef564333aec9dbecb8c54d8, type: 3}
       propertyPath: maxParticle
-      value: 256
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 5406915948779571827, guid: b33484d7aef564333aec9dbecb8c54d8, type: 3}
       propertyPath: instantiateNum
