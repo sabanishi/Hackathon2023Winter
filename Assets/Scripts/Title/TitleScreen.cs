@@ -23,8 +23,6 @@ namespace Hackathon2023Winter.Title
             _isTransitioning = false;
             clickSoloButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(false)).AddTo(gameObject);
             clickDuoButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(true)).AddTo(gameObject);
-            
-            await interactiveShape.Initialize();
         }
 
         private void GoToNextScreen(bool isOnline)

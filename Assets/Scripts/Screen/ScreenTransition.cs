@@ -35,7 +35,7 @@ namespace Hackathon2023Winter.Screen
 
         private void Start()
         {
-            NowLoadingAnimation.Instance.CloseAnimation(0f, this.GetCancellationTokenOnDestroy()).Forget();
+            //NowLoadingAnimation.Instance.CloseAnimation(0f, this.GetCancellationTokenOnDestroy()).Forget();
             Move(loadScreenType).Forget();
         }
 

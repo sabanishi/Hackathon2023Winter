@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -19,3 +20,5 @@ namespace Hackathon2023Winter.Entity
         }
     }
 }
+
+#endif
