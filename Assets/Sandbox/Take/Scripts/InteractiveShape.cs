@@ -140,6 +140,9 @@ public class InteractiveShape : MonoBehaviour
             
             // 目的地のレンダーテクスチャ上の位置
             Vector2 positionOnTex = renderCamera.WorldToViewportPoint(dest);
+#if UNITY_STANDALONE_WIN
+            positionOnTex.y = 1.0F - positionOnTex.y;
+#endif
             positionOnTex *= new Vector2(renderTexture.width, renderTexture.height);
             
             // レンダーテクスチャ上の色をテクスチャ(Texture2D)に書き込む
