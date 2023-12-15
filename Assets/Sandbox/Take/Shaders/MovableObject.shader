@@ -2,6 +2,7 @@ Shader "Unlit/MovableObject"
 {
     Properties
     {
+        _MainTex ("Texture", 2D) = "white" {}
         _ObjectType ("ObjectType", Int) = 0
     }
     SubShader

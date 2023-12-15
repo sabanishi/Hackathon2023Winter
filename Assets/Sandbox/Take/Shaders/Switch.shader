@@ -2,6 +2,7 @@ Shader "Unlit/Switch"
 {
     Properties
     {
+        _MainTex ("Texture", 2D) = "white" {}
         _ColorType ("ColorType", Int) = 0
     }
     SubShader

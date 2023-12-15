@@ -2,6 +2,7 @@ Shader "Unlit/Terrain"
 {
     Properties
     {
+        _MainTex ("Texture", 2D) = "white" {}
         _AspectRatio ("Aspect Ratio", Float) = 1.77777778 // 16.0 / 9.0
     }
     SubShader
