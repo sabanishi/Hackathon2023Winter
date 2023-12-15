@@ -21,6 +21,7 @@ CGPROGRAM
 #define TAU (PI * 2.0)
 #define NOISE_SCALE 8.0
 #define OCTAVES 4
+#define MAX_WARP 16
 
 struct appdata
 {
@@ -48,10 +49,11 @@ uniform float2 quadPosition;
 uniform float3 quadInfo; // scale and rotation
 
 // warp hole
-uniform float3 warpInfo; // position and color; color: 0: blue, otherwise: pink
-uniform float isVanishing; // 0: not vanishing, otherwise: vanishing
-uniform float vanishTime; // normalized: 0-1
-uniform float2 waprSeed;
+uniform float4 warpInfo[MAX_WARP]; // position and color; color: 0: blue, otherwise: pink
+uniform float isVanishing[MAX_WARP]; // 0: not vanishing, otherwise: vanishing
+uniform float vanishTime[MAX_WARP]; // normalized: 0-1
+uniform float4 warpSeed[MAX_WARP];
+uniform int warpNum;
 
 // scene transition
 uniform int isTransition; // 0: not transition, otherwise: transition
@@ -138,7 +140,7 @@ fixed4 sceneTransition(float2 uv, float time, float4 seed)
     return fixed4(col.x, col.y, col.z, 1.0);
 }
 
-fixed4 warpHole(float2 uv, float2 pos, float colorType, float time, float2 seed)
+fixed4 warpHole(float2 uv, float2 pos, float colorType, float isVanishing, float vanishTime, float animationTime, float2 seed)
 {
     uv -= pos;
     float ratio = _MainTex_TexelSize.z * _MainTex_TexelSize.w == 0
@@ -148,7 +150,7 @@ fixed4 warpHole(float2 uv, float2 pos, float colorType, float time, float2 seed)
     
     float l = length(uv);
     float t = atan2(uv.y, uv.x);
-    float2 val = float2(cos(t) + 1.0 + time, sin(t) + 2.0 + time);
+    float2 val = float2(cos(t) + 1.0 + animationTime, sin(t) + 2.0 + animationTime);
     val *= 8.0;
     float n = noise(val + seed);
     l *= lerp(0.6, 1.0, n*n);
@@ -182,7 +184,11 @@ fixed4 frag (v2f i) : SV_Target
         fixed4 circleCol = circle(i.uv, circlePosition, circleInfo);
         fixed4 quadCol = quad(i.uv, quadPosition, quadInfo);
         col = tex2D(_MainTex, i.uv) + circleCol + quadCol;
-        col += warpHole(i.uv, warpInfo.xy, warpInfo.z, _Time.y * 0.5, waprSeed);
+        for (int j = 0; j < warpNum; j++)
+        {
+            col += warpHole(i.uv, warpInfo[j].xy, warpInfo[j].z, isVanishing[j],
+                vanishTime[j], _Time.y * 0.5, warpSeed[j]);
+        }
     }
     
     return col;
