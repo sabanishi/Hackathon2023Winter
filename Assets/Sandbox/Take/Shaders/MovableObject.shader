@@ -104,9 +104,10 @@ fixed4 frag (v2f i) : SV_Target
     float2 uv2 = uv * 16.0;
     float l = 0.0;
     float time = _Time.y;
+    float vel = clamp(velocity, 0.0, 1.0);
     for (int i = 0; i < 4; i++)
     {
-        l = lerp(l, length(uv2), lerp(0.05, 1.0, velocity));
+        l = lerp(l, length(uv2), lerp(0.05, 1.0, vel));
         uv2 = float2(uv2.x + sin(uv2.y + cos(l + time * 2.0) + time * 4.0),
                      uv2.y + cos(uv2.x + sin(l + time * 2.0) + time * 4.0));
     }

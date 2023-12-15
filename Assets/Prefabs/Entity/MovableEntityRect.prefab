@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 229de2360dad049c69b191d70ad0b912, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -218,6 +218,9 @@ MonoBehaviour:
   isOnline: 1
   rb: {fileID: 2925841898428437498}
   isCircle: 0
+  myShader: {fileID: 4800000, guid: 52fd90b4ac83e4ad0947b2fda1c16f4b, type: 3}
+  spriteRenderer: {fileID: 845620362465788884}
+  ShaderMaxSpeed: 8
 --- !u!114 &6172519995880168100
 MonoBehaviour:
   m_ObjectHideFlags: 0

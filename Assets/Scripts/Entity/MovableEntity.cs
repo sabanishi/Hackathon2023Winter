@@ -6,7 +6,28 @@ namespace Hackathon2023Winter.Entity
     {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private bool isCircle;
+        [SerializeField] private Shader myShader;
+        [SerializeField]private SpriteRenderer spriteRenderer;
+        [SerializeField] private float ShaderMaxSpeed = 1.0f;
         public bool IsCircle => isCircle;
+
+        private Material _material;
+
+        private readonly int _objectType = Shader.PropertyToID("_ObjectType");
+        private readonly int _velocityFlag = Shader.PropertyToID("velocity");
+        
+
+        private void Awake()
+        {
+            _material = new Material(myShader);
+            _material.SetInt(_objectType, isCircle ? 0 : 1);
+            spriteRenderer.material = _material;
+        }
+
+        private void Update()
+        {
+            _material.SetFloat(_velocityFlag,rb.velocity.magnitude / ShaderMaxSpeed);
+        }
 
         protected override void ChangeToOfflineInternal()
         {

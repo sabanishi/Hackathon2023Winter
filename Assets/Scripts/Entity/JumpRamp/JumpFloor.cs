@@ -7,11 +7,25 @@ namespace Hackathon2023Winter.Entity
     public class JumpFloor : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D rb;
+        [SerializeField]private Shader shader;
+        [SerializeField]private SpriteRenderer spriteRenderer;
+        [SerializeField]private float MaxShaderSpeed = 6.0f;
         public float Height;
         public IObservable<Vector3> StopObservable { get; private set; }
 
         private bool _isOnline;
         private bool _isOwner;
+        private Material _material;
+        
+        private readonly int _objectType = Shader.PropertyToID("_ObjectType");
+        private readonly int _velocityFlag = Shader.PropertyToID("velocity");
+
+        private void Awake()
+        {
+            _material = new Material(shader);
+            _material.SetInt(_objectType,2);
+            spriteRenderer.material = _material;
+        }
 
         public void SetIsOnline(bool isOnline)
         {
@@ -27,6 +41,8 @@ namespace Hackathon2023Winter.Entity
 
         private void Update()
         {
+            _material.SetFloat(_velocityFlag,rb.velocity.magnitude/MaxShaderSpeed);
+            
             //オンラインモードで自分のオブジェクトでない場合は処理を行わない
             if (_isOnline && !_isOwner)
             {
