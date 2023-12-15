@@ -33,6 +33,8 @@ struct v2f
     float4 vertex : SV_POSITION;
 };
 
+uniform sampler2D _MainTex;
+uniform float4 _MainTex_ST;
 uniform int _ObjectType;
 uniform float velocity; // normalized: 0-1
 
@@ -92,7 +94,7 @@ v2f vert (appdata v)
 {
     v2f o;
     o.vertex = UnityObjectToClipPos(v.vertex);
-    o.uv = v.uv;
+    o.uv = TRANSFORM_TEX(v.uv, _MainTex);
     return o;
 }
 
