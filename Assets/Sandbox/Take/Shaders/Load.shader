@@ -6,7 +6,7 @@ Shader "Unlit/Load"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Background" }
+        Tags { "RenderType"="Opaque" "Queue"="Overlay+1" }
 
         Pass
         {
