@@ -40,7 +40,7 @@ fixed4 frag (v2f i) : SV_Target
     float2 uv = abs(i.uv - 0.5);
     float k1 = 0.5;
     float k2 = 0.5;
-    for (int i = 0; i < 2; i++)
+    for (int j = 0; j < 2; j++)
     {
         uv = (1.0-k1) + k1 * cos(uv * TAU - _Time.y);
         uv = (1.0-k2) + k2 * sin(uv * TAU + _Time.y * 2.0);
