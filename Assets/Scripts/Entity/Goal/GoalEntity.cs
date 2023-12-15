@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Sabanishi.Common;
 using UniRx;
 using UnityEngine;
@@ -30,6 +33,16 @@ namespace Hackathon2023Winter.Entity
             if (!other.CompareTag(TagName.Player)) return;
             //Playerがゴールに触れた時の処理
             _clearSubject.OnNext(other.gameObject);
+        }
+
+        /// <summary>
+        /// ゴール時のアニメーションを再生する
+        /// </summary>
+        public async UniTask PlayGoalAnimation(float animationTime,CancellationToken token)
+        {
+            Debug.Log("PlayGoalAnimation");
+            await transform.DOScale(Vector3.zero, animationTime).SetEase(Ease.Linear)
+                .ToUniTask(cancellationToken: token);
         }
     }
 }

@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using Hackathon2023Winter.Entity;
 using Photon.Pun;
 using Sabanishi.Common;
 using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Hackathon2023Winter.Level
 {
@@ -23,7 +26,12 @@ namespace Hackathon2023Winter.Level
         private readonly int _sCircleInfo = Shader.PropertyToID("circleInfo");
         private readonly int _sQuadPosition = Shader.PropertyToID("quadPosition");
         private readonly int _sQuadInfo = Shader.PropertyToID("quadInfo");
+        
         private readonly int _warpInfo = Shader.PropertyToID("warpInfo");
+        private readonly int _isVanishing = Shader.PropertyToID("isVanishing");
+        private readonly int _vanishTime = Shader.PropertyToID("vanishTime");
+        private readonly int _warpSeed = Shader.PropertyToID("warpSeed");
+        private readonly int _warpNum = Shader.PropertyToID("warpNum");
 
         private PunEntityShaderInfoPasser _passer;
         private PunEntityShaderInfoReceiver _receiver;
@@ -33,7 +41,8 @@ namespace Hackathon2023Winter.Level
 
         private GameObject _playerCircle;
         private GameObject _playerRect;
-        private List<(GameObject obj,bool isGoal)> _warpObjects;
+        private List<(GameObject obj,bool isGoal,Vector2 seed)> _warpObjects;
+        private GoalEntity _goalEntity;
         
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
         private static readonly int SubTexture = Shader.PropertyToID("_SubTexture");
@@ -89,7 +98,7 @@ namespace Hackathon2023Winter.Level
             }
         }
 
-        public void SetEntityObject(GameObject circle, GameObject rect,List<(GameObject,bool)> warpObjects)
+        public void SetEntityObject(GameObject circle, GameObject rect,List<(GameObject,bool,Vector2)> warpObjects)
         {
             _playerCircle = circle;
             _playerRect = rect;
@@ -120,16 +129,49 @@ namespace Hackathon2023Winter.Level
             material.SetVector(_sCircleInfo, new Vector4(_circleScale.x, _circleScale.y, circleInfo.r, 0));
             material.SetVector(_sQuadPosition, new Vector4(rectInfo.x, rectInfo.y, 0, 0));
             material.SetVector(_sQuadInfo, new Vector4(_rectScale.x, _rectScale.y, rectInfo.r, 0));
-           
-            //TODO:Goal,Gateで違うフラグを渡す、複数のobjの情報を渡せるようにする
+            
+            //Goal/Gateの情報を渡す
             if (_warpObjects.IsNullOrEmpty()) return;
-            foreach (var tuple in _warpObjects)
+            var count = _warpObjects.Count;
+            var warpInfos = new Vector4[count];
+            var isVanishings = new float[count];
+            var vanishTimes = new float[count];
+            var warpSeeds = new Vector4[count];
+
+            var deleteList = new List<int>();
+            for(int i=0;i<count;i++)
             {
-                if(tuple.obj == null) continue;
+                var tuple = _warpObjects[i];
+                if (tuple.obj == null)
+                {
+                    deleteList.Add(i);
+                    Debug.Log("null");
+                    continue;
+                }
                 (float x, float y, float r) goalInfo = CalcInfo(tuple.obj.transform);
-                material.SetVector(_warpInfo,new Vector4(goalInfo.x,goalInfo.y,0,0));
-                break;
+                var colorType = tuple.isGoal ? 0 : 1;
+               warpInfos[i] = new Vector4(goalInfo.x,goalInfo.y,colorType,0);
+               isVanishings[i] = Math.Abs(tuple.obj.transform.localScale.x - 1) < 0.01f ? 0 : 1;
+               vanishTimes[i] = 1- tuple.obj.transform.localScale.x;
+               warpSeeds[i] = tuple.seed;
             }
+
+            if (!deleteList.IsNullOrEmpty())
+            {
+                //deleteListを数字が大きい順にソートする
+                deleteList.Sort((a, b) => b - a);
+                foreach (var i in deleteList)
+                {
+                    _warpObjects.RemoveAt(i);
+                }
+                count -= deleteList.Count;
+            }
+            
+            material.SetFloat(_warpNum,count);
+            material.SetVectorArray(_warpInfo,warpInfos);
+            material.SetFloatArray(_isVanishing,isVanishings);
+            material.SetFloatArray(_vanishTime,vanishTimes);
+            material.SetVectorArray(_warpSeed,warpSeeds);
         }
 
         private (float x, float y, float rotate) CalcInfo(Transform target)
@@ -159,13 +201,15 @@ namespace Hackathon2023Winter.Level
             var goals = GameObject.FindGameObjectsWithTag(TagName.GoalEntity);
             foreach (var obj in goals)
             {
-                _warpObjects.Add((obj,true));
+                var seed = new Vector2(Random.value * 100,Random.value * 100);
+                _warpObjects.Add((obj,true,seed));
             }
 
             var gates = GameObject.FindGameObjectsWithTag(TagName.GateEntity);
             foreach (var obj in gates)
             {
-                _warpObjects.Add((obj,false));
+                var seed = new Vector2(Random.value * 100,Random.value * 100);
+                _warpObjects.Add((obj,false,seed));
             }
         }
     }

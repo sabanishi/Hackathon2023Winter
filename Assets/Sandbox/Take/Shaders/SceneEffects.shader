@@ -187,7 +187,7 @@ fixed4 frag (v2f i) : SV_Target
         for (int j = 0; j < warpNum; j++)
         {
             col += warpHole(i.uv, warpInfo[j].xy, warpInfo[j].z, isVanishing[j],
-                vanishTime[j], _Time.y * 0.5, warpSeed[j]);
+                vanishTime[j], _Time.y * 0.5, warpSeed[j].xy);
         }
     }
     
