@@ -149,7 +149,6 @@ GameObject:
   - component: {fileID: 3025798151792014712}
   - component: {fileID: 4105221016712212691}
   - component: {fileID: 5019751966861180526}
-  - component: {fileID: 4758246082238195702}
   m_Layer: 0
   m_Name: PlayerRect
   m_TagString: Player
@@ -346,7 +345,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mover: {fileID: 3025798151792014712}
-  rb: {fileID: 8792576885683161971}
 --- !u!114 &3025798151792014712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,7 +382,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5019751966861180526}
-  - {fileID: 4758246082238195702}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -401,19 +398,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warpDistance: 30
---- !u!114 &4758246082238195702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8436217441524702630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 0
-  m_SynchronizeRotation: 0
-  m_SynchronizeScale: 1
-  m_UseLocal: 0
