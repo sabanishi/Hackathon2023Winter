@@ -105,7 +105,14 @@ namespace Hackathon2023Winter.Entity
             {
                 rb.velocity = (toPos - transform.position).normalized * speed;
                 var velocity = rb.velocity;
-                await UniTask.WaitUntil(() => Vector3.Distance(transform.position, toPos) < Epsilon,
+                var catchPos = transform.position;
+                await UniTask.WaitUntil(() =>
+                    {
+                        var flag1 = Vector3.Distance(transform.position, toPos) < Epsilon;
+                        var nowPos = transform.position;
+                        var flag2 = Vector3.Distance(catchPos,toPos)<Vector3.Distance(nowPos, toPos);
+                        return flag1||flag2;
+                    },
                     cancellationToken:this.GetCancellationTokenOnDestroy());
                 await UniTask.DelayFrame(1, cancellationToken: stopCts.Token);
                 rb.velocity = Vector2.zero;
@@ -149,13 +156,11 @@ namespace Hackathon2023Winter.Entity
         
         private void OnCollisionEnter2D(Collision2D other)
         {
-            Debug.Log(other.gameObject.name);
             if (other.gameObject.TryGetComponent(out IInfulencedShiftBlock infulenced))
             {
                 //上に乗っていたら加える
                 if (other.transform.position.y > transform.position.y)
                 {
-                    Debug.Log("A");
                     _infulenced.Add(infulenced);
                 }
             }

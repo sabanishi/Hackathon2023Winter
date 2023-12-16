@@ -90,8 +90,7 @@ namespace Hackathon2023Winter.Entity
         
         public void AddVelocity(Vector2 velocity)
         {
-            Debug.Log("AddVelocity");
-            rb.velocity += velocity;
+            rb.velocity += new Vector2(velocity.x,0);
         }
     }
 }
