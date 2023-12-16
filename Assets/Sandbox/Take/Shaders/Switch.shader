@@ -7,7 +7,7 @@ Shader "Unlit/Switch"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry-1" }
 
         Pass
         {
