@@ -97,6 +97,12 @@ namespace Hackathon2023Winter.MainGame
                     .AddTo(gameObject);
                 levelEntityManager.OnEnterObservable.Subscribe(x => moveStageManager.OnCanStageSelect(x.stageId,x.isCircle||!isOnline)).AddTo(gameObject);
                 levelEntityManager.OnExitObservable.Subscribe(x => moveStageManager.OnCannotStageSelect(x.isCircle||!isOnline)).AddTo(gameObject);
+                
+                //Clientの場合は0.5秒待機
+                if (!isHost&&isOnline)
+                {
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+                }
             }
             else
             {
