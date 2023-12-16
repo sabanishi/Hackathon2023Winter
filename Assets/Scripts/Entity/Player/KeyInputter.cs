@@ -130,7 +130,7 @@ namespace Hackathon2023Winter.Entity
                     _keyConditions.IsJumpDown = false;
                 }
 
-                onlineOperator.SetKeyCondition2(_keyConditions);
+                onlineOperator.SetKeyConditions(_keyConditions);
             }
         }
 

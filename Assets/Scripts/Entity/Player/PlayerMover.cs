@@ -17,7 +17,7 @@ namespace Hackathon2023Winter.Entity
         }
 
         /// <summary>
-        /// PlayerOperatorんから毎フレーム呼び出される
+        /// PlayerOperatorから毎フレーム呼び出される
         /// </summary>
         public abstract void Move(KeyConditions keyCondition);
     }
