@@ -40,10 +40,10 @@ namespace Hackathon2023Winter.Entity
             else
             {
                 //補間
-                var coPos = Vector2.Lerp(pos_2d, _latestPos, Time.deltaTime * 20);
+                var coPos = Vector2.Lerp(pos_2d, _latestPos, Time.deltaTime *PhotonNetwork.SerializationRate);
                 _transform.localPosition = new Vector3(coPos.x, coPos.y, 0);
             }
-            _transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(_transform.eulerAngles.z, _latestRot, Time.deltaTime * 20));
+            _transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(_transform.eulerAngles.z, _latestRot, Time.deltaTime * PhotonNetwork.SerializationRate));
             _transform.localScale = new Vector3(_scale.x,_scale.y, 1f);
             _r.velocity = _velocity;
             _r.angularVelocity = _angularVelocity;
@@ -53,7 +53,8 @@ namespace Hackathon2023Winter.Entity
         {
             if (stream.IsWriting)
             {
-                if (!photonView.IsMine) return;
+                if (!photonView.IsMine)return;
+                
                 var pos = _transform.localPosition;
                 var rotate = _transform.eulerAngles.z;
                 var scale = _transform.localScale;
@@ -62,6 +63,7 @@ namespace Hackathon2023Winter.Entity
 
                 var coefficientPos = pos*posCoefficient;
                 coefficientPos += Vector3.one * 10000;
+                
                 
                 var intPos = new Vector2Int(Clamp(coefficientPos.x,0,60000),
                     Clamp(coefficientPos.y,0,60000));
@@ -85,14 +87,15 @@ namespace Hackathon2023Winter.Entity
                 var (intRotate, intAngularVelocity,intScale) = BitPackingCalc.DeserializePack_2(pack2);
 
                 var coefficientPos = intPos - Vector2.one * 10000;
-                coefficientPos /= ((float)posCoefficient*10);
+                coefficientPos /= posCoefficient;
+                
                 
                 _latestPos = new Vector2(coefficientPos.x,coefficientPos.y);
                 _latestRot = intRotate/100f;
                 _velocity = new Vector2((intVelocity.x/100f)-100,(intVelocity.y/100f)-100);
                 _angularVelocity = (intAngularVelocity/100f)-100;
                 _scale = new Vector2(intScale.x/100f,intScale.y/100f);
-
+                
                 _valuesReceived = true;
             }
         }

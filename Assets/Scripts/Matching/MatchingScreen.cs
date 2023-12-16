@@ -35,8 +35,8 @@ namespace Hackathon2023Winter.Matching
             PhotonNetwork.NickName = "Player";
             //Photonに接続
             await Pun2TaskNetwork.ConnectUsingSettingsAsync(token: token);
-            PhotonNetwork.SendRate = 40;
-            PhotonNetwork.SerializationRate = 20;
+            PhotonNetwork.SendRate = 50;
+            PhotonNetwork.SerializationRate = 25;
             //ロビーに入る
             PhotonNetwork.JoinLobby();
         }
