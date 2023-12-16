@@ -103,21 +103,20 @@ namespace Hackathon2023Winter.Entity
             //toPosまでrigidbodyのvelocityを変化させながら移動する
             UniTask.Void(async () =>
             {
-                rb.velocity = (toPos - transform.position).normalized * speed;
-                var velocity = rb.velocity;
-                var catchPos = transform.position;
+                Vector3 initPos = rb.position;
+                var dir = (toPos - initPos).normalized;
+                var velocity = dir * speed;
+                rb.velocity = velocity;
                 await UniTask.WaitUntil(() =>
                     {
-                        var flag1 = Vector3.Distance(transform.position, toPos) < Epsilon;
-                        var nowPos = transform.position;
-                        var flag2 = Vector3.Distance(catchPos,toPos)<Vector3.Distance(nowPos, toPos);
-                        catchPos = nowPos;
-                        return flag1||flag2;
+                        Vector3 currPos = rb.position;
+                        var flag = Vector3.Dot(dir, toPos - currPos)<Epsilon;
+                        return flag;
                     },
                     cancellationToken:this.GetCancellationTokenOnDestroy());
                 await UniTask.DelayFrame(1, cancellationToken: stopCts.Token);
                 rb.velocity = Vector2.zero;
-                transform.position = toPos;
+                rb.position = toPos;
             });
         }
 
