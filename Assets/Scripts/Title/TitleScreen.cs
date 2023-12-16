@@ -12,7 +12,7 @@ namespace Hackathon2023Winter.Title
     {
         [SerializeField]private Button clickSoloButton;
         [SerializeField]private Button clickDuoButton;
-        [SerializeField]private Button clickInstructionsButton;
+        [SerializeField] private Button clickExit;
         [SerializeField] private InteractiveShape interactiveShape;
 
         private bool _isOnline;
@@ -24,7 +24,7 @@ namespace Hackathon2023Winter.Title
             _isTransitioning = false;
             clickSoloButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(false)).AddTo(gameObject);
             clickDuoButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(true)).AddTo(gameObject);
-            
+            clickExit.SafeOnClickAsObservable().Subscribe(_ => Quit()).AddTo(gameObject);
             await interactiveShape.Initialize();
             SoundManager.PlayBGM(BGM_Enum.TITLE);
         }
@@ -37,6 +37,15 @@ namespace Hackathon2023Winter.Title
             _isOnline = isOnline;
             var screenType = isOnline ? ScreenType.Matching : ScreenType.MainGame;
             ScreenTransition.Instance.Move(screenType).Forget();
+        }
+
+        private void Quit()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
