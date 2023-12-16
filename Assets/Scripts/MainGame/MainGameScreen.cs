@@ -19,6 +19,7 @@ namespace Hackathon2023Winter.MainGame
         [SerializeField] private LevelEntityManager levelEntityManager;
         [SerializeField] private MainGameCommandManager commandManager;
         [SerializeField]private MainGameMoveStageManager moveStageManager;
+        [SerializeField] private GameObject instructionPanel;
         [SerializeField] private PunMainGameScreen punMainGameScreenPrefab;
         [SerializeField] private PunMainGameScreenReceiver punMainGameScreenReceiverPrefab;
 
@@ -43,6 +44,16 @@ namespace Hackathon2023Winter.MainGame
                 commandManager.OnCommandObservable.Subscribe(TakeCommand).AddTo(gameObject);
                 moveStageManager.Setup(isOnline,isHost);
                 moveStageManager.MoveStageObservable.Subscribe(GoToStage).AddTo(gameObject);
+                
+                if (mainGameScreenData.LevelId == -1)
+                {
+                    //ステージセレクト画面
+                    instructionPanel.SetActive(true);
+                }
+                else
+                {
+                    instructionPanel.SetActive(false);
+                }
 
                 //Photonの通信を行う機構を作る
                 if (isOnline)
@@ -95,12 +106,24 @@ namespace Hackathon2023Winter.MainGame
 
         protected override async UniTask OpenDealInternal(CancellationToken token)
         {
+            Debug.Log("MainGameScreenのOpen");
+            if (_mainGameData.LevelId == -1)
+            {
+                //ステージセレクト画面
+                instructionPanel.SetActive(true);
+            }
+            else
+            {
+                instructionPanel.SetActive(false);
+            }
             //ユーザーの入力受付を開始する
             levelEntityManager.SetCanInput(true);
         }
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
+            Debug.Log("MainGameScreenのDispose");
+            instructionPanel.SetActive(false);
             commandManager.Cleanup();
             moveStageManager.Cleanup();
             return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,
