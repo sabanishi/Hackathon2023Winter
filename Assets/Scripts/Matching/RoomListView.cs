@@ -32,7 +32,11 @@ namespace Hackathon2023Winter.Matching
             {
                 var element = Instantiate(elementPrefab, content.transform);
                 element.Setup();
-                element.OnClickAsObservable.Subscribe(x => _joinRoomSubject.OnNext(x)).AddTo(gameObject);
+                element.OnClickAsObservable.Subscribe(x =>
+                {
+                    SoundManager.PlaySE(SE_Enum.CLICK);
+                    _joinRoomSubject.OnNext(x);
+                }).AddTo(gameObject);
                 _elements.Add(element);
             }
         }

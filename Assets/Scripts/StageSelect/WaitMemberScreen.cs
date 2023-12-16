@@ -20,6 +20,7 @@ namespace Hackathon2023Winter.StageSelect
 
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
+            SoundManager.PlayBGM(BGM_Enum.TITLE);
             if (screenData is MainGameData mainGameData)
             {
                 _mainGameData = mainGameData;

@@ -76,6 +76,7 @@ namespace Hackathon2023Winter.Entity
                 await UniTask.Delay((int)(startTime * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
                 //ジャンプ台を起動
                 floor.Run(speed);
+                SoundManager.PlaySE(SE_Enum.JUMPRAMP,true);
                 //1フレーム待機(Floorが動き出すのを待つため)
                 await UniTask.DelayFrame(1, cancellationToken: this.GetCancellationTokenOnDestroy());
                 //床のY座標が止まるまで待機

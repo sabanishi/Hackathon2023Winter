@@ -20,16 +20,19 @@ namespace Hackathon2023Winter.Title
 
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
+            SoundManager.PlayBGM(BGM_Enum.LOADING);
             _isTransitioning = false;
             clickSoloButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(false)).AddTo(gameObject);
             clickDuoButton.SafeOnClickAsObservable().Subscribe(_ => GoToNextScreen(true)).AddTo(gameObject);
             
             await interactiveShape.Initialize();
+            SoundManager.PlayBGM(BGM_Enum.TITLE);
         }
 
         private void GoToNextScreen(bool isOnline)
         {
             if (_isTransitioning) return;
+            SoundManager.PlaySE(SE_Enum.CLICK);
             _isTransitioning = true;
             _isOnline = isOnline;
             var screenType = isOnline ? ScreenType.Matching : ScreenType.MainGame;

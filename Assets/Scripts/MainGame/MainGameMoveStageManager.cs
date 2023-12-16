@@ -125,7 +125,10 @@ namespace Hackathon2023Winter.MainGame
         
         private void SetPanelActive(bool isActive)
         {
-            Debug.Log(isActive);
+            if (isActive)
+            {
+                SoundManager.PlaySE(SE_Enum.COMMANDPANEL);
+            }
             KillTween();
             var posY = isActive ? 300 : 600;
             _tween = explainPanelTransform?.DOAnchorPos(new Vector2(0, posY), AnimationTime);

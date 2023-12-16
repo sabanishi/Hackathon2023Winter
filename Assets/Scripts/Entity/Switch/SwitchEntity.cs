@@ -81,7 +81,11 @@ namespace Hackathon2023Winter.Entity
                 : _defaultScale;
             var scaleY = child.localScale.y;
             child.localPosition = new Vector3(0,-0.5f+scaleY/2, 0);
-                
+
+            if (isOn)
+            {
+                SoundManager.PlaySE(SE_Enum.SWITCH,true);
+            }
             
             //導線の処理
             if (isOnline)

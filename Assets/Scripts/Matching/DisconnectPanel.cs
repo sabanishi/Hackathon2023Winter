@@ -33,6 +33,7 @@ namespace Hackathon2023Winter.Matching
 
         public void Show()
         {
+            SoundManager.PlaySE(SE_Enum.DISCONNECT);
             panel.SetActive(true);
         }
     }

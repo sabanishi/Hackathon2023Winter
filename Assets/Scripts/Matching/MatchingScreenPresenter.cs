@@ -23,7 +23,11 @@ namespace Hackathon2023Winter.Matching
             roomListView.Setup();
             roomListView.OnJoinRoomAsObservable.Subscribe(JoinRoom).AddTo(gameObject);
             createRoomButton.SafeOnClickAsObservable().Subscribe(_ => OnCreateRoomButtonClicked()).AddTo(gameObject);
-            goTitleButton.SafeOnClickAsObservable().Subscribe(_=>ScreenTransition.Instance.Move(ScreenType.Title).Forget()).AddTo(gameObject);
+            goTitleButton.SafeOnClickAsObservable().Subscribe(_=>
+            {
+                SoundManager.PlaySE(SE_Enum.CLICK);
+                ScreenTransition.Instance.Move(ScreenType.Title).Forget();
+            }).AddTo(gameObject);
             roomNameInputField.onValueChanged.AddListener(OnRoomNameInputFieldChanged);
             canvasGroup.interactable = false;
             OnRoomNameInputFieldChanged(roomNameInputField.text);
@@ -39,6 +43,7 @@ namespace Hackathon2023Winter.Matching
         /// </summary>
         private void OnCreateRoomButtonClicked()
         {
+            SoundManager.PlaySE(SE_Enum.CLICK);
             canvasGroup.interactable = false;
 
             var roomOptions = new RoomOptions

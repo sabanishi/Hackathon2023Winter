@@ -15,6 +15,7 @@ namespace Hackathon2023Winter.Matching
 
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
+            SoundManager.PlayBGM(BGM_Enum.TITLE);
             matchingScreenPresenter.Setup();
             matchingCallback.Setup();
             matchingCallback.OnJoinedRoomSubject.Subscribe(_ =>
