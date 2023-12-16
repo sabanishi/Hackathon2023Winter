@@ -121,7 +121,6 @@ namespace Hackathon2023Winter.MainGame
 
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
-            Debug.Log("MainGameScreenのDispose");
             instructionPanel.SetActive(false);
             commandManager.Cleanup();
             moveStageManager.Cleanup();

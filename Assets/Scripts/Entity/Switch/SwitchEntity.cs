@@ -1,7 +1,11 @@
 using Photon.Pun;
+using Sabanishi.Common;
 using UniRx;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 namespace Hackathon2023Winter.Entity
 {
@@ -9,18 +13,13 @@ namespace Hackathon2023Winter.Entity
     {
         [SerializeField] private bool isCircle;
         [SerializeField] private bool isPermanent;
-        [SerializeField] private PunSwitchColorChanger punSwitchColorChanger;
-        [SerializeField] private Tilemap wires;
         [SerializeField] private Transform child;
-
-        private ReactiveProperty<bool> _trigger;
-
-        private static readonly Color CircleColor = Color.red;
-        private static readonly Color RectColor = Color.green;
-        private static readonly Color DefaultColor = Color.white;
+        [SerializeField] private BaseEntity[] targets;
+        
         //踏まれた時のScaleの倍率
         private const float TriggeredScale = 0.4f;
-
+        
+        private ReactiveProperty<bool> _trigger;
         public IReadOnlyReactiveProperty<bool> Trigger => _trigger;
         private Vector3 _defaultScale;
 
@@ -28,18 +27,12 @@ namespace Hackathon2023Winter.Entity
         {
             _trigger = new ReactiveProperty<bool>(false);
             _trigger.Skip(1).Subscribe(OnChangeTrigger).AddTo(gameObject);
-            if (punSwitchColorChanger != null)
-            {
-                punSwitchColorChanger.Setup();
-                punSwitchColorChanger.OnColorChangeObservable.Subscribe(OnChangeWireColorDeal).AddTo(gameObject);
-            }
             _defaultScale = child.localScale;
         }
 
         private void OnDestroy()
         {
             _trigger.Dispose();
-            punSwitchColorChanger?.Cleanup();
         }
 
         private void Update()
@@ -77,57 +70,75 @@ namespace Hackathon2023Winter.Entity
         {
             //Scaleの処理
             child.localScale = isOn
-                ? new Vector3(_defaultScale.x, _defaultScale.y*TriggeredScale, _defaultScale.z)
+                ? new Vector3(_defaultScale.x, _defaultScale.y * TriggeredScale, _defaultScale.z)
                 : _defaultScale;
             var scaleY = child.localScale.y;
-            child.localPosition = new Vector3(0,-0.5f+scaleY/2, 0);
+            child.localPosition = new Vector3(0, -0.5f + scaleY / 2, 0);
 
             if (isOn)
             {
-                SoundManager.PlaySE(SE_Enum.SWITCH,true);
-            }
-            
-            //導線の処理
-            if (isOnline)
-            {
-                punSwitchColorChanger.ChangeColor(isOn);
-            }
-            else
-            {
-                OnChangeWireColorDeal(isOn);
-            }
-        }
-        
-
-        private void OnChangeWireColorDeal(bool isOn)
-        {
-            if (isOn)
-            {
-                wires.color = isCircle ? CircleColor : RectColor;
-            }
-            else
-            {
-                wires.color = DefaultColor;
+                SoundManager.PlaySE(SE_Enum.SWITCH, true);
             }
         }
 
         protected override void ChangeToOfflineInternal()
         {
-            if (gameObject.TryGetComponent(typeof(PunSwitchColorChanger), out var component))
-            {
-                var colorChanger = (PunSwitchColorChanger) component;
-                Destroy(colorChanger);
-            }
-            if(child.TryGetComponent(typeof(PhotonView),out var view))
+            if (child.TryGetComponent(typeof(PhotonView), out var view))
             {
                 Destroy(view);
             }
-            if(child.TryGetComponent(typeof(PhotonTransformView),out var transformView))
+
+            if (child.TryGetComponent(typeof(PhotonTransformView), out var transformView))
             {
                 Destroy(transformView);
             }
-            
+
             base.ChangeToOfflineInternal();
         }
+
+        public void OnMouseEnterOrExit(bool isEnter)
+        {
+            if (targets.IsNullOrEmpty()) return;
+            foreach (var target in targets)
+            {
+                if (target == null) continue;
+                if (target is ISwitchTarget switchTarget)
+                {
+                    if (isEnter)
+                    {
+                        switchTarget.Enter();
+                    }
+                    else
+                    {
+                        switchTarget.Exit();
+                    }
+                }
+            }
+        }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor拡張用
+        /// </summary>
+        public void SetSwitchTarget()
+        {
+            if (targets.IsNullOrEmpty()) return;
+            foreach (var target in targets)
+            {
+                if (target == null) continue;
+                if (target is ISwitchTarget switchTarget)
+                {
+                    switchTarget.PassSwitchReference(this);
+                }else
+                {
+                    Debug.LogError(
+                        $"ISwitchTargetを実装していないEntityがSwitchEntityのTargetに設定されています: my_name={gameObject.name}, targetName:{target.name}");
+                }
+            }
+            
+            Undo.RecordObject(this, "Set Switch Target");
+            EditorUtility.SetDirty(this);
+        }
+#endif
     }
 }
