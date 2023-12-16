@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a630b8039c74a029adb86967caf06e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
   isOnline: 1
 --- !u!114 &-8825851002732897786
 MonoBehaviour:

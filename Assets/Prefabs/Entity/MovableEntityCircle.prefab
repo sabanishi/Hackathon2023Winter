@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5871786ab1ba461ea34a01b8bc3482dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 8
   isOnline: 1
   rb: {fileID: 5068855886155262410}
   isCircle: 1
