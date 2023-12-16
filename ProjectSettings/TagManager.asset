@@ -15,6 +15,7 @@ TagManager:
   - GateEntity
   - MainGameMoveStageReceiver
   - MianGameMoveStageReceiver
+  - Terrain
   layers:
   - Default
   - TransparentFX
