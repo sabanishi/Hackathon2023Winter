@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 270f9140ce944a67b73cea65ea855d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 4
   isOnline: 1
   rb: {fileID: 8792576885683161971}
   offlineOperator: {fileID: 3803176367600333697}
