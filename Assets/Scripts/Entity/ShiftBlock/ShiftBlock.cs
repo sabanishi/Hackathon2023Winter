@@ -57,7 +57,7 @@ namespace Hackathon2023Winter.Entity
             _toPos = toPosTransform.position;
             foreach (var generator in eventGenerators)
             {
-                generator.Trigger.Skip(1).Subscribe(_ => CheckSwitch()).AddTo(gameObject);
+                generator.Trigger.Skip(1).ThrottleFrame(1).Subscribe(_ => CheckSwitch()).AddTo(gameObject);
             }
         }
 
