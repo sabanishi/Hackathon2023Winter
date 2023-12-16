@@ -7,7 +7,7 @@ Shader "Unlit/StencilMask"
     
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Geometry-1" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry-2" }
         
         Pass
         {
