@@ -24,6 +24,8 @@ namespace Hackathon2023Winter.Entity
         private CancellationTokenSource _cts;
         private Transform _transform;
 
+        private List<IInfulencedShiftBlock> _infulenced;
+
         private void Awake()
         {
             _children = new();
@@ -35,6 +37,16 @@ namespace Hackathon2023Winter.Entity
                     shiftBlockChildren.SetMaskActive(false);
                     _children.Add(shiftBlockChildren);
                 }
+            }
+
+            _infulenced = new();
+        }
+
+        private void FixedUpdate()
+        {
+            foreach(var infulenced in _infulenced)
+            {
+                infulenced.AddVelocity(rb.velocity);
             }
         }
 
@@ -132,6 +144,28 @@ namespace Hackathon2023Winter.Entity
             foreach (var child in _children)
             {
                 child.SetMaskActive(false);
+            }
+        }
+        
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            Debug.Log(other.gameObject.name);
+            if (other.gameObject.TryGetComponent(out IInfulencedShiftBlock infulenced))
+            {
+                //上に乗っていたら加える
+                if (other.transform.position.y > transform.position.y)
+                {
+                    Debug.Log("A");
+                    _infulenced.Add(infulenced);
+                }
+            }
+        }
+        
+        private void OnCollisionExit2D(Collision2D other)
+        {
+            if (other.gameObject.TryGetComponent(out IInfulencedShiftBlock infulenced))
+            {
+                _infulenced.Remove(infulenced);
             }
         }
 

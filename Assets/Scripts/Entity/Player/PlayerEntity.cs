@@ -5,7 +5,7 @@ namespace Hackathon2023Winter.Entity
     /// <summary>
     /// ユーザーが動かすことのできるEntityの基底クラス
     /// </summary>
-    public abstract class PlayerEntity : BaseEntity, IShapable
+    public abstract class PlayerEntity : BaseEntity, IShapable,IInfulencedShiftBlock
     {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private PlayerOfflineOperator offlineOperator;
@@ -86,6 +86,12 @@ namespace Hackathon2023Winter.Entity
         {
             rb.simulated = isSimulate;
             base.SetIsSimulateInternal(isSimulate);
+        }
+        
+        public void AddVelocity(Vector2 velocity)
+        {
+            Debug.Log("AddVelocity");
+            rb.velocity += velocity;
         }
     }
 }

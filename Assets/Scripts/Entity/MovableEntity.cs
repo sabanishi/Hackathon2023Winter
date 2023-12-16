@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Hackathon2023Winter.Entity
 {
-    public class MovableEntity : BaseEntity, IShapable, IPushed
+    public class MovableEntity : BaseEntity, IShapable, IPushed,IInfulencedShiftBlock
     {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private bool isCircle;
@@ -41,7 +41,7 @@ namespace Hackathon2023Winter.Entity
         
         public void ExitPush()
         {
-            rb.velocity = Vector2.zero;
+            //rb.velocity = Vector2.zero;
         }
         
         private void OnCollisionExit2D(Collision2D other)
@@ -57,6 +57,12 @@ namespace Hackathon2023Winter.Entity
         {
             rb.simulated = isSimulate;
             base.SetIsSimulateInternal(isSimulate);
+        }
+        
+        public void AddVelocity(Vector2 velocity)
+        {
+            Debug.Log("AddVelocity");
+            //rb.velocity = new Vector2(rb.velocity.x, 0);
         }
     }
 }
