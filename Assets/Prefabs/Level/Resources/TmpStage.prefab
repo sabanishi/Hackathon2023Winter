@@ -3268,7 +3268,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1865858994620918797, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2775139133223496511, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
       propertyPath: m_Name
@@ -3317,6 +3317,14 @@ PrefabInstance:
     - target: {fileID: 3954288337916630279, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718118642638858849, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+    - target: {fileID: 6718118642638858849, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7586410763324657246, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
       propertyPath: eventGenerators.Array.size

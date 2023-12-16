@@ -51,6 +51,15 @@ namespace Hackathon2023Winter.Entity
             }
         }
 
+        private void Update()
+        {
+            if (isOnline && !IsOwner) return;
+            if (_isRunning)
+            {
+                
+            }
+        }
+
         /// <summary>
         /// いずれかのスイッチのON/OFFが切り替わった時に呼ばれる関数
         /// </summary>

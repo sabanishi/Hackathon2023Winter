@@ -8,7 +8,9 @@ namespace Hackathon2023Winter.Entity
     {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField]private Shader shader;
+        [SerializeField] private Shader barShader;
         [SerializeField]private SpriteRenderer spriteRenderer;
+        [SerializeField]private SpriteRenderer barRenderer;
         [SerializeField]private float MaxShaderSpeed = 6.0f;
         public float Height;
         public IObservable<Vector3> StopObservable { get; private set; }
@@ -16,9 +18,12 @@ namespace Hackathon2023Winter.Entity
         private bool _isOnline;
         private bool _isOwner;
         private Material _material;
+        private Material _barMaterial;
         
         private readonly int _objectType = Shader.PropertyToID("_ObjectType");
         private readonly int _velocityFlag = Shader.PropertyToID("velocity");
+        
+        private readonly int _barColorType = Shader.PropertyToID("_ColorType");
 
         private const int NormalColor = 2;
         private const int MouseOverColor = 3;
@@ -28,6 +33,10 @@ namespace Hackathon2023Winter.Entity
             _material = new Material(shader);
             _material.SetInt(_objectType,NormalColor);
             spriteRenderer.material = _material;
+            
+            _barMaterial = new Material(barShader);
+            _barMaterial.SetInt(_barColorType,NormalColor);
+            barRenderer.material = _barMaterial;
         }
 
         public void SetIsOnline(bool isOnline)
@@ -77,6 +86,7 @@ namespace Hackathon2023Winter.Entity
         public void SetMouseTarget(bool isTarget)
         {
             _material.SetInt(_objectType, isTarget ? MouseOverColor : NormalColor);
+            _barMaterial.SetInt(_barColorType,isTarget ? MouseOverColor : NormalColor);
         }
     }
 }

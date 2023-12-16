@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f931b6086d2314a83b62e5b554f258d1, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -161,7 +161,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -259,7 +259,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8102655131327501878}
   shader: {fileID: 4800000, guid: 52fd90b4ac83e4ad0947b2fda1c16f4b, type: 3}
+  barShader: {fileID: 4800000, guid: 4e9f8ef77c72b4d868dd3dd4aef637df, type: 3}
   spriteRenderer: {fileID: 3609884282297885359}
+  barRenderer: {fileID: 8772032299859789083}
   MaxShaderSpeed: 6
   Height: 2
 --- !u!114 &8978741363930620755
@@ -369,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b6d0f64312c46328e3da9b2b865b934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 7
   isOnline: 1
   bar: {fileID: 2316230391627876224}
   floor: {fileID: 2985661535160342917}
@@ -377,6 +379,7 @@ MonoBehaviour:
   eventGenerators: []
   speed: 5
   waitTime: 0
+  startTime: 0
 --- !u!114 &7287148106940598683
 MonoBehaviour:
   m_ObjectHideFlags: 0

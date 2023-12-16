@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad39598309904958852909d07e176a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 10
   isOnline: 1
   eventGenerators: []
   toPosTransform: {fileID: 223113082894221251}

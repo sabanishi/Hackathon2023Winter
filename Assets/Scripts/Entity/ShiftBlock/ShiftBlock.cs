@@ -131,7 +131,7 @@ namespace Hackathon2023Winter.Entity
             if (_children.IsNullOrEmpty()) return;
             foreach (var child in _children)
             {
-                child.SetMaskActive(true);
+                child.SetMaskActive(false);
             }
         }
 
