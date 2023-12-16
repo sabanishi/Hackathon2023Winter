@@ -55,15 +55,12 @@ namespace Hackathon2023Winter.Entity
         {
             if (isOnline && !IsOwner) return;
             if (_isRunning) return;
-            Debug.Log("A");
             //全てのスイッチがONになっているか確認
             if (eventGenerators.IsNullOrEmpty()) return;
-            Debug.Log("B");
             foreach (var generator in eventGenerators)
             {
                 if (!generator.Trigger.Value) return;
             }
-            Debug.Log("Run");
             Run();
         }
 

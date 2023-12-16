@@ -17,11 +17,6 @@ namespace Hackathon2023Winter.Entity
             _keyConditions = keyConditions;
         }
 
-        public void SetKeyCondition2(KeyConditions keyConditions)
-        {
-            _keyConditions = keyConditions;
-        }
-
         public void SetActive(bool isActive)
         {
             photonView.RPC(nameof(RPC_SetActive), RpcTarget.All, isActive);
@@ -72,16 +67,25 @@ namespace Hackathon2023Winter.Entity
             if (!_canInput) return;
             //キー入力をMoverに渡す
             if (_keyConditions == null) return;
-            if (!photonView.IsMine) return;
-            mover.Move(_keyConditions);
+            if (photonView.IsMine)
+            {
+                mover.Move(_keyConditions);
 
-            //UP/Down系をfalseにする
-            _keyConditions.IsLeftDown = false;
-            _keyConditions.IsRightDown = false;
-            _keyConditions.IsJumpDown = false;
-            _keyConditions.IsLeftUp = false;
-            _keyConditions.IsRightUp = false;
-            _keyConditions.IsJumpUp = false;
+                //UP/Down系をfalseにする
+                _keyConditions.IsLeftDown = false;
+                _keyConditions.IsRightDown = false;
+                _keyConditions.IsJumpDown = false;
+                _keyConditions.IsLeftUp = false;
+                _keyConditions.IsRightUp = false;
+                _keyConditions.IsJumpUp = false;
+            }
+            else
+            {
+                if (mover is PlayerRectMover)
+                {
+                    mover.Move(_keyConditions);
+                }
+            }
         }
         
         public void SetCanInput(bool canInput)

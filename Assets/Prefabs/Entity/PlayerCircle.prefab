@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mover: {fileID: 1509553496628266044}
+  rb: {fileID: 3858345662305354196}
 --- !u!114 &1509553496628266044
 MonoBehaviour:
   m_ObjectHideFlags: 0
