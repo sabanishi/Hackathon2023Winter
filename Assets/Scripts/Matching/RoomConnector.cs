@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Pun2Task;
 using Sabanishin.Common;
+using Sound.Scripts;
 using UniRx;
 using UnityEngine;
 
@@ -17,7 +18,9 @@ namespace Hackathon2023Winter.Matching
     {
         [SerializeField] private DisconnectDetector disconnectDetectorPrefab;
         [SerializeField] private DisconnectPanel disconnectPanel;
+        [SerializeField]private PunSoundManager punSoundManagerPrefab;
         private DisconnectDetector _disconnectDetector;
+        private PunSoundManager _punSoundManager;
 
         private bool _isCreateRoom;
         private bool _isJoinRoom;
@@ -35,6 +38,7 @@ namespace Hackathon2023Winter.Matching
                     await Pun2TaskNetwork.CreateRoomAsync(roomName: roomName, roomOptions: roomOptions, token: token);
                     successCallback?.Invoke();
                     CreateDisconnectDetector();
+                    CreatePunSoundManager();
                 }
                 catch (Pun2TaskNetwork.ConnectionFailedException e)
                 {
@@ -56,6 +60,7 @@ namespace Hackathon2023Winter.Matching
                     await Pun2TaskNetwork.JoinRoomAsync(roomName: name, token: token);
                     successCallback?.Invoke();
                     CreateDisconnectDetector();
+                    CreatePunSoundManager();
                 }
                 catch (Pun2TaskNetwork.ConnectionFailedException e)
                 {
@@ -92,6 +97,16 @@ namespace Hackathon2023Winter.Matching
             _disconnectDetector = PhotonNetwork.Instantiate(disconnectDetectorPrefab.name, Vector3.zero, Quaternion.identity)
                 .GetComponent<DisconnectDetector>();
             _disconnectDetector.OnDisconnectedAsObservable.Subscribe(_=>disconnectPanel.Show()).AddTo(gameObject);
+        }
+        
+        private void CreatePunSoundManager()
+        {
+            if (_punSoundManager != null)
+            {
+                PhotonNetwork.Destroy(_punSoundManager.gameObject);
+            }
+            _punSoundManager = PhotonNetwork.Instantiate(punSoundManagerPrefab.name, Vector3.zero, Quaternion.identity)
+                .GetComponent<PunSoundManager>();
         }
     }
 }

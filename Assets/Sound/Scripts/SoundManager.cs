@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sound.Scripts;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -188,9 +189,13 @@ public class SoundManager : MonoBehaviour
         LoopBGM_Source.clip = null;
     }
 
-    public static void PlaySE(SE_Enum seType)
+    public static void PlaySE(SE_Enum seType,bool isOnline=false)
     {
         instance.InstancePlaySE(seType);
+        if (isOnline)
+        {
+            PunSoundManager.Instance?.PlaySE(seType);
+        }
     }
 
     private void InstancePlaySE(SE_Enum seType)

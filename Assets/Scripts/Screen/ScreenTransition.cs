@@ -176,6 +176,7 @@ namespace Hackathon2023Winter.Screen
         
         private async UniTask ShowMainGameTransitionAnimation(Camera beforeCamera, Camera afterCamera)
         {
+            SoundManager.PlaySE(SE_Enum.SCREENCHANGE);
             if (!_isScreenChangeAnimationFlag)
             {
                 afterCamera.targetTexture = screenChangeTexture_1;

@@ -30,6 +30,7 @@ namespace Hackathon2023Winter.MainGame
 
         protected override async UniTask InitializeInternal(IScreenData screenData, CancellationToken token)
         {
+            SoundManager.PlayBGM(BGM_Enum.PUZZLE);
             _isTransition = false;
             if (screenData is MainGameData mainGameScreenData)
             {
@@ -140,6 +141,7 @@ namespace Hackathon2023Winter.MainGame
         private async UniTask GameClear(GameObject clearObject, GoalEntity goalEntity)
         {
             if (_isTransition) return;
+            SoundManager.PlaySE(SE_Enum.WAVE,true);
             var goalObject = goalEntity.gameObject;
             var token = this.GetCancellationTokenOnDestroy();
             _isTransition = true;
