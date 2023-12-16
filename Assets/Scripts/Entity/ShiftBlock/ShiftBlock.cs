@@ -111,6 +111,7 @@ namespace Hackathon2023Winter.Entity
                         var flag1 = Vector3.Distance(transform.position, toPos) < Epsilon;
                         var nowPos = transform.position;
                         var flag2 = Vector3.Distance(catchPos,toPos)<Vector3.Distance(nowPos, toPos);
+                        catchPos = nowPos;
                         return flag1||flag2;
                     },
                     cancellationToken:this.GetCancellationTokenOnDestroy());
