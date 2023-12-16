@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickSoloButton: {fileID: 1168528432738846468}
   clickDuoButton: {fileID: 5029402854761650036}
-  clickInstructionsButton: {fileID: 8586986723959382774}
+  clickExit: {fileID: 8586986723959382774}
   interactiveShape: {fileID: 6803023764194185344}
 --- !u!1 &1653834175765155397
 GameObject:
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 8405282062921413765}
   - component: {fileID: 7596296297749679161}
   m_Layer: 5
-  m_Name: button-HIdeInstructions
+  m_Name: Button-HIdeExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -400, y: 300}
+  m_AnchoredPosition: {x: -300, y: 230}
   m_SizeDelta: {x: 320, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2747285262987162563
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 3022381181864108384}
   - component: {fileID: 8586986723959382774}
   m_Layer: 5
-  m_Name: button-ClickInstructions
+  m_Name: button-ClickExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,7 +247,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -400, y: 300}
+  m_AnchoredPosition: {x: -300, y: 230}
   m_SizeDelta: {x: 320, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7410564208510331285
@@ -399,7 +399,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: INSTRUCTIONS
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
   m_sharedMaterial: {fileID: -2601759147593020727, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.7
+  m_fontSize: 109.05
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -504,7 +504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400, y: 300}
+  m_AnchoredPosition: {x: 300, y: 230}
   m_SizeDelta: {x: 320, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &531345928690749215
@@ -627,7 +627,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400, y: 300}
+  m_AnchoredPosition: {x: 300, y: 230}
   m_SizeDelta: {x: 320, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7857933946138249571
@@ -1018,7 +1018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: 230}
   m_SizeDelta: {x: 320, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2459911900596571793
@@ -1283,7 +1283,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: 230}
   m_SizeDelta: {x: 320, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1368331771422231226
