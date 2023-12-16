@@ -24,6 +24,7 @@ namespace Hackathon2023Winter.Entity
         private float startTime = 0f;
 
         private bool _isRunning;
+        private bool _isRunReady;
 
         /// <summary>
         /// エディタ拡張用
@@ -54,10 +55,16 @@ namespace Hackathon2023Winter.Entity
         private void Update()
         {
             if (isOnline && !IsOwner) return;
-            if (_isRunning)
+            if (_isRunning) return;
+            //全てのスイッチがONになっているか確認
+            if (eventGenerators.IsNullOrEmpty()) return;
+            foreach (var generator in eventGenerators)
             {
-                
+                if (!generator.Trigger.Value) return;
             }
+            Debug.Log("Run");
+            _isRunReady = false;
+            Run();
         }
 
         /// <summary>
@@ -65,13 +72,16 @@ namespace Hackathon2023Winter.Entity
         /// </summary>
         private void CheckSwitch()
         {
-            //既に起動していたら何もしない
-            if (_isRunning) return;
-
             //全てのスイッチがONになっているか確認
             foreach (var generator in eventGenerators)
             {
                 if (!generator.Trigger.Value) return;
+            }
+            
+            //既に起動していたら起動待ちにする
+            if (_isRunning)
+            {
+                return;
             }
 
             //全てのスイッチがONになっていたらジャンプ台を起動
