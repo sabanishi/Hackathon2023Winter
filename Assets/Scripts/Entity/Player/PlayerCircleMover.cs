@@ -46,7 +46,7 @@ namespace Hackathon2023Winter.Entity
             if (hits.IsNullOrEmpty()) return false;
             foreach (var hit in hits)
             {
-                if (!hit.collider.gameObject.CompareTag(TagName.Terrain)) continue;
+                if (hit.collider.gameObject.CompareTag(TagName.SwitchCollider)) continue;
                 if (!hit.collider.gameObject.Equals(gameObject)) return true;
             }
             return false;

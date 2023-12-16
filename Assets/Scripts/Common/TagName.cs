@@ -23,6 +23,6 @@
 		public const string GateEntity = "GateEntity";
 		public const string MainGameMoveStageReceiver = "MainGameMoveStageReceiver";
 		public const string MianGameMoveStageReceiver = "MianGameMoveStageReceiver";
-		public const string Terrain = "Terrain";
+		public const string SwitchCollider = "SwitchCollider";
 	}
 }
