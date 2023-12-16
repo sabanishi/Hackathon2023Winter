@@ -230,7 +230,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 65535
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -262,7 +262,7 @@ MonoBehaviour:
   barShader: {fileID: 4800000, guid: 4e9f8ef77c72b4d868dd3dd4aef637df, type: 3}
   spriteRenderer: {fileID: 3609884282297885359}
   barRenderer: {fileID: 8772032299859789083}
-  MaxShaderSpeed: 6
+  MaxShaderSpeed: 32
   Height: 2
 --- !u!114 &8978741363930620755
 MonoBehaviour:

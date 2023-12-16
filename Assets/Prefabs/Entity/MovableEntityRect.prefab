@@ -202,7 +202,7 @@ MonoBehaviour:
   isCircle: 0
   myShader: {fileID: 4800000, guid: 52fd90b4ac83e4ad0947b2fda1c16f4b, type: 3}
   spriteRenderer: {fileID: 845620362465788884}
-  ShaderMaxSpeed: 16
+  ShaderMaxSpeed: 32
 --- !u!114 &6172519995880168100
 MonoBehaviour:
   m_ObjectHideFlags: 0
