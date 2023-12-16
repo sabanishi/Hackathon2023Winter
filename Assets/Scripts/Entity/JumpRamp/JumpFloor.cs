@@ -36,6 +36,7 @@ namespace Hackathon2023Winter.Entity
             
             _barMaterial = new Material(barShader);
             _barMaterial.SetInt(_barColorType,NormalColor);
+            _barMaterial.renderQueue = 1999;
             barRenderer.material = _barMaterial;
         }
 

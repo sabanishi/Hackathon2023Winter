@@ -44,17 +44,21 @@ namespace Hackathon2023Winter.Entity
         private void CheckTrigger()
         {
             //自身の上にあるEntityをRayを飛ばすことにより取得する
-            var hit = Physics2D.Raycast(transform.position, Vector2.up, 0.2f);
-            if (hit.collider != null)
+            var hits = Physics2D.RaycastAll(transform.position, Vector2.up, 0.2f);
+            if (hits.IsNullOrEmpty()) return;
+            foreach (var hit in hits)
             {
-                //IShapableが乗っている時、Triggerをtrueにする
-                if (hit.collider.gameObject.GetComponent<IShapable>() != null)
+                if (hit.collider != null)
                 {
-                    var shape = hit.collider.gameObject.GetComponent<IShapable>();
-                    if (shape.IsCircle == isCircle)
+                    //IShapableが乗っている時、Triggerをtrueにする
+                    if (hit.collider.gameObject.GetComponent<IShapable>() != null)
                     {
-                        _trigger.Value = true;
-                        return;
+                        var shape = hit.collider.gameObject.GetComponent<IShapable>();
+                        if (shape.IsCircle == isCircle)
+                        {
+                            _trigger.Value = true;
+                            return;
+                        }
                     }
                 }
             }
