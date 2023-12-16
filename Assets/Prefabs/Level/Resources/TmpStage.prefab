@@ -2596,6 +2596,14 @@ PrefabInstance:
       propertyPath: type
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7198643928148266336, guid: 91243e2ec02aa409e8fad7687059d147, type: 3}
+      propertyPath: targets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7198643928148266336, guid: 91243e2ec02aa409e8fad7687059d147, type: 3}
+      propertyPath: targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 8760822321436405260}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2992,6 +3000,14 @@ PrefabInstance:
       propertyPath: type
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8261927510919601706, guid: ade70b54ddc1b406f8b18ebeea3c61bd, type: 3}
+      propertyPath: targets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261927510919601706, guid: ade70b54ddc1b406f8b18ebeea3c61bd, type: 3}
+      propertyPath: targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 2840913088109266097}
     - target: {fileID: 9041062485914066553, guid: ade70b54ddc1b406f8b18ebeea3c61bd, type: 3}
       propertyPath: m_Name
       value: SwitchCircle
@@ -3365,11 +3381,30 @@ PrefabInstance:
       propertyPath: type
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7586410763324657246, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+      propertyPath: eventGenerators.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586410763324657246, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+      propertyPath: eventGenerators.Array.data[0]
+      value: 
+      objectReference: {fileID: 8760822321436405260}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+--- !u!114 &2840913088109266097 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7586410763324657246, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}
+  m_PrefabInstance: {fileID: 5630813467027458799}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad39598309904958852909d07e176a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8702325885590953960 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3954288337916630279, guid: 5df3f76b016784c599bd3da14ebfca63, type: 3}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -5,9 +6,9 @@ using UnityEngine;
 
 namespace Hackathon2023Winter.Entity
 {
-    public class ShiftBlock : BaseEntity
+    public class ShiftBlock : BaseEntity,ISwitchTarget
     {
-        [SerializeField]　private SwitchEntity[] eventGenerators;
+        public List<SwitchEntity> eventGenerators=new List<SwitchEntity>();
         [SerializeField] private Transform toPosTransform;
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float speed;
@@ -139,6 +140,21 @@ namespace Hackathon2023Winter.Entity
         {
             rb.simulated = isSimulate;
             base.SetIsSimulateInternal(isSimulate);
+        }
+
+        public void Enter()
+        {
+            
+        }
+
+        public void Exit()
+        {
+            
+        }
+
+        public void PassSwitchReference(SwitchEntity switchEntity)
+        {
+            eventGenerators.Add(switchEntity);
         }
     }
 }
