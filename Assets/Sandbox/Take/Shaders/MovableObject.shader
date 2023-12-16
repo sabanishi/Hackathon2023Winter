@@ -75,6 +75,15 @@ fixed4 outLineYellowQuad(float2 uv, float r)
     return fixed4(s, s, s*0.2, 1.0);
 }
 
+fixed4 outLinePinkQuad(float2 uv, float r)
+{
+    uv = mul(rotate2D(PI/4.0), uv);
+    float d = abs(uv.x) + abs(uv.y);
+    float s = 0.03 / abs(d - r);
+
+    return fixed4(s, s*s, s*0.8, 1.0);
+}
+
 fixed4 circle(float val)
 {
     return fixed4(sqrt(val), val*val, val*val*0.3, 1.0);
@@ -88,6 +97,11 @@ fixed4 greenQuad(float val)
 fixed4 yellowQuad(float val)
 {
     return fixed4(sqrt(val), sqrt(val), val*val*0.2, 1.0);
+}
+
+fixed4 pinkQuad()
+{
+    return fixed4(0.8, 0.2, 0.4, 1.0);
 }
 
 v2f vert (appdata v)
@@ -130,11 +144,17 @@ fixed4 frag (v2f i) : SV_Target
         col = greenQuad(val);
         col += outLineGreenQuad(uv, r);
     }
-    else
+    else if (_ObjectType == 2)
     { // yellowQuad
         float r = 1./sqrt(2.);
         col = yellowQuad(val);
         col += outLineYellowQuad(uv, r);
+    }
+    else
+    { // pinkQuad
+        float r = 1./sqrt(2.);
+        col = pinkQuad();
+        col += outLinePinkQuad(uv, r);
     }
     
     return col;
