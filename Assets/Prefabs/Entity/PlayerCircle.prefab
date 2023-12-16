@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 1509553496628266044}
   - component: {fileID: 2514679400634982659}
   - component: {fileID: 3220711542939716646}
-  - component: {fileID: 1067184483052995386}
   m_Layer: 0
   m_Name: PlayerCircle
   m_TagString: Player
@@ -205,7 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mover: {fileID: 1509553496628266044}
-  rb: {fileID: 3858345662305354196}
 --- !u!114 &1509553496628266044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +240,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3220711542939716646}
-  - {fileID: 1067184483052995386}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -259,22 +256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warpDistance: 30
---- !u!114 &1067184483052995386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437428368256468788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 0
-  m_SynchronizeRotation: 0
-  m_SynchronizeScale: 1
-  m_UseLocal: 0
 --- !u!1 &2492113320971144727
 GameObject:
   m_ObjectHideFlags: 0
