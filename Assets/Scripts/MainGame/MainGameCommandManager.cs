@@ -133,7 +133,7 @@ namespace Hackathon2023Winter.MainGame
             }
             KillTween();
             var posY = isActive ? 300 : 600;
-            _tween = explainPanelTransform?.DOAnchorPos(new Vector2(0, posY), AnimationTime);
+            _tween = explainPanelTransform?.DOAnchorPos(new Vector2(-400, posY), AnimationTime);
             _isPanelActive = isActive;
         }
 
