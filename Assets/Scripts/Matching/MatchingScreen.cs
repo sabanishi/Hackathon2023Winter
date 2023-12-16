@@ -42,7 +42,7 @@ namespace Hackathon2023Winter.Matching
         protected override async UniTask<IScreenData> DisposeInternal(CancellationToken token)
         {
             matchingScreenPresenter.Cleanup();
-            var mainGameData = new MainGameData(true, PhotonNetwork.IsMasterClient,-1);
+            var mainGameData = new MainGameData(true, PhotonNetwork.IsMasterClient,-1,false);
             return mainGameData;
         }
 
