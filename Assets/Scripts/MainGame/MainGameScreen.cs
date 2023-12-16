@@ -44,11 +44,11 @@ namespace Hackathon2023Winter.MainGame
                 commandManager.OnCommandObservable.Subscribe(TakeCommand).AddTo(gameObject);
                 moveStageManager.Setup(isOnline,isHost);
                 moveStageManager.MoveStageObservable.Subscribe(GoToStage).AddTo(gameObject);
-                
-                if (mainGameScreenData.LevelId == -1)
+
+                if (levelId == -1)
                 {
                     //ステージセレクト画面
-                    instructionPanel.SetActive(true);
+                    instructionPanel.SetActive(!mainGameScreenData.IsGameToGame);
                 }
                 else
                 {
@@ -106,7 +106,6 @@ namespace Hackathon2023Winter.MainGame
 
         protected override async UniTask OpenDealInternal(CancellationToken token)
         {
-            Debug.Log("MainGameScreenのOpen");
             if (_mainGameData.LevelId == -1)
             {
                 //ステージセレクト画面
@@ -127,7 +126,7 @@ namespace Hackathon2023Winter.MainGame
             commandManager.Cleanup();
             moveStageManager.Cleanup();
             return new MainGameData(isOnline: _mainGameData.IsOnline, isHost: _mainGameData.IsHost,
-                levelId: _nextStageId);
+                levelId: _nextStageId,true);
         }
 
         public void Dispose()

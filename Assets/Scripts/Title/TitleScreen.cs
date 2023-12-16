@@ -52,7 +52,7 @@ namespace Hackathon2023Winter.Title
         {
             return _isOnline
                 ? null
-                : new MainGameData(false, false,-1);
+                : new MainGameData(false, false,-1,false);
         }
 
         protected override async UniTask CloseAnimationInternal(CancellationToken token)
