@@ -1,9 +1,11 @@
 using Photon.Pun;
 using Sabanishi.Common;
 using UniRx;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Tilemaps;
 
 namespace Hackathon2023Winter.Entity
 {
@@ -12,20 +14,12 @@ namespace Hackathon2023Winter.Entity
         [SerializeField] private bool isCircle;
         [SerializeField] private bool isPermanent;
         [SerializeField] private Transform child;
-        [SerializeField] private EventTrigger eventTrigger;
         [SerializeField] private BaseEntity[] targets;
-
-
-        private ReactiveProperty<bool> _trigger;
-
-        private static readonly Color CircleColor = Color.red;
-        private static readonly Color RectColor = Color.green;
-
-        private static readonly Color DefaultColor = Color.white;
-
+        
         //踏まれた時のScaleの倍率
         private const float TriggeredScale = 0.4f;
-
+        
+        private ReactiveProperty<bool> _trigger;
         public IReadOnlyReactiveProperty<bool> Trigger => _trigger;
         private Vector3 _defaultScale;
 
@@ -34,16 +28,6 @@ namespace Hackathon2023Winter.Entity
             _trigger = new ReactiveProperty<bool>(false);
             _trigger.Skip(1).Subscribe(OnChangeTrigger).AddTo(gameObject);
             _defaultScale = child.localScale;
-
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerEnter;
-            entry.callback.AddListener((data) => OnMouseEnterOrExit(true));
-            eventTrigger.triggers.Add(entry);
-
-            EventTrigger.Entry exit = new EventTrigger.Entry();
-            exit.eventID = EventTriggerType.PointerExit;
-            exit.callback.AddListener((data) => OnMouseEnterOrExit(false));
-            eventTrigger.triggers.Add(exit);
         }
 
         private void OnDestroy()
@@ -112,7 +96,7 @@ namespace Hackathon2023Winter.Entity
             base.ChangeToOfflineInternal();
         }
 
-        private void OnMouseEnterOrExit(bool isEnter)
+        public void OnMouseEnterOrExit(bool isEnter)
         {
             if (targets.IsNullOrEmpty()) return;
             foreach (var target in targets)
@@ -151,6 +135,9 @@ namespace Hackathon2023Winter.Entity
                         $"ISwitchTargetを実装していないEntityがSwitchEntityのTargetに設定されています: my_name={gameObject.name}, targetName:{target.name}");
                 }
             }
+            
+            Undo.RecordObject(this, "Set Switch Target");
+            EditorUtility.SetDirty(this);
         }
 #endif
     }

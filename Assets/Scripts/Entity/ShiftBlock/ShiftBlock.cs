@@ -1,24 +1,42 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sabanishi.Common;
 using UniRx;
+using UnityEditor;
 using UnityEngine;
 
 namespace Hackathon2023Winter.Entity
 {
     public class ShiftBlock : BaseEntity,ISwitchTarget
     {
-        public List<SwitchEntity> eventGenerators=new List<SwitchEntity>();
+        [SerializeField] private List<SwitchEntity> eventGenerators=new List<SwitchEntity>();
         [SerializeField] private Transform toPosTransform;
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float speed;
-
+        [SerializeField] private Transform parent;
+        
+        private List<ShiftBlockChildren> _children;
         private const float Epsilon = 0.1f;
         private Vector3 _fromPos;
         private Vector3 _toPos;
 
         private CancellationTokenSource _cts;
         private Transform _transform;
+
+        private void Awake()
+        {
+            _children = new();
+            foreach (Transform child in parent)
+            {
+                if (child.gameObject.TryGetComponent(typeof(ShiftBlockChildren), out var component))
+                {
+                    var shiftBlockChildren = (ShiftBlockChildren) component;
+                    shiftBlockChildren.SetMaskActive(false);
+                    _children.Add(shiftBlockChildren);
+                }
+            }
+        }
 
         public void Setup()
         {
@@ -75,51 +93,8 @@ namespace Hackathon2023Winter.Entity
             {
                 rb.velocity = (toPos - transform.position).normalized * speed;
                 var velocity = rb.velocity;
-                var cancellationToken = new CancellationTokenSource();
-                var whenAnyCts =
-                    CancellationTokenSource.CreateLinkedTokenSource(stopCts.Token, cancellationToken.Token);
-                await UniTask.WhenAny(
-                    UniTask.WaitUntil(() => Vector3.Distance(transform.position, toPos) < Epsilon,
-                        cancellationToken: whenAnyCts.Token),
-                    UniTask.Create(async () =>
-                    {
-                        while (true)
-                        {
-                            await UniTask.Yield();
-                            whenAnyCts.Token.ThrowIfCancellationRequested();
-                            //進んでいる方向に別のEntityが存在する場合
-                            var hits = Physics2D.RaycastAll(transform.position, velocity, _transform.localScale.x / 2);
-                            if (hits != null)
-                            {
-                                var isHit = false;
-                                foreach (var hit in hits)
-                                {
-                                    if (hit.collider != null)
-                                    {
-                                        if (!hit.collider.gameObject.Equals(gameObject))
-                                        {
-                                            if (hit.collider.gameObject.GetComponent<BaseEntity>())
-                                            {
-                                                if (hit.collider.GetComponent<BaseEntity>().CheckIsCollide(velocity))
-                                                {
-                                                    //移動を一時的に停止する
-                                                    Debug.Log(hit.collider.gameObject.name);
-                                                    rb.velocity = Vector2.zero;
-                                                    isHit = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if (isHit) continue;
-                            }
-
-                            rb.velocity = velocity;
-                        }
-                    }));
-                cancellationToken.Cancel();
+                await UniTask.WaitUntil(() => Vector3.Distance(transform.position, toPos) < Epsilon,
+                    cancellationToken:this.GetCancellationTokenOnDestroy());
                 await UniTask.DelayFrame(1, cancellationToken: stopCts.Token);
                 rb.velocity = Vector2.zero;
                 transform.position = toPos;
@@ -144,17 +119,36 @@ namespace Hackathon2023Winter.Entity
 
         public void Enter()
         {
-            
+            if (_children.IsNullOrEmpty()) return;
+            foreach (var child in _children)
+            {
+                child.SetMaskActive(true);
+            }
         }
 
         public void Exit()
         {
-            
+            if (_children.IsNullOrEmpty()) return;
+            foreach (var child in _children)
+            {
+                child.SetMaskActive(true);
+            }
         }
 
         public void PassSwitchReference(SwitchEntity switchEntity)
         {
+            foreach (var generator in eventGenerators)
+            {
+                if (generator == switchEntity)
+                {
+                    return;
+                }
+            }
             eventGenerators.Add(switchEntity);
+#if UNITY_EDITOR
+            Undo.RecordObject(this, "Set Switch Target");
+            EditorUtility.SetDirty(this);
+#endif
         }
     }
 }

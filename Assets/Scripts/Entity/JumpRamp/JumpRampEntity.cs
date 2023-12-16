@@ -1,16 +1,21 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
+using Sabanishi.Common;
 using UniRx;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Hackathon2023Winter.Entity
 {
-    public class JumpRampEntity : BaseEntity
+    public class JumpRampEntity : BaseEntity,ISwitchTarget
     {
         [SerializeField] private GameObject bar;
         [SerializeField] private JumpFloor floor;
         [SerializeField] private float height;
-        [SerializeField]　private SwitchEntity[] eventGenerators;
+        [SerializeField]　private List<SwitchEntity> eventGenerators=new List<SwitchEntity>();
         [Header("ジャンプ台の速度")] [SerializeField] private float speed;
 
         [Header("ジャンプ台が停止してから使用可能になるまでの時間")] [SerializeField]
@@ -39,6 +44,7 @@ namespace Hackathon2023Winter.Entity
         public void Setup()
         {
             floor.Setup(IsOwner);
+            if (eventGenerators.IsNullOrEmpty()) return;
             foreach (var generator in eventGenerators)
             {
                 generator.Trigger.Skip(1).Subscribe(_ => CheckSwitch()).AddTo(gameObject);
@@ -107,6 +113,32 @@ namespace Hackathon2023Winter.Entity
         {
             floor.SetIsSimulateActive(isSimulate);
             base.SetIsSimulateInternal(isSimulate);
+        }
+
+        public void Enter()
+        {
+            floor.SetMouseTarget(true);
+        }
+
+        public void Exit()
+        {
+            floor.SetMouseTarget(false);
+        }
+
+        public void PassSwitchReference(SwitchEntity switchEntity)
+        {
+            foreach (var generator in eventGenerators)
+            {
+                if (generator == switchEntity)
+                {
+                    return;
+                }
+            }
+            eventGenerators.Add(switchEntity);
+#if UNITY_EDITOR
+            Undo.RecordObject(this, "Set Switch Target");
+            EditorUtility.SetDirty(this);
+#endif
         }
     }
 }

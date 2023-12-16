@@ -20,10 +20,13 @@ namespace Hackathon2023Winter.Entity
         private readonly int _objectType = Shader.PropertyToID("_ObjectType");
         private readonly int _velocityFlag = Shader.PropertyToID("velocity");
 
+        private const int NormalColor = 2;
+        private const int MouseOverColor = 3;
+
         private void Awake()
         {
             _material = new Material(shader);
-            _material.SetInt(_objectType,2);
+            _material.SetInt(_objectType,NormalColor);
             spriteRenderer.material = _material;
         }
 
@@ -69,6 +72,11 @@ namespace Hackathon2023Winter.Entity
         public void SetIsSimulateActive(bool isActive)
         {
             rb.simulated = isActive;
+        }
+
+        public void SetMouseTarget(bool isTarget)
+        {
+            _material.SetInt(_objectType, isTarget ? MouseOverColor : NormalColor);
         }
     }
 }
