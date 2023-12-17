@@ -69,12 +69,18 @@ namespace Hackathon2023Winter.Entity
             if (_keyConditions == null) return;
             if (photonView.IsMine)
             {
-                var canJump = mover.Move(_keyConditions);
+                var isJump = mover.Move(_keyConditions);
 
                 //UP/Down系をfalseにする
                 _keyConditions.IsLeftDown = false;
                 _keyConditions.IsRightDown = false;
-                if (canJump)
+                //ジャンプ不可であり、isJump=trueかつisJumpDown=trueの場合、
+                //isJumpDownをtrueにする
+                if (!isJump && _keyConditions.IsJumpDown)
+                {
+                    _keyConditions.IsJumpDown = true;
+                }
+                else
                 {
                     _keyConditions.IsJumpDown = false;
                 }
