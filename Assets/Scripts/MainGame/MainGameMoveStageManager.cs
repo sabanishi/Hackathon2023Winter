@@ -44,14 +44,6 @@ namespace Hackathon2023Winter.MainGame
                     .GetComponent<MainGameMoveStagePasser>();
                 _passer.transform.parent = myTransform;
                 _receiver = Instantiate(receiverPrefab, myTransform, true);
-                _receiver.ReceiverCanStageSelectObservable.Subscribe(x =>
-                {
-                    SetCanStageSelect(true,x);
-                }).AddTo(gameObject);
-                _receiver.ReceiverCannotStageSelectObservable.Subscribe(x =>
-                {
-                    SetCanStageSelect(false);
-                }).AddTo(gameObject);
                 _receiver.ReceiverGoToStageObservable.Subscribe(x =>
                 {
                     _moveStageSubject.OnNext(x);
@@ -89,7 +81,7 @@ namespace Hackathon2023Winter.MainGame
             }
             else
             {
-                _passer?.SendCanStageSelect(stageId);
+                //_passer?.SendCanStageSelect(stageId);
             }
         }
 
@@ -102,10 +94,6 @@ namespace Hackathon2023Winter.MainGame
             if (isHost)
             {
                 SetCanStageSelect(false);
-            }
-            else
-            {
-                _passer?.SendCannotStageSelect();
             }
         }
 
