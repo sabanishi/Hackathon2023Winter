@@ -93,6 +93,10 @@ namespace Hackathon2023Winter.Entity
             if (_isRunning) return;
             UniTask.Void(async () =>
             {
+                foreach(var eventGenerator in eventGenerators)
+                {
+                    eventGenerator.SendFireEvent();
+                }
                 _isRunning = true;
                 //startTime秒待機
                 await UniTask.Delay((int)(startTime * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
