@@ -362,6 +362,7 @@ MonoBehaviour:
   moveSpeed: 7
   rotateSpeed: 480
   catchTransform: {fileID: 1009092107292107971}
+  minTVelocity: -15
 --- !u!114 &4105221016712212691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,3 +399,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warpDistance: 30
+  posCoefficient: 1000

@@ -9,6 +9,7 @@ namespace Hackathon2023Winter.Entity
         [SerializeField]private float moveSpeed = 5.0f;
         [SerializeField] private float rotateSpeed = 480f;
         [SerializeField]private Transform catchTransform;
+        [SerializeField] private float minTVelocity = -20f;
         
         public override void Move(KeyConditions keyCondition)
         {
@@ -35,6 +36,11 @@ namespace Hackathon2023Winter.Entity
                 if (!CheckIsGround()) return;
                 //上方向への衝撃を加える
                 rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            }
+            
+            if(rb.velocity.y < minTVelocity)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, minTVelocity);
             }
         }
         
