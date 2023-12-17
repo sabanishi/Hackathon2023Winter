@@ -778,7 +778,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DUO
+  m_text: Multi
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
   m_sharedMaterial: {fileID: -2601759147593020727, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SOLO
+  m_text: Solo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
   m_sharedMaterial: {fileID: -2601759147593020727, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
@@ -1470,7 +1470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5406915948779571827, guid: b33484d7aef564333aec9dbecb8c54d8, type: 3}
       propertyPath: maxParticle
-      value: 128
+      value: 192
       objectReference: {fileID: 0}
     - target: {fileID: 5406915948779571827, guid: b33484d7aef564333aec9dbecb8c54d8, type: 3}
       propertyPath: instantiateNum
