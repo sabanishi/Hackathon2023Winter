@@ -22,12 +22,14 @@ namespace Hackathon2023Winter.Entity
         private ReactiveProperty<bool> _trigger;
         public IReadOnlyReactiveProperty<bool> Trigger => _trigger;
         private Vector3 _defaultScale;
+        private bool _isFinish;
 
         private void Awake()
         {
             _trigger = new ReactiveProperty<bool>(false);
             _trigger.Skip(1).Subscribe(OnChangeTrigger).AddTo(gameObject);
             _defaultScale = child.localScale;
+            _isFinish = false;
         }
 
         private void OnDestroy()
@@ -63,7 +65,7 @@ namespace Hackathon2023Winter.Entity
                 }
             }
 
-            if (isPermanent) return;
+            if (_isFinish) return;
             _trigger.Value = false;
         }
 
@@ -117,6 +119,14 @@ namespace Hackathon2023Winter.Entity
                         switchTarget.Exit();
                     }
                 }
+            }
+        }
+
+        public void SendFireEvent()
+        {
+            if (isPermanent)
+            {
+                _isFinish = true;
             }
         }
 

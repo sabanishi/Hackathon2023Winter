@@ -84,6 +84,10 @@ namespace Hackathon2023Winter.Entity
         private void TurnOn()
         {
             GoTo(_toPos);
+            foreach(var eventGenerator in eventGenerators)
+            {
+                eventGenerator.SendFireEvent();
+            }
         }
 
         private void TurnOff()
