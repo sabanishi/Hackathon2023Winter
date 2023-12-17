@@ -143,7 +143,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "WASD\t\tMove\nArrow Keys\tMove(SOLO Only)\nR\t\tRestart\nT\t\tGo Stage
-    Select\nEsc\t\tGo Title"
+    Select\nEsc\t\tGo Title\nMouse\tPoint Switch"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
   m_sharedMaterial: {fileID: -2601759147593020727, guid: 3fdab992b26684845bfd11e3b4682c79, type: 2}
