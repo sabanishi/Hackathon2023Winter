@@ -11,9 +11,9 @@ namespace Hackathon2023Winter.Entity
         [SerializeField]private Transform catchTransform;
         [SerializeField] private float minTVelocity = -20f;
         
-        public override void Move(KeyConditions keyCondition)
+        public override bool Move(KeyConditions keyCondition)
         {
-            if (!CanControl) return;
+            if (!CanControl) return false;
             if (keyCondition.IsLeft)
             {
                 rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
@@ -33,7 +33,7 @@ namespace Hackathon2023Winter.Entity
             
             if (keyCondition.IsJumpDown)
             {
-                if (!CheckIsGround()) return;
+                if (!CheckIsGround()) return false;
                 //上方向への衝撃を加える
                 rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             }
@@ -42,6 +42,8 @@ namespace Hackathon2023Winter.Entity
             {
                 rb.velocity = new Vector2(rb.velocity.x, minTVelocity);
             }
+
+            return true;
         }
         
         /// <summary>
