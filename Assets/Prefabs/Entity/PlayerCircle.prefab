@@ -220,6 +220,7 @@ MonoBehaviour:
   jumpPower: 15
   moveSpeed: 7
   catchTransform: {fileID: 547761261009818395}
+  minTVelocity: -15
 --- !u!114 &2514679400634982659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warpDistance: 30
+  posCoefficient: 1000
 --- !u!1 &2492113320971144727
 GameObject:
   m_ObjectHideFlags: 0
